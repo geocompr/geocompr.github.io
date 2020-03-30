@@ -97,6 +97,7 @@ the installation of upstream dependencies). The following bash commands
 should install key geographic R packages on Ubuntu 19.10:
 
 ``` bash
+# bash
 sudo add-apt-repository ppa:marutter/rrutter3.5
 sudo apt update
 sudo apt install libudunits2-dev libgdal-dev libgeos-dev libproj-dev 
@@ -113,6 +114,7 @@ as RStudio or in the terminal by entering `R`. You should be able to run
 the following commands without problem:
 
 ``` r
+# R
 library(sf)
 #> Linking to GEOS 3.7.2, GDAL 2.4.2, PROJ 5.2.0
 install.packages("tmap")
@@ -216,6 +218,7 @@ most R packages. For most people I recommend installing the release
 version as follows:
 
 ``` r
+# R
 install.packages("tmap")
 ```
 
@@ -223,6 +226,7 @@ It is good practice to keep your packages up-to-date. To do so you run
 the following command regularly:
 
 ``` r
+# R
 update.packages()
 ```
 
@@ -231,6 +235,7 @@ always do so from inside R with commands such as the following (which
 installs the development versions of **tmap** and **tmaptools**):
 
 ``` r
+# R
 remotes::install_github("mtennekes/tmap")
 remotes::install_github("mtennekes/tmaptools")
 ```
@@ -238,8 +243,11 @@ remotes::install_github("mtennekes/tmaptools")
 You can get more recent versions on OSGeo packages on Ubuntu by adding
 the `ubuntugis` repository as follows:
 
-    sudo add-apt-repository ppa:ubuntugis/ubuntugis-unstable
-    sudo apt-get update
+``` bash
+# bash
+sudo add-apt-repository ppa:ubuntugis/ubuntugis-unstable
+sudo apt-get update
+```
 
 # 5\. Geographic R packages on Docker
 
@@ -282,8 +290,12 @@ To test-out the Ubuntu 19.10 set-up recommended above I created a
 and associated image on Dockerhub that you can test-out as follows:
 
 ``` bash
+# bash
 docker run -it robinlovelace/geocompr:ubuntu-eoan
-R
+```
+
+``` r
+# R
 library(sf)
 #> Linking to GEOS 3.7.2, GDAL 2.4.2, PROJ 5.2.0
 library(raster)

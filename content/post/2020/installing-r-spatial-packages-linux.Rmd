@@ -68,6 +68,7 @@ R's spatial packages can be installed from source on the latest version of this 
 The following bash commands should install key geographic R packages on Ubuntu 19.10:
 
 ```bash
+# bash
 sudo add-apt-repository ppa:marutter/rrutter3.5
 sudo apt update
 sudo apt install libudunits2-dev libgdal-dev libgeos-dev libproj-dev 
@@ -80,6 +81,7 @@ To test your installation of R has worked, try running R in an IDE such as RStud
 You should be able to run the following commands without problem:
 
 ```r
+# R
 library(sf)
 #> Linking to GEOS 3.7.2, GDAL 2.4.2, PROJ 5.2.0
 install.packages("tmap")
@@ -141,6 +143,7 @@ For me, that means the latest version of Ubuntu plus CRAN versions of most R pac
 For most people I recommend installing the release version as follows:
 
 ```{r, eval=FALSE}
+# R
 install.packages("tmap")
 ```
 
@@ -148,19 +151,22 @@ It is good practice to keep your packages up-to-date.
 To do so you run the following command regularly:
 
 ```{r, eval=FALSE}
+# R
 update.packages()
 ```
 
 If you want to test development versions of various packages, you can always do so from inside R with commands such as the following (which installs the development versions of **tmap** and **tmaptools**):
 
 ```{r, eval=FALSE}
+# R
 remotes::install_github("mtennekes/tmap")
 remotes::install_github("mtennekes/tmaptools")
 ```
 
 You can get more recent versions on OSGeo packages on Ubuntu by adding the `ubuntugis` repository as follows:
 
-```
+```bash
+# bash
 sudo add-apt-repository ppa:ubuntugis/ubuntugis-unstable
 sudo apt-get update
 ```
@@ -192,8 +198,12 @@ docker run -e PASSWORD=yourpassword --rm -p 8787:8787 robinlovelace/geocompr
 To test-out the Ubuntu 19.10 set-up recommended above I created a [Dockerfile](https://github.com/Robinlovelace/geocompr/blob/master/docker/ubuntu-eoan/Dockerfile) and associated image on Dockerhub that you can test-out as follows:
 
 ```bash
+# bash
 docker run -it robinlovelace/geocompr:ubuntu-eoan
-R
+```
+
+```{r, eval=FALSE}
+# R
 library(sf)
 #> Linking to GEOS 3.7.2, GDAL 2.4.2, PROJ 5.2.0
 library(raster)
