@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>ggplot2 on the Geocomputation with R website</title>
+    <link>https://geocompr.github.io/tags/ggplot2/</link>
+    <description>Recent content in ggplot2 on the Geocomputation with R website</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Sun, 08 Dec 2019 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="https://geocompr.github.io/tags/ggplot2/feed.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Inset maps with ggplot2</title>
+      <link>https://geocompr.github.io/post/2019/ggplot2-inset-maps/</link>
+      <pubDate>Sun, 08 Dec 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://geocompr.github.io/post/2019/ggplot2-inset-maps/</guid>
+      <description>Inset maps enable multiple places to be shown in the same geographic data visualisation, as described in the Inset maps section (8.2.7) of our open source book Geocomputation with R. The topic of inset maps has gained attention and recently Enrico Spinielli asked inset maps could be created for data in unusual coordinate systems:
+Speaking of insets, do you know of any ggplot2 examples with an inset for showing where the (bbox of the) map is in an orthographic/satellite proj?</description>
+    </item>
+    
+  </channel>
+</rss>

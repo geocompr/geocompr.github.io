@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en-us">
+    <head>
+         
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title></title>
+        <meta name="description=" content="Geocomputation with R is for people who want to analyze, visualize and model geographic data with open source software. GIS, Spatial, R, Geospatial, Maps.">
+        
+        <style>
+
+    html body {
+        font-family: 'Raleway', sans-serif;
+        background-color: white;
+    }
+
+    :root {
+        --accent: #591257;
+        --border-width:  5px ;
+    }
+
+</style>
+
+
+<link rel="stylesheet" href="https://geocompr.github.io/css/main.css">
+
+
+
+
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
+
+
+ <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/solarized-dark.min.css"> 
+
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+ 
+
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+
+     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/go.min.js"></script>  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/haskell.min.js"></script>  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/kotlin.min.js"></script>  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/scala.min.js"></script>  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/swift.min.js"></script> 
+
+    <script>hljs.initHighlightingOnLoad();</script>
+
+
+
+
+
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+
+
+<script>$(document).on('click', function() { $('.collapse').collapse('hide'); })</script>
+ <meta name="generator" content="Hugo 0.68.3" />
+        
+
+        
+        
+        <script async src="https://www.googletagmanager.com/gtag/js?id=UA-99618359-2"></script>
+        <script>
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments)};
+          gtag('js', new Date());
+
+          gtag('config', 'UA-99618359-2');
+        </script>
+        
+    </head>
+
+    
+    
+    <script type="text/javascript" async
+      src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+    </script>
+    
+
+    <body>
+         
+        <nav class="navbar navbar-default navbar-fixed-top">
+
+            <div class="container">
+
+                <div class="navbar-header">
+
+                    <a class="navbar-brand visible-xs" href="#"></a>
+
+                    <button class="navbar-toggle" data-target=".navbar-collapse" data-toggle="collapse">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+
+                </div>
+
+                <div class="collapse navbar-collapse">
+
+                    
+                        <ul class="nav navbar-nav">
+                            
+                                <li><a href="/">Home</a></li>
+                            
+                                <li><a href="/post/">Posts</a></li>
+                            
+                                <li><a href="/presentations/">Presentations</a></li>
+                            
+                                <li><a href="/workshops/">Workshops</a></li>
+                            
+                                <li><a href="/vignettes/">Vignettes and solutions</a></li>
+                            
+                                <li><a href="/guestbook/">Guestbook</a></li>
+                            
+                        </ul>
+                    
+
+                    
+                        <ul class="nav navbar-nav navbar-right">
+                            
+                                <li class="navbar-icon"><a href="https://geocompr.robinlovelace.net/"><i class="fa fa-book"></i></a></li>
+                            
+                                <li class="navbar-icon"><a href="https://github.com/Robinlovelace/geocompr"><i class="fa fa-github"></i></a></li>
+                            
+                                <li class="navbar-icon"><a href="https://twitter.com/hashtag/geocompr"><i class="fa fa-twitter"></i></a></li>
+                            
+                                <li class="navbar-icon"><a href="https://geocompr.github.io/feed.xml"><i class="fa fa-rss"></i></a></li>
+                            
+                        </ul>
+                    
+
+                </div>
+
+            </div>
+
+        </nav>
+
+
+<main>
+
+    <div class="item">
+
+    
+    
+    
+
+    
+
+    <h4><a href="/guestbook/"></a></h4>
+    
+    <div class="post-metadata">
+        
+        <br>
+        
+    </div>
+    
+    <h5></h5>
+    
+
+</div>
+
+
+    <br> <div class="text-justify"><h3 id="modules-using-the-book">Modules using the book</h3>
+<ul>
+<li><a href="https://www.nhh.no/en/courses/analysing-spatial-data/">ECS530 Analysing spatial data</a>, <a href="https://www.nhh.no/en/employees/faculty/roger-bivand/">Roger Bivand</a>, Norwegian School of Economics</li>
+<li><a href="http://geog.uoregon.edu/bartlein/courses/geog495/readings.html">GEOG 495</a> and <a href="https://pjbartlein.github.io/GeogDataAnalysis/">595: Geographic Data Analysis</a>, University of Oregon</li>
+<li><a href="https://espm-288.carlboettiger.info/">ESPM 288: Reproducible and Collaborative Data Science</a>, <a href="https://classes.berkeley.edu/content/2018-spring-espm-288-001-lab-001">Berkeley</a> University of California</li>
+</ul>
+<!-- raw HTML omitted -->
+<ul>
+<li><a href="https://www.northwestern.edu/class-descriptions/4730/WCAS/ENVR_SCI/390-0/28232.html">ENVR_SCI 390-0 &ldquo;R Data Science&rdquo; - Special Topics in Environmental Sciences</a> Northwestern University</li>
+<li><a href="https://gistbok.ucgis.org/bok-topics/r-geospatial-analysis-and-mapping">PD-15 - R for Geospatial Analysis and Mapping</a>, University Consortium for Geographic Information Science</li>
+</ul>
+<!-- raw HTML omitted -->
+<ul>
+<li><a href="https://crd230.github.io/index.html">CRD 298: Spatial Methods in Community Research</a>,  Professor <a href="https://humanecology.ucdavis.edu/people/noli-brazil">Noli Brazil</a>, University of California, Davis</li>
+<li><a href="https://rstudio-pubs-static.s3.amazonaws.com/460816_f7e4d237e0334e9887323686041bd762.html">CP6521 Advanced GIS</a>, <a href="https://sites.google.com/view/yongsunglee">Yongsun Lee</a>, Georgia Tech</li>
+<li><a href="https://sia.planning.unc.edu/teaching/techniques-course/">Urban Data Analytics in R</a>, <a href="https://sia.planning.unc.edu/">Nikhil Kaza</a>, University of North Carolina at Chapel Hill</li>
+<li><a href="https://le.ac.uk/modules/2019/gy7707">Geospatial Analytics</a>, taught by Dr <a href="https://www2.le.ac.uk/departments/geography/people/njt9">Nick Tate</a> as part of the MSc in Geographical Information Science at the Unversity of Leicester, UK.</li>
+</ul>
+<h3 id="other-teaching-courseslecturesguides-using-the-book">Other teaching courses/lectures/guides using the book</h3>
+<ul>
+<li><a href="https://github.com/uo-ec607/lectures">Data Science for Economists, EC 607</a></li>
+<li><a href="http://spatialepidemiology.strikingly.com/">11th International Summer School2019: Spatial and digital Epidemiology: Leveraging geo-referenced social media in the context of urban health</a></li>
+<li><a href="https://datacarpentry.org/r-raster-vector-geospatial/">Data Carpentry: Introduction to Geospatial Raster and Vector Data with R</a></li>
+<li><a href="https://guides.library.duke.edu/r-geospatial">R: Mapping and Geospatial</a> guide, Duke University</li>
+</ul>
+<h5 id="suggest-more-herehttpsgithubcomgeocomprgeocomprgithubioeditsourcecontentguestbookindexmd">(<a href="https://github.com/geocompr/geocompr.github.io/edit/source/content/guestbook/index.md">suggest more here</a>)</h5>
+<h3 id="tweets">Tweets:</h3>
+<h5 id="suggest-more-herehttpsgithubcomgeocomprgeocomprgithubioeditsourcecontentguestbookindexmd-1">(<a href="https://github.com/geocompr/geocompr.github.io/edit/source/content/guestbook/index.md">suggest more here</a>)</h5>
+<p><blockquote class="twitter-tweet"><p lang="en" dir="ltr">So whats the difference between sp, sf, sfc, sfg, ... ? <br>Finally getting my head around working with geodata in <a href="https://twitter.com/hashtag/rstats?src=hash&amp;ref_src=twsrc%5Etfw">#rstats</a>  -<br> <br>Thanks <a href="https://twitter.com/robinlovelace?ref_src=twsrc%5Etfw">@robinlovelace</a>  for providing this awesome book &quot;Geocomputation with R&quot; for free online!<a href="https://t.co/hSzwXXMs6Q">https://t.co/hSzwXXMs6Q</a></p>&mdash; Alexandra Kapp (@lxndrkp) <a href="https://twitter.com/lxndrkp/status/1232231744692260865?ref_src=twsrc%5Etfw">February 25, 2020</a></blockquote>
+<script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+
+<blockquote class="twitter-tweet"><p lang="en" dir="ltr">Did you know that <a href="https://twitter.com/hashtag/rstats?src=hash&amp;ref_src=twsrc%5Etfw">#rstats</a> is capable of doing GIS work? <br><br>Check out Geocomputation with R (<a href="https://t.co/eVBUKkJUPQ">https://t.co/eVBUKkJUPQ</a>) and the <a href="https://twitter.com/hashtag/rspatial?src=hash&amp;ref_src=twsrc%5Etfw">#rspatial</a> hashtag to learn more. <a href="https://t.co/fiavYpU6jF">https://t.co/fiavYpU6jF</a></p>&mdash; R for the Rest of Us (@rfortherest) <a href="https://twitter.com/rfortherest/status/1222565065330700291?ref_src=twsrc%5Etfw">January 29, 2020</a></blockquote>
+<script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+
+<blockquote class="twitter-tweet"><p lang="en" dir="ltr">Getting myself acquainted with geocomputation! Thanks for the amazing resource <a href="https://twitter.com/jakub_nowosad?ref_src=twsrc%5Etfw">@jakub_nowosad</a> <a href="https://twitter.com/robinlovelace?ref_src=twsrc%5Etfw">@robinlovelace</a>  &amp; Jannes Muenchow,  thoroughly enjoying the <a href="https://twitter.com/hashtag/geocompr?src=hash&amp;ref_src=twsrc%5Etfw">#geocompr</a>! Love the fact we have <a href="https://twitter.com/hashtag/OpenSource?src=hash&amp;ref_src=twsrc%5Etfw">#OpenSource</a> learning source for spatial analysis. <a href="https://twitter.com/hashtag/rstats?src=hash&amp;ref_src=twsrc%5Etfw">#rstats</a> <a href="https://twitter.com/hashtag/DataScience?src=hash&amp;ref_src=twsrc%5Etfw">#DataScience</a></p>&mdash; Naman Paul (@virtualnaman) <a href="https://twitter.com/virtualnaman/status/1222392518177783811?ref_src=twsrc%5Etfw">January 29, 2020</a></blockquote>
+<script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+
+<blockquote class="twitter-tweet"><p lang="en" dir="ltr">For those using <a href="https://twitter.com/hashtag/rstats?src=hash&amp;ref_src=twsrc%5Etfw">#rstats</a> for <a href="https://twitter.com/hashtag/rspatial?src=hash&amp;ref_src=twsrc%5Etfw">#rspatial</a> I can highly recommend <a href="https://twitter.com/robinlovelace?ref_src=twsrc%5Etfw">@robinlovelace</a>, <a href="https://twitter.com/jakub_nowosad?ref_src=twsrc%5Etfw">@jakub_nowosad</a> and Jannes Muenchow  open source book: &quot;Geocomputation with R&quot; It has opened doors for me.<a href="https://t.co/ALDXlxw6pt">https://t.co/ALDXlxw6pt</a> <a href="https://t.co/Ovw0kugn6H">pic.twitter.com/Ovw0kugn6H</a></p>&mdash; Jarrod Cusens (@jcusens) <a href="https://twitter.com/jcusens/status/1202893592009805825?ref_src=twsrc%5Etfw">December 6, 2019</a></blockquote>
+<script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+
+<blockquote class="twitter-tweet"><p lang="en" dir="ltr">I&#39;ve been migrating <a href="https://twitter.com/hashtag/maptools?src=hash&amp;ref_src=twsrc%5Etfw">#maptools</a> and <a href="https://twitter.com/hashtag/sp?src=hash&amp;ref_src=twsrc%5Etfw">#sp</a> based <a href="https://twitter.com/hashtag/rstats?src=hash&amp;ref_src=twsrc%5Etfw">#rstats</a> code to use the <a href="https://twitter.com/hashtag/sf?src=hash&amp;ref_src=twsrc%5Etfw">#sf</a> package instead, and if you are doing the same I can highly recommend the open &quot;Geocomputation with R&quot; book <a href="https://t.co/ID0jZi7XRC">https://t.co/ID0jZi7XRC</a> - many thanks to authors <a href="https://twitter.com/robinlovelace?ref_src=twsrc%5Etfw">@robinlovelace</a> <a href="https://twitter.com/jakub_nowosad?ref_src=twsrc%5Etfw">@jakub_nowosad</a> Jannes Muenchow! 👍</p>&mdash; Thomas R Etherington (@tretherington) <a href="https://twitter.com/tretherington/status/1153822584166686723?ref_src=twsrc%5Etfw">July 24, 2019</a></blockquote>
+<script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+
+<blockquote class="twitter-tweet"><p lang="en" dir="ltr">I spent the last few days working through Robin Lovelace and coauthors&#39; book &quot;Geomcomputation with R&quot;. It is just amazing. Really one of the best pieces I have read so far on programming and applied data analysis in R. Super recommended! <a href="https://t.co/Wen5Iy5Kv0">https://t.co/Wen5Iy5Kv0</a></p>&mdash; Tiago Ventura (@_Tiagoventura) <a href="https://twitter.com/_Tiagoventura/status/1120870984540725249?ref_src=twsrc%5Etfw">April 24, 2019</a></blockquote>
+<script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+
+<blockquote class="twitter-tweet"><p lang="en" dir="ltr"><a href="https://t.co/Wp87gLtaK8">https://t.co/Wp87gLtaK8</a>  is a great, fresh resource. I really like the Introduction where it goes through the history of r pkg development in the spatial domain, so easy to piece together the little bits I have done in the past.</p>&mdash; Dean Marchiori (@deanmarchiori) <a href="https://twitter.com/deanmarchiori/status/1116144237756604416?ref_src=twsrc%5Etfw">April 11, 2019</a></blockquote>
+<script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+
+<blockquote class="twitter-tweet"><p lang="en" dir="ltr">Really excited to teach GIS 3, Geocomputation (in R) <a href="https://twitter.com/UChicago?ref_src=twsrc%5Etfw">@UChicago</a> this Spring with the new opensource text by <a href="https://twitter.com/robinlovelace?ref_src=twsrc%5Etfw">@robinlovelace</a> <a href="https://twitter.com/jakub_nowosad?ref_src=twsrc%5Etfw">@jakub_nowosad</a> and Muenchow! A huge contribution to teaching <a href="https://twitter.com/hashtag/GIScience?src=hash&amp;ref_src=twsrc%5Etfw">#GIScience</a> <a href="https://twitter.com/hashtag/SpatialDataScience?src=hash&amp;ref_src=twsrc%5Etfw">#SpatialDataScience</a> in cutting edge, meaningful ways. &lt;3 <a href="https://t.co/3TJGuhQF9l">https://t.co/3TJGuhQF9l</a></p>&mdash; marynia (@MaryniaKolak) <a href="https://twitter.com/MaryniaKolak/status/1103527764035096576?ref_src=twsrc%5Etfw">March 7, 2019</a></blockquote>
+<script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+
+<blockquote class="twitter-tweet"><p lang="en" dir="ltr">This book is excellent if you haven&#39;t already come across it <a href="https://t.co/gXHQlVekU0">https://t.co/gXHQlVekU0</a></p>&mdash; Marley Buchman (@Buchmayne) <a href="https://twitter.com/Buchmayne/status/1100870953309896704?ref_src=twsrc%5Etfw">February 27, 2019</a></blockquote>
+<script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+
+<blockquote class="twitter-tweet"><p lang="es" dir="ltr">Joya recién salidita del horno: Geocomputation with R<a href="https://t.co/qs2GP1MqSH">https://t.co/qs2GP1MqSH</a> <a href="https://t.co/YGDWrM4hvz">pic.twitter.com/YGDWrM4hvz</a></p>&mdash; Sebastián Garrido (@segasi) <a href="https://twitter.com/segasi/status/1093646132662566912?ref_src=twsrc%5Etfw">February 7, 2019</a></blockquote>
+<script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+
+<blockquote class="twitter-tweet"><p lang="ja" dir="ltr">またよさそうな Bookdown を見つけてしまった（困ったらこれを見ればいいやとなり勉強を放棄する // Geocomputation with R <a href="https://t.co/kvRw7oVN1U">https://t.co/kvRw7oVN1U</a></p>&mdash; Castañeda (@tuntsehchestnut) <a href="https://twitter.com/tuntsehchestnut/status/1092428927333588993?ref_src=twsrc%5Etfw">February 4, 2019</a></blockquote>
+<script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+
+<blockquote class="twitter-tweet"><p lang="en" dir="ltr">Geocomputation with R: a book on geographic data analysis, visualization and modeling <a href="https://t.co/yjauLYTz8D">https://t.co/yjauLYTz8D</a> (brilliant work by <a href="https://twitter.com/robinlovelace?ref_src=twsrc%5Etfw">@robinlovelace</a> et al) <a href="https://twitter.com/hashtag/openaccess?src=hash&amp;ref_src=twsrc%5Etfw">#openaccess</a> <a href="https://twitter.com/hashtag/R?src=hash&amp;ref_src=twsrc%5Etfw">#R</a> <a href="https://twitter.com/hashtag/statistics?src=hash&amp;ref_src=twsrc%5Etfw">#statistics</a> <a href="https://twitter.com/hashtag/geography?src=hash&amp;ref_src=twsrc%5Etfw">#geography</a> <a href="https://twitter.com/hashtag/opensource?src=hash&amp;ref_src=twsrc%5Etfw">#opensource</a> <a href="https://twitter.com/hashtag/geocomputation?src=hash&amp;ref_src=twsrc%5Etfw">#geocomputation</a> <a href="https://t.co/HWRqCF508H">pic.twitter.com/HWRqCF508H</a></p>&mdash; Benjamin Hennig (@geoviews) <a href="https://twitter.com/geoviews/status/1084753004178358272?ref_src=twsrc%5Etfw">January 14, 2019</a></blockquote>
+<script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+
+<blockquote class="twitter-tweet"><p lang="en" dir="ltr">Impressive new open source book <a href="https://twitter.com/hashtag/Geocomputation?src=hash&amp;ref_src=twsrc%5Etfw">#Geocomputation</a> with R (R + spatial ecosystem). Useful for anyone &quot;using the power of computers to do things with geographic data. It teaches a range of spatial skills...applying geocomputation to solve real-world problems&quot;  <a href="https://t.co/yvg5V85gNS">https://t.co/yvg5V85gNS</a> <a href="https://t.co/CQAV9hRmpi">pic.twitter.com/CQAV9hRmpi</a></p>&mdash; Kit Macleod (@KitMacleod) <a href="https://twitter.com/KitMacleod/status/1074561874195292162?ref_src=twsrc%5Etfw">December 17, 2018</a></blockquote>
+<script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+
+<blockquote class="twitter-tweet"><p lang="en" dir="ltr">Just came across this cool (free!) resource for those interested in spatial analyses in R. Covers basics, and also dabbles in some more advanced techniques (machine learning, algorithms, etc) &quot;Geocomputation with R&quot; <a href="https://t.co/KypjoQq0sX">https://t.co/KypjoQq0sX</a> <a href="https://twitter.com/hashtag/rspatial?src=hash&amp;ref_src=twsrc%5Etfw">#rspatial</a> <a href="https://twitter.com/hashtag/Rstats?src=hash&amp;ref_src=twsrc%5Etfw">#Rstats</a> <a href="https://twitter.com/hashtag/geocompr?src=hash&amp;ref_src=twsrc%5Etfw">#geocompr</a></p>&mdash; Natasha Klappstein (@NJKlappstein) <a href="https://twitter.com/NJKlappstein/status/1074399182432100352?ref_src=twsrc%5Etfw">December 16, 2018</a></blockquote>
+<script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+
+<blockquote class="twitter-tweet"><p lang="en" dir="ltr">Geocomputation with R is an awesome book. If you want to see R applied to a topic other than statistics and data science, this is the book to read. <a href="https://t.co/j7MI9UKUa7">https://t.co/j7MI9UKUa7</a></p>&mdash; Carl Howe (@cdhowe) <a href="https://twitter.com/cdhowe/status/1073280734926909442?ref_src=twsrc%5Etfw">December 13, 2018</a></blockquote>
+<script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+
+<blockquote class="twitter-tweet"><p lang="en" dir="ltr">Brand new open source <a href="https://twitter.com/hashtag/rstats?src=hash&amp;ref_src=twsrc%5Etfw">#rstats</a> book about Geocomputation with R by <a href="https://twitter.com/robinlovelace?ref_src=twsrc%5Etfw">@Robinlovelace</a> &amp; <a href="https://twitter.com/jakub_nowosad?ref_src=twsrc%5Etfw">@Jakub_Nowosad</a>. This should be a fundamental reading for all students of <a href="https://twitter.com/geography_uh?ref_src=twsrc%5Etfw">@geography_uh</a> 🙂 Great work, dear authors! 🥂<a href="https://twitter.com/hashtag/GIS?src=hash&amp;ref_src=twsrc%5Etfw">#GIS</a> <a href="https://twitter.com/hashtag/Geography?src=hash&amp;ref_src=twsrc%5Etfw">#Geography</a> <a href="https://twitter.com/hashtag/geocompr?src=hash&amp;ref_src=twsrc%5Etfw">#geocompr</a><a href="https://t.co/RmPJWqBrHZ">https://t.co/RmPJWqBrHZ</a> <a href="https://t.co/JeznJ6oor4">pic.twitter.com/JeznJ6oor4</a></p>&mdash; Pekka Niittynen 🇫🇮🇪🇺🌎❄ (@PONiittynen) <a href="https://twitter.com/PONiittynen/status/1073112001382105088?ref_src=twsrc%5Etfw">December 13, 2018</a></blockquote>
+<script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+
+<blockquote class="twitter-tweet"><p lang="en" dir="ltr">The amount of learning material for <a href="https://twitter.com/hashtag/rstats?src=hash&amp;ref_src=twsrc%5Etfw">#rstats</a> is amazing. Check out this great free online text about geocomputation and spatial analysis with R. <a href="https://t.co/7dpomXe65A">https://t.co/7dpomXe65A</a> - in grad school I remember a book like this cost $100+. Thanks <a href="https://twitter.com/robinlovelace?ref_src=twsrc%5Etfw">@robinlovelace</a> <a href="https://twitter.com/jakub_nowosad?ref_src=twsrc%5Etfw">@jakub_nowosad</a> and Jannes Munchow <a href="https://t.co/Gq7PBR5q0O">pic.twitter.com/Gq7PBR5q0O</a></p>&mdash; Civilytics (@civilytics) <a href="https://twitter.com/civilytics/status/1071082943056093186?ref_src=twsrc%5Etfw">December 7, 2018</a></blockquote>
+<script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+
+<blockquote class="twitter-tweet"><p lang="en" dir="ltr">Check it out this book about using R to do geographic data analysis! <a href="https://twitter.com/hashtag/rstats?src=hash&amp;ref_src=twsrc%5Etfw">#rstats</a> &quot;R’s wide range of spatial capabilities would never have evolved without people willing to share what they were creating or adapting.&quot; (<a href="https://twitter.com/RogerBivand?ref_src=twsrc%5Etfw">@RogerBivand</a>) - <a href="https://twitter.com/hashtag/Geocomputation?src=hash&amp;ref_src=twsrc%5Etfw">#Geocomputation</a> with <a href="https://twitter.com/hashtag/R?src=hash&amp;ref_src=twsrc%5Etfw">#R</a> <a href="https://t.co/VWouBfjMxK">https://t.co/VWouBfjMxK</a></p>&mdash; Beatriz Milz (@BeaMilz) <a href="https://twitter.com/BeaMilz/status/1058886302903533568?ref_src=twsrc%5Etfw">November 4, 2018</a></blockquote>
+<script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+
+<blockquote class="twitter-tweet"><p lang="en" dir="ltr">😊🌿✨An awesome and fantastic resource for spatial <a href="https://twitter.com/hashtag/rstats?src=hash&amp;ref_src=twsrc%5Etfw">#rstats</a><br>Thank you <a href="https://twitter.com/robinlovelace?ref_src=twsrc%5Etfw">@robinlovelace</a>, <a href="https://twitter.com/jakub_nowosad?ref_src=twsrc%5Etfw">@jakub_nowosad</a>, and Jannes Muenchow!<a href="https://t.co/ZuEP1VO8K5">https://t.co/ZuEP1VO8K5</a><a href="https://t.co/v3kfJ5OVF1">https://t.co/v3kfJ5OVF1</a></p>&mdash; Linh-chan (@Thienthanh_le) <a href="https://twitter.com/Thienthanh_le/status/1046710705267695616?ref_src=twsrc%5Etfw">October 1, 2018</a></blockquote>
+<script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+
+<blockquote class="twitter-tweet"><p lang="en" dir="ltr">THIS BOOK IS 💚💫⚡️💯❗️‼️ Such a fantastic resource for spatial <a href="https://twitter.com/hashtag/rstats?src=hash&amp;ref_src=twsrc%5Etfw">#rstats</a> - Thank you <a href="https://twitter.com/robinlovelace?ref_src=twsrc%5Etfw">@robinlovelace</a>, <a href="https://twitter.com/jakub_nowosad?ref_src=twsrc%5Etfw">@jakub_nowosad</a>, and Jannes Muenchow! <a href="https://t.co/QuwhouXTRk">https://t.co/QuwhouXTRk</a></p>&mdash; Charlotte Chang (@harpactes) <a href="https://twitter.com/harpactes/status/1046560803745406977?ref_src=twsrc%5Etfw">October 1, 2018</a></blockquote>
+<script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+
+<blockquote class="twitter-tweet"><p lang="en" dir="ltr"><a href="https://twitter.com/robinlovelace?ref_src=twsrc%5Etfw">@robinlovelace</a> has added a section on <a href="https://twitter.com/hashtag/mapdeck?src=hash&amp;ref_src=twsrc%5Etfw">#mapdeck</a> and <a href="https://twitter.com/hashtag/googleway?src=hash&amp;ref_src=twsrc%5Etfw">#googleway</a> to his awesome <a href="https://twitter.com/hashtag/rstats?src=hash&amp;ref_src=twsrc%5Etfw">#rstats</a> &#39;Geocomputation with R&#39; book<a href="https://t.co/86tcbE5pT4">https://t.co/86tcbE5pT4</a><br><br>The example chosen is one of my favourite features of mapdeck - add_grid() <a href="https://t.co/u92WVre4ji">pic.twitter.com/u92WVre4ji</a></p>&mdash; Symbolix (@symbolixAU) <a href="https://twitter.com/symbolixAU/status/1039117359586279425?ref_src=twsrc%5Etfw">September 10, 2018</a></blockquote>
+<script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+
+<blockquote class="twitter-tweet"><p lang="en" dir="ltr">During my PhD I made the switch to do all spatial work in R and how I wish I had &quot;Geocomputation in R&quot; earlier. What a fantastic resource, I really can&#39;t recommend it enough <a href="https://t.co/V3PEsEcFqm">https://t.co/V3PEsEcFqm</a> <a href="https://twitter.com/robinlovelace?ref_src=twsrc%5Etfw">@robinlovelace</a></p>&mdash; Michael Branion-Calles (@mbrcalles) <a href="https://twitter.com/mbrcalles/status/1032678122859032576?ref_src=twsrc%5Etfw">August 23, 2018</a></blockquote>
+<script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+
+<blockquote class="twitter-tweet"><p lang="en" dir="ltr">When I started using <a href="https://twitter.com/hashtag/rstats?src=hash&amp;ref_src=twsrc%5Etfw">#rstats</a> I had no idea you could use it for geospatial work. In the last year, that&#39;s become a huge portion of my data viz work. I learned a ton by reading <a href="https://twitter.com/robinlovelace?ref_src=twsrc%5Etfw">@robinlovelace</a>, <a href="https://twitter.com/jakub_nowosad?ref_src=twsrc%5Etfw">@jakub_nowosad</a>, and Jannes Muenchow&#39;s Geocomputation with R.<a href="https://t.co/q4TA0xigUa">https://t.co/q4TA0xigUa</a></p>&mdash; David Keyes (@dgkeyes) <a href="https://twitter.com/dgkeyes/status/1212123222931456000?ref_src=twsrc%5Etfw">December 31, 2019</a></blockquote>
+<script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+</p>
+</div>
+
+    
+    
+
+    
+
+    
+
+</main>
+
+        <footer>
+
+            <p class="copyright text-muted">© All rights reserved. Powered by <a href="https://gohugo.io">Hugo</a> and <a href="https://github.com/calintat/minimal">Minimal</a></p>
+
+        </footer>
+       
+    </body>
+
+</html>
+

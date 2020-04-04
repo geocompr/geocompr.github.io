@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en-us">
+    <head>
+         
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title></title>
+        <meta name="description=" content="Geocomputation with R is for people who want to analyze, visualize and model geographic data with open source software. GIS, Spatial, R, Geospatial, Maps.">
+        
+        <style>
+
+    html body {
+        font-family: 'Raleway', sans-serif;
+        background-color: white;
+    }
+
+    :root {
+        --accent: #591257;
+        --border-width:  5px ;
+    }
+
+</style>
+
+
+<link rel="stylesheet" href="https://geocompr.github.io/css/main.css">
+
+
+
+
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
+
+
+ <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/solarized-dark.min.css"> 
+
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+ 
+
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+
+     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/go.min.js"></script>  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/haskell.min.js"></script>  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/kotlin.min.js"></script>  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/scala.min.js"></script>  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/swift.min.js"></script> 
+
+    <script>hljs.initHighlightingOnLoad();</script>
+
+
+
+
+
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+
+
+<script>$(document).on('click', function() { $('.collapse').collapse('hide'); })</script>
+ <meta name="generator" content="Hugo 0.68.3" />
+        
+
+        
+        
+        <script async src="https://www.googletagmanager.com/gtag/js?id=UA-99618359-2"></script>
+        <script>
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments)};
+          gtag('js', new Date());
+
+          gtag('config', 'UA-99618359-2');
+        </script>
+        
+    </head>
+
+    
+    
+    <script type="text/javascript" async
+      src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+    </script>
+    
+
+    <body>
+         
+        <nav class="navbar navbar-default navbar-fixed-top">
+
+            <div class="container">
+
+                <div class="navbar-header">
+
+                    <a class="navbar-brand visible-xs" href="#"></a>
+
+                    <button class="navbar-toggle" data-target=".navbar-collapse" data-toggle="collapse">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+
+                </div>
+
+                <div class="collapse navbar-collapse">
+
+                    
+                        <ul class="nav navbar-nav">
+                            
+                                <li><a href="/">Home</a></li>
+                            
+                                <li><a href="/post/">Posts</a></li>
+                            
+                                <li><a href="/presentations/">Presentations</a></li>
+                            
+                                <li><a href="/workshops/">Workshops</a></li>
+                            
+                                <li><a href="/vignettes/">Vignettes and solutions</a></li>
+                            
+                                <li><a href="/guestbook/">Guestbook</a></li>
+                            
+                        </ul>
+                    
+
+                    
+                        <ul class="nav navbar-nav navbar-right">
+                            
+                                <li class="navbar-icon"><a href="https://geocompr.robinlovelace.net/"><i class="fa fa-book"></i></a></li>
+                            
+                                <li class="navbar-icon"><a href="https://github.com/Robinlovelace/geocompr"><i class="fa fa-github"></i></a></li>
+                            
+                                <li class="navbar-icon"><a href="https://twitter.com/hashtag/geocompr"><i class="fa fa-twitter"></i></a></li>
+                            
+                                <li class="navbar-icon"><a href="https://geocompr.github.io/feed.xml"><i class="fa fa-rss"></i></a></li>
+                            
+                        </ul>
+                    
+
+                </div>
+
+            </div>
+
+        </nav>
+
+
+<main>
+
+    <div class="item">
+
+    
+    
+    
+
+    
+
+    <h4><a href="/presentations/"></a></h4>
+    
+    <div class="post-metadata">
+        
+        <br>
+        
+    </div>
+    
+    <h5></h5>
+    
+
+</div>
+
+
+    <br> <div class="text-justify"><h3 id="presentation-how-to-win-friends-and-write-an-open-source-book">Presentation &ldquo;How to win friends and write an open-source book&rdquo;</h3>
+<p><a href="http://user2019.r-project.org/">useR! 2019</a>, Toulouse, France, 2019-07-12</p>
+<ul>
+<li><a href="https://geocompr.github.io/user_19/presentation/">slides</a></li>
+</ul>
+<h3 id="presentation-reproducible-spatial-data-analysis-an-example-of-transportation-analysis-for-bristol">Presentation &ldquo;Reproducible spatial data analysis: An example of transportation analysis for Bristol&rdquo;</h3>
+<p>Collegium Da Vinci. Poznan, Poland, 2019-01-29</p>
+<ul>
+<li><a href="https://nowosad.github.io/georep_2019/">slides</a></li>
+</ul>
+<h3 id="presentation-geocomputation-with-r-data-science-open-source-software-and-geo-data">Presentation &ldquo;Geocomputation with R: Data science, open source software and geo* data&rdquo;</h3>
+<p><a href="https://twitter.com/hashtag/NWURday?src=hash">Northwest Universities R Day</a>. Manchester, UK, 2018-10-31</p>
+<ul>
+<li><a href="https://www.robinlovelace.net/presentations/nurd.html#1">slides</a></li>
+</ul>
+<h3 id="presentation-spatial-data-and-the-tidyverse">Presentation &ldquo;Spatial data and the tidyverse&rdquo;</h3>
+<p><a href="https://geostat-course.org/">GEOSTAT2018</a>. Prague, Czech Republic, 2018-08-22</p>
+<ul>
+<li><a href="spatial-tidyverse.html">slides</a></li>
+</ul>
+<h3 id="presentation-geocomputation-with-r-an-overview-of-the-field-and-introduction-to-the-book">Presentation &ldquo;Geocomputation with R: An overview of the field and introduction to the book&rdquo;</h3>
+<p><a href="https://geostat-course.org/">GEOSTAT2018</a>. Prague, Czech Republic, 2018-08-20</p>
+<ul>
+<li><a href="geostat18-geocomputation.html">slides</a></li>
+</ul>
+<h3 id="presentation-introduction-to-geocomputation-with-r">Presentation &ldquo;Introduction to geocomputation with R&rdquo;</h3>
+<p><a href="https://www.meetup.com/CinDay-RUG/">CinDay RUG</a>. Mason, Ohio, 2018-05-22</p>
+<ul>
+<li><a href="geocompr_cinday.html">slides</a></li>
+</ul>
+<h3 id="presentation-spatial-data-and-the-tidyverse-1">Presentation &ldquo;Spatial data and the tidyverse&rdquo;</h3>
+<p><a href="http://www.geocomputation.org/2017/conference/">Geocomputation 2017</a>. Leeds, UK, 2017-09-04</p>
+<ul>
+<li><a href="https://www.robinlovelace.net/presentations/spatial-tidyverse.html#1">slides</a></li>
+</ul>
+<h3 id="presentation-rqgis---integrating-r-with-qgis-for-statistical-geocomputing">Presentation &ldquo;<strong>RQGIS</strong> - integrating R with QGIS for statistical geocomputing&rdquo;</h3>
+<p><a href="https://user2017.brussels/">UseR!</a>, Brussels, Belgium, 2017-07-05</p>
+<ul>
+<li><a href="schd.ws/hosted_files/user2017/37/rqgis_useR.pptx">slides</a></li>
+<li><a href="https://channel9.msdn.com/events/useR-international-R-User-conferences/useR-International-R-User-2017-Conference/RQGIS-integrating-R-with-QGIS-for-innovative-geocomputing?term=rqgis&amp;lang-en=true">video recording</a></li>
+</ul>
+<h3 id="presentation-integrating-r-with-gis-for-innovative-geocomputing--the-examples-of-rqgis-and-rsaga">Presentation &ldquo;Integrating R with GIS for innovative geocomputing – the examples of <strong>RQGIS</strong> and <strong>RSAGA</strong>&rdquo;</h3>
+<p><a href="https://www.egu2017.eu/">EGU</a>, Vienna, Austria, 2017-04-25</p>
+<ul>
+<li><a href="http://adsabs.harvard.edu/abs/2017EGUGA..19.3301M">abstract</a></li>
+<li><a href="https://presentations.copernicus.org/EGU2017-3301_presentation.pdf">slides</a></li>
+</ul>
+</div>
+
+    
+    
+
+    
+
+    
+
+</main>
+
+        <footer>
+
+            <p class="copyright text-muted">© All rights reserved. Powered by <a href="https://gohugo.io">Hugo</a> and <a href="https://github.com/calintat/minimal">Minimal</a></p>
+
+        </footer>
+       
+    </body>
+
+</html>
+
