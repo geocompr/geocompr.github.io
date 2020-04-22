@@ -6,10 +6,21 @@
     <description>Recent content in benchmarks on the Geocomputation with R website</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Wed, 07 Aug 2019 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Tue, 21 Apr 2020 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="/tags/benchmarks/feed.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Demo of reproducible geographic data analysis: mapping Covid-19 data with R</title>
+      <link>/post/2020/mapping-covid-19/</link>
+      <pubDate>Tue, 21 Apr 2020 00:00:00 +0000</pubDate>
+      
+      <guid>/post/2020/mapping-covid-19/</guid>
+      <description>library(sf) ## Linking to GEOS 3.8.0, GDAL 3.0.4, PROJ 7.0.0 library(tmap) library(dplyr) To get data on official Covid-19 statistics, we will use the COVID19 R package.
+This package provides daily updated data on a variety of variables related to the coronavirus pandemic at national, regional and city levels. Install it as follows:
+install.packages(&amp;quot;COVID19&amp;quot;) To minimise dependencies for reproducing the results in this article, we accessed and uploaded a copy of the data with the following commands:</description>
+    </item>
     
     <item>
       <title>Geocomputation benchmarks</title>

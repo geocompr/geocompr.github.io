@@ -7,6 +7,11 @@
   </url>
   
   <url>
+    <loc>/tags/benchmarks/</loc>
+    <lastmod>2020-04-21T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
     <loc>/categories/</loc>
     <lastmod>2020-04-21T00:00:00+00:00</lastmod>
   </url>
@@ -33,6 +38,11 @@
   
   <url>
     <loc>/tags/rspatial/</loc>
+    <lastmod>2020-04-21T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/tags/sf/</loc>
     <lastmod>2020-04-21T00:00:00+00:00</lastmod>
   </url>
   
@@ -139,16 +149,6 @@
   <url>
     <loc>/post/2019/crs-projections-transformations/</loc>
     <lastmod>2019-08-21T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>/tags/sf/</loc>
-    <lastmod>2019-08-21T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>/tags/benchmarks/</loc>
-    <lastmod>2019-08-07T00:00:00+00:00</lastmod>
   </url>
   
   <url>

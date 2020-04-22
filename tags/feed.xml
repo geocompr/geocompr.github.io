@@ -12,6 +12,15 @@
     
     
     <item>
+      <title>benchmarks</title>
+      <link>/tags/benchmarks/</link>
+      <pubDate>Tue, 21 Apr 2020 00:00:00 +0000</pubDate>
+      
+      <guid>/tags/benchmarks/</guid>
+      <description></description>
+    </item>
+    
+    <item>
       <title>geocompr</title>
       <link>/tags/geocompr/</link>
       <pubDate>Tue, 21 Apr 2020 00:00:00 +0000</pubDate>
@@ -26,6 +35,15 @@
       <pubDate>Tue, 21 Apr 2020 00:00:00 +0000</pubDate>
       
       <guid>/tags/rspatial/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>sf</title>
+      <link>/tags/sf/</link>
+      <pubDate>Tue, 21 Apr 2020 00:00:00 +0000</pubDate>
+      
+      <guid>/tags/sf/</guid>
       <description></description>
     </item>
     
@@ -125,24 +143,6 @@
       <pubDate>Wed, 21 Aug 2019 00:00:00 +0000</pubDate>
       
       <guid>/tags/crs/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>sf</title>
-      <link>/tags/sf/</link>
-      <pubDate>Wed, 21 Aug 2019 00:00:00 +0000</pubDate>
-      
-      <guid>/tags/sf/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>benchmarks</title>
-      <link>/tags/benchmarks/</link>
-      <pubDate>Wed, 07 Aug 2019 00:00:00 +0000</pubDate>
-      
-      <guid>/tags/benchmarks/</guid>
       <description></description>
     </item>
     
