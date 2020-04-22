@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>raster on the Geocomputation with R website</title>
+    <link>/tags/raster/</link>
+    <description>Recent content in raster on the Geocomputation with R website</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Mon, 07 Oct 2019 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="/tags/raster/feed.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Hillshade maps</title>
+      <link>/post/2020/hillshade-maps/</link>
+      <pubDate>Mon, 07 Oct 2019 00:00:00 +0000</pubDate>
+      
+      <guid>/post/2020/hillshade-maps/</guid>
+      <description>This vignette builds on the making maps chapter of the Geocomputation with R book.
+Prerequisites The example below assume the following packages are attached:
+library(raster) # data download library(tmap) # map creation  Hillshade map Hillshade maps show the topographical shape of hills and mountains using levels of gray on a map. The role of this kind of maps is to display relative slopes, but not absolute height.
+Calculate terrain characteristics Elevation data is needed to create a hillshade map.</description>
+    </item>
+    
+    <item>
+      <title>Geocomputation for sea level research</title>
+      <link>/post/2020/sea-level-rise/</link>
+      <pubDate>Wed, 07 Aug 2019 00:00:00 +0000</pubDate>
+      
+      <guid>/post/2020/sea-level-rise/</guid>
+      <description>Introduction Sea level rise (SLR) is a global phenemona whose impacts vary geographically. Although the sea rises everywhere (although at different rates), only certain, low-lying locations will be affected. Sea level research involves analysing large geographic datasets and statistical models of change, making the computational approach advocated in Geocomputation with R well-suited to its study.
+The main factors determining the spatial distribution include elevation, proximity to the sea and population density: large, low-lying coastal settlements house the highest numbers of people at risk.</description>
+    </item>
+    
+  </channel>
+</rss>

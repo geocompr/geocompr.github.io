@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>benchmarks on the Geocomputation with R website</title>
+    <link>/tags/benchmarks/</link>
+    <description>Recent content in benchmarks on the Geocomputation with R website</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Wed, 07 Aug 2019 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="/tags/benchmarks/feed.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Geocomputation benchmarks</title>
+      <link>/post/2020/geocompr-benchmarks/</link>
+      <pubDate>Wed, 07 Aug 2019 00:00:00 +0000</pubDate>
+      
+      <guid>/post/2020/geocompr-benchmarks/</guid>
+      <description>Datasets used The following filepaths datasets will be used:
+f1 = system.file(&amp;quot;shapes/world.gpkg&amp;quot;, package = &amp;quot;spData&amp;quot;) f2 = &amp;quot;promenade-all.geojson&amp;quot; To run, this article relies on downloading files onto your computer:
+suppressPackageStartupMessages(library(dplyr)) suppressPackageStartupMessages(library(data.table)) suppressPackageStartupMessages(library(sf)) f2 = &amp;quot;promenade-all.geojson&amp;quot; u = &amp;quot;https://github.com/spnethack/spnethack/releases/download/0.1/promenade-all.geojson&amp;quot; if(!file.exists(f2)) download.file(u, destfile = f2) system.time({b = read_sf(f2)}) system.time({d = b %&amp;gt;% data.table::as.data.table()}) system.time(d[,geometry:=sf::st_as_text(geometry),]) system.time(d %&amp;gt;% readr::write_tsv(&amp;quot;tmp.tsv&amp;quot;))  Reading vector data library(sf) vector_filepath = system.file(&amp;quot;shapes/world.gpkg&amp;quot;, package = &amp;quot;spData&amp;quot;) world = st_read(vector_filepath) To demonstrate this, we will use a function to compare st_read() with its sp equivalent, rgdal::readOGR():</description>
+    </item>
+    
+  </channel>
+</rss>

@@ -2,156 +2,219 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Tags on the Geocomputation with R website</title>
-    <link>https://geocompr.github.io/tags/</link>
+    <link>/tags/</link>
     <description>Recent content in Tags on the Geocomputation with R website</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Mon, 30 Mar 2020 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Tue, 21 Apr 2020 00:00:00 +0000</lastBuildDate>
     
-	<atom:link href="https://geocompr.github.io/tags/feed.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="/tags/feed.xml" rel="self" type="application/rss+xml" />
     
-    
-    <item>
-      <title>gdal</title>
-      <link>https://geocompr.github.io/tags/gdal/</link>
-      <pubDate>Mon, 30 Mar 2020 00:00:00 +0000</pubDate>
-      
-      <guid>https://geocompr.github.io/tags/gdal/</guid>
-      <description></description>
-    </item>
     
     <item>
       <title>geocompr</title>
-      <link>https://geocompr.github.io/tags/geocompr/</link>
-      <pubDate>Mon, 30 Mar 2020 00:00:00 +0000</pubDate>
+      <link>/tags/geocompr/</link>
+      <pubDate>Tue, 21 Apr 2020 00:00:00 +0000</pubDate>
       
-      <guid>https://geocompr.github.io/tags/geocompr/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>geos</title>
-      <link>https://geocompr.github.io/tags/geos/</link>
-      <pubDate>Mon, 30 Mar 2020 00:00:00 +0000</pubDate>
-      
-      <guid>https://geocompr.github.io/tags/geos/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>linux</title>
-      <link>https://geocompr.github.io/tags/linux/</link>
-      <pubDate>Mon, 30 Mar 2020 00:00:00 +0000</pubDate>
-      
-      <guid>https://geocompr.github.io/tags/linux/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>packages</title>
-      <link>https://geocompr.github.io/tags/packages/</link>
-      <pubDate>Mon, 30 Mar 2020 00:00:00 +0000</pubDate>
-      
-      <guid>https://geocompr.github.io/tags/packages/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>proj</title>
-      <link>https://geocompr.github.io/tags/proj/</link>
-      <pubDate>Mon, 30 Mar 2020 00:00:00 +0000</pubDate>
-      
-      <guid>https://geocompr.github.io/tags/proj/</guid>
+      <guid>/tags/geocompr/</guid>
       <description></description>
     </item>
     
     <item>
       <title>rspatial</title>
-      <link>https://geocompr.github.io/tags/rspatial/</link>
+      <link>/tags/rspatial/</link>
+      <pubDate>Tue, 21 Apr 2020 00:00:00 +0000</pubDate>
+      
+      <guid>/tags/rspatial/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>gdal</title>
+      <link>/tags/gdal/</link>
       <pubDate>Mon, 30 Mar 2020 00:00:00 +0000</pubDate>
       
-      <guid>https://geocompr.github.io/tags/rspatial/</guid>
+      <guid>/tags/gdal/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>geos</title>
+      <link>/tags/geos/</link>
+      <pubDate>Mon, 30 Mar 2020 00:00:00 +0000</pubDate>
+      
+      <guid>/tags/geos/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>linux</title>
+      <link>/tags/linux/</link>
+      <pubDate>Mon, 30 Mar 2020 00:00:00 +0000</pubDate>
+      
+      <guid>/tags/linux/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>packages</title>
+      <link>/tags/packages/</link>
+      <pubDate>Mon, 30 Mar 2020 00:00:00 +0000</pubDate>
+      
+      <guid>/tags/packages/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>proj</title>
+      <link>/tags/proj/</link>
+      <pubDate>Mon, 30 Mar 2020 00:00:00 +0000</pubDate>
+      
+      <guid>/tags/proj/</guid>
       <description></description>
     </item>
     
     <item>
       <title>ggplot2</title>
-      <link>https://geocompr.github.io/tags/ggplot2/</link>
+      <link>/tags/ggplot2/</link>
       <pubDate>Sun, 08 Dec 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://geocompr.github.io/tags/ggplot2/</guid>
+      <guid>/tags/ggplot2/</guid>
       <description></description>
     </item>
     
     <item>
       <title>maps</title>
-      <link>https://geocompr.github.io/tags/maps/</link>
+      <link>/tags/maps/</link>
       <pubDate>Sun, 08 Dec 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://geocompr.github.io/tags/maps/</guid>
+      <guid>/tags/maps/</guid>
       <description></description>
     </item>
     
     <item>
       <title>viz</title>
-      <link>https://geocompr.github.io/tags/viz/</link>
+      <link>/tags/viz/</link>
       <pubDate>Sun, 08 Dec 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://geocompr.github.io/tags/viz/</guid>
+      <guid>/tags/viz/</guid>
       <description></description>
     </item>
     
     <item>
       <title>tmap</title>
-      <link>https://geocompr.github.io/tags/tmap/</link>
+      <link>/tags/tmap/</link>
       <pubDate>Thu, 17 Oct 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://geocompr.github.io/tags/tmap/</guid>
+      <guid>/tags/tmap/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>raster</title>
+      <link>/tags/raster/</link>
+      <pubDate>Mon, 07 Oct 2019 00:00:00 +0000</pubDate>
+      
+      <guid>/tags/raster/</guid>
       <description></description>
     </item>
     
     <item>
       <title>crs</title>
-      <link>https://geocompr.github.io/tags/crs/</link>
+      <link>/tags/crs/</link>
       <pubDate>Wed, 21 Aug 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://geocompr.github.io/tags/crs/</guid>
+      <guid>/tags/crs/</guid>
       <description></description>
     </item>
     
     <item>
       <title>sf</title>
-      <link>https://geocompr.github.io/tags/sf/</link>
+      <link>/tags/sf/</link>
       <pubDate>Wed, 21 Aug 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://geocompr.github.io/tags/sf/</guid>
+      <guid>/tags/sf/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>benchmarks</title>
+      <link>/tags/benchmarks/</link>
+      <pubDate>Wed, 07 Aug 2019 00:00:00 +0000</pubDate>
+      
+      <guid>/tags/benchmarks/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>gps</title>
+      <link>/tags/gps/</link>
+      <pubDate>Wed, 07 Aug 2019 00:00:00 +0000</pubDate>
+      
+      <guid>/tags/gps/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>sea level rise</title>
+      <link>/tags/sea-level-rise/</link>
+      <pubDate>Wed, 07 Aug 2019 00:00:00 +0000</pubDate>
+      
+      <guid>/tags/sea-level-rise/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>topological relations</title>
+      <link>/tags/topological-relations/</link>
+      <pubDate>Wed, 07 Aug 2019 00:00:00 +0000</pubDate>
+      
+      <guid>/tags/topological-relations/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>tracks</title>
+      <link>/tags/tracks/</link>
+      <pubDate>Wed, 07 Aug 2019 00:00:00 +0000</pubDate>
+      
+      <guid>/tags/tracks/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>type transformation</title>
+      <link>/tags/type-transformation/</link>
+      <pubDate>Wed, 07 Aug 2019 00:00:00 +0000</pubDate>
+      
+      <guid>/tags/type-transformation/</guid>
       <description></description>
     </item>
     
     <item>
       <title>go</title>
-      <link>https://geocompr.github.io/tags/go/</link>
+      <link>/tags/go/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>https://geocompr.github.io/tags/go/</guid>
+      <guid>/tags/go/</guid>
       <description></description>
     </item>
     
     <item>
       <title>golang</title>
-      <link>https://geocompr.github.io/tags/golang/</link>
+      <link>/tags/golang/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>https://geocompr.github.io/tags/golang/</guid>
+      <guid>/tags/golang/</guid>
       <description></description>
     </item>
     
     <item>
       <title>hugo</title>
-      <link>https://geocompr.github.io/tags/hugo/</link>
+      <link>/tags/hugo/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>https://geocompr.github.io/tags/hugo/</guid>
+      <guid>/tags/hugo/</guid>
       <description></description>
     </item>
     

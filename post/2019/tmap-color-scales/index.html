@@ -22,7 +22,7 @@
 </style>
 
 
-<link rel="stylesheet" href="https://geocompr.github.io/css/main.css">
+<link rel="stylesheet" href="/css/main.css">
 
 
 
@@ -60,7 +60,7 @@
 
 
 <script>$(document).on('click', function() { $('.collapse').collapse('hide'); })</script>
- <meta name="generator" content="Hugo 0.68.3" />
+ <meta name="generator" content="Hugo 0.69.1" />
         
 
         
@@ -166,15 +166,15 @@
     
     <h5></h5>
     
-    <a href="https://geocompr.github.io/tags/geocompr"><kbd class="item-tag">geocompr</kbd></a>
+    <a href="/tags/geocompr"><kbd class="item-tag">geocompr</kbd></a>
     
-    <a href="https://geocompr.github.io/tags/rspatial"><kbd class="item-tag">rspatial</kbd></a>
+    <a href="/tags/rspatial"><kbd class="item-tag">rspatial</kbd></a>
     
-    <a href="https://geocompr.github.io/tags/tmap"><kbd class="item-tag">tmap</kbd></a>
+    <a href="/tags/tmap"><kbd class="item-tag">tmap</kbd></a>
     
-    <a href="https://geocompr.github.io/tags/maps"><kbd class="item-tag">maps</kbd></a>
+    <a href="/tags/maps"><kbd class="item-tag">maps</kbd></a>
     
-    <a href="https://geocompr.github.io/tags/viz"><kbd class="item-tag">viz</kbd></a>
+    <a href="/tags/viz"><kbd class="item-tag">viz</kbd></a>
     
 
 </div>
@@ -193,7 +193,7 @@ library(tmap)   # map creation
 library(sf)     # spatial data reprojection</code></pre>
 <p>The <code>world</code> object containing a world map data from <a href="https://www.naturalearthdata.com/">Natural Earth</a> and information about countries’ names, regions, and subregions they belong to, areas, life expectancies, and populations.
 This object is in geographical coordinates using the WGS84 datum, however, for mapping purposes, the Mollweide projection is a better alternative (learn more in <a href="https://geocompr.robinlovelace.net/reproj-geo-data.html#modifying-map-projections">the modifying map projections section</a>).
-The <code>st_tranform</code> function from the <strong>sf</strong> package allows for quick reprojection to the selected coordinate reference system (e.g., <code>&quot;+proj=moll&quot;</code> represents the Mollweide projection).</p>
+The <code>st_tranform</code> function from the <strong>sf</strong> package allows for quick reprojection to the selected coordinate reference system (e.g., <code>"+proj=moll"</code> represents the Mollweide projection).</p>
 <pre class="r"><code>world_moll = st_transform(world, crs = &quot;+proj=moll&quot;)</code></pre>
 </div>
 <div id="one-color" class="section level1">
@@ -211,7 +211,7 @@ The last one draws the filled polygons with borders, where the fill color can be
 <h1>Coloring of adjacent polygons</h1>
 <p>The <code>col</code> argument is very flexible, and its action depends on the value provided.
 In the previous example, we provided a single color value resulting in a map with one color.
-To create a map, where adjacent polygons do not get the same color, we need to provide a keyword <code>&quot;MAP_COLORS&quot;</code>.</p>
+To create a map, where adjacent polygons do not get the same color, we need to provide a keyword <code>"MAP_COLORS"</code>.</p>
 <pre class="r"><code>tm_shape(world_moll) +
   tm_polygons(col = &quot;MAP_COLORS&quot;)</code></pre>
 <p><img src="/post/2019/tmap-styles_files/figure-html/unnamed-chunk-4-1.png" width="768" /></p>
@@ -235,7 +235,7 @@ On a side note, in theory, no more than four colors are required to color the po
 In this case, the map will represent the given variable.
 By default, <strong>tmap</strong> behaves differently depending on the input variable type.
 For example, it will create a categorical map when the provided variable contains characters or factors.
-The <code>tm_polygons(col = &quot;subregion&quot;, style = &quot;cat&quot;)</code> code will be run automatically in this case.</p>
+The <code>tm_polygons(col = "subregion", style = "cat")</code> code will be run automatically in this case.</p>
 <pre class="r"><code>tm_shape(world_moll) +
   tm_polygons(col = &quot;subregion&quot;)+
   tm_layout(legend.outside = TRUE) </code></pre>
@@ -247,8 +247,8 @@ The <code>tm_polygons(col = &quot;subregion&quot;, style = &quot;cat&quot;)</cod
 There are several ways to convert continuous variables to discrete ones implemented in <strong>tmap</strong>.</p>
 <div id="pretty" class="section level2">
 <h2>Pretty</h2>
-<p>When the variable provided as the <code>col</code> argument is numeric, <strong>tmap</strong> will use the <code>&quot;pretty&quot;</code> style as a default.
-In other words, it runs <code>tm_polygons(col = &quot;lifeExp&quot;, style = &quot;pretty&quot;)</code> invisibly to the user.
+<p>When the variable provided as the <code>col</code> argument is numeric, <strong>tmap</strong> will use the <code>"pretty"</code> style as a default.
+In other words, it runs <code>tm_polygons(col = "lifeExp", style = "pretty")</code> invisibly to the user.
 This style rounds breaks into whole numbers where possible and spaces them evenly.</p>
 <pre class="r"><code>tm_shape(world_moll) +
   tm_polygons(col = &quot;lifeExp&quot;,
@@ -267,7 +267,7 @@ Importantly, not every <code>n</code> is possible depending on the range of the 
 </div>
 <div id="fixed" class="section level2">
 <h2>Fixed</h2>
-<p>The <code>&quot;jenks&quot;</code> style allows for a manual selection of the breaks in conjunction with the <code>breaks</code> argument.</p>
+<p>The <code>"jenks"</code> style allows for a manual selection of the breaks in conjunction with the <code>breaks</code> argument.</p>
 <pre class="r"><code>tm_shape(world_moll) +
   tm_polygons(col = &quot;lifeExp&quot;, 
               style = &quot;fixed&quot;,
@@ -287,7 +287,7 @@ Importantly, not every <code>n</code> is possible depending on the range of the 
 </div>
 <div id="breaks-based-on-the-standard-deviation-value" class="section level2">
 <h2>Breaks based on the standard deviation value</h2>
-<p>The <code>&quot;sd&quot;</code> style calculates a standard deviation of a given variable, and next use this value as the break width.</p>
+<p>The <code>"sd"</code> style calculates a standard deviation of a given variable, and next use this value as the break width.</p>
 <pre class="r"><code>tm_shape(world_moll) +
   tm_polygons(col = &quot;lifeExp&quot;, 
               style = &quot;sd&quot;,
@@ -297,7 +297,7 @@ Importantly, not every <code>n</code> is possible depending on the range of the 
 </div>
 <div id="fisher-algorithm" class="section level2">
 <h2>Fisher algorithm</h2>
-<p>The <code>&quot;fisher&quot;</code> style creates groups with maximalized homogeneity.<a href="#fn1" class="footnote-ref" id="fnref1"><sup>1</sup></a></p>
+<p>The <code>"fisher"</code> style creates groups with maximalized homogeneity.<a href="#fn1" class="footnote-ref" id="fnref1"><sup>1</sup></a></p>
 <pre class="r"><code>tm_shape(world_moll) +
   tm_polygons(col = &quot;lifeExp&quot;,
               style = &quot;fisher&quot;,
@@ -307,7 +307,7 @@ Importantly, not every <code>n</code> is possible depending on the range of the 
 </div>
 <div id="jenks-natural-breaks" class="section level2">
 <h2>Jenks natural breaks</h2>
-<p>The <code>&quot;jenks&quot;</code> style identifies groups of similar values in the data and maximizes the differences between categories.<a href="#fn2" class="footnote-ref" id="fnref2"><sup>2</sup></a></p>
+<p>The <code>"jenks"</code> style identifies groups of similar values in the data and maximizes the differences between categories.<a href="#fn2" class="footnote-ref" id="fnref2"><sup>2</sup></a></p>
 <pre class="r"><code>tm_shape(world_moll) +
   tm_polygons(col = &quot;lifeExp&quot;,
               style = &quot;jenks&quot;,
@@ -317,7 +317,7 @@ Importantly, not every <code>n</code> is possible depending on the range of the 
 </div>
 <div id="hierarchical-clustering" class="section level2">
 <h2>Hierarchical clustering</h2>
-<p>In the <code>&quot;hclust&quot;</code> style, breaks are created using hierarchical clustering.<a href="#fn3" class="footnote-ref" id="fnref3"><sup>3</sup></a></p>
+<p>In the <code>"hclust"</code> style, breaks are created using hierarchical clustering.<a href="#fn3" class="footnote-ref" id="fnref3"><sup>3</sup></a></p>
 <pre class="r"><code>tm_shape(world_moll) +
   tm_polygons(col = &quot;lifeExp&quot;,
               style = &quot;hclust&quot;,
@@ -327,7 +327,7 @@ Importantly, not every <code>n</code> is possible depending on the range of the 
 </div>
 <div id="bagged-clustering" class="section level2">
 <h2>Bagged clustering</h2>
-<p>The <code>&quot;bclust&quot;</code> style uses the <code>bclust</code> function to generate the breaks using bagged clustering.<a href="#fn4" class="footnote-ref" id="fnref4"><sup>4</sup></a></p>
+<p>The <code>"bclust"</code> style uses the <code>bclust</code> function to generate the breaks using bagged clustering.<a href="#fn4" class="footnote-ref" id="fnref4"><sup>4</sup></a></p>
 <pre class="r"><code>tm_shape(world_moll) +
   tm_polygons(col = &quot;lifeExp&quot;,
               style = &quot;bclust&quot;,
@@ -339,7 +339,7 @@ Importantly, not every <code>n</code> is possible depending on the range of the 
 </div>
 <div id="k-means-clustering" class="section level2">
 <h2>k-means clustering</h2>
-<p>The <code>&quot;kmeans&quot;</code> style uses the <code>kmeans</code> function to generate the breaks.<a href="#fn5" class="footnote-ref" id="fnref5"><sup>5</sup></a></p>
+<p>The <code>"kmeans"</code> style uses the <code>kmeans</code> function to generate the breaks.<a href="#fn5" class="footnote-ref" id="fnref5"><sup>5</sup></a></p>
 <pre class="r"><code>tm_shape(world_moll) +
   tm_polygons(col = &quot;lifeExp&quot;, 
               style = &quot;kmeans&quot;,
@@ -349,7 +349,7 @@ Importantly, not every <code>n</code> is possible depending on the range of the 
 </div>
 <div id="quantile-breaks" class="section level2">
 <h2>Quantile breaks</h2>
-<p>The <code>&quot;quantile&quot;</code> style creates breaks with an equal number of features (polygons).</p>
+<p>The <code>"quantile"</code> style creates breaks with an equal number of features (polygons).</p>
 <pre class="r"><code>tm_shape(world_moll) +
   tm_polygons(col = &quot;lifeExp&quot;, 
               style = &quot;quantile&quot;,
@@ -359,7 +359,7 @@ Importantly, not every <code>n</code> is possible depending on the range of the 
 </div>
 <div id="equal-breaks" class="section level2">
 <h2>Equal breaks</h2>
-<p>The <code>&quot;equal&quot;</code> style divides input values into bins of equal range and is appropriate for variables with a uniform distribution.
+<p>The <code>"equal"</code> style divides input values into bins of equal range and is appropriate for variables with a uniform distribution.
 It is not recommended for variables with a skewed distribution as the resulting map may end-up having little color diversity.</p>
 <pre class="r"><code>tm_shape(world_moll) +
   tm_polygons(col = &quot;lifeExp&quot;, 
@@ -375,7 +375,7 @@ It is not recommended for variables with a skewed distribution as the resulting 
 <p>The <strong>tmap</strong> package also allows for creating continuous maps.</p>
 <div id="continuous" class="section level2">
 <h2>Continuous</h2>
-<p>The <code>&quot;cont&quot;</code> style presents a large number of colors over the continuous color field.</p>
+<p>The <code>"cont"</code> style presents a large number of colors over the continuous color field.</p>
 <pre class="r"><code>tm_shape(world_moll) +
   tm_polygons(col = &quot;lifeExp&quot;,
               style = &quot;cont&quot;) +
@@ -384,7 +384,7 @@ It is not recommended for variables with a skewed distribution as the resulting 
 </div>
 <div id="order" class="section level2">
 <h2>Order</h2>
-<p>The <code>&quot;order&quot;</code> style also presents a large number of colors over the continuous color field.
+<p>The <code>"order"</code> style also presents a large number of colors over the continuous color field.
 However, this style is suited to visualize skewed distributions; notice that the values on the legend do not change linearly.</p>
 <pre class="r"><code>tm_shape(world_moll) +
   tm_polygons(col = &quot;lifeExp&quot;,
@@ -407,14 +407,14 @@ However, this style is suited to visualize skewed distributions; notice that the
   tm_layout(legend.outside = TRUE) </code></pre>
 <p><img src="/post/2019/tmap-styles_files/figure-html/unnamed-chunk-23-1.png" width="768" /></p>
 <p>A better alternative, in this case, is to use a common logarithm (the logarithm to base 10) scale.
-The <strong>tmap</strong> package gives two possibilities in this case - <code>&quot;log10_pretty&quot;</code> and <code>&quot;log10&quot;</code>.
-The <code>&quot;log10_pretty&quot;</code> style is a common logarithmic version of the regular <code>pretty</code> style.</p>
+The <strong>tmap</strong> package gives two possibilities in this case - <code>"log10_pretty"</code> and <code>"log10"</code>.
+The <code>"log10_pretty"</code> style is a common logarithmic version of the regular <code>pretty</code> style.</p>
 <pre class="r"><code>tm_shape(world_moll) +
   tm_polygons(col = &quot;pop&quot;, 
               style = &quot;log10_pretty&quot;) +
   tm_layout(legend.outside = TRUE) </code></pre>
 <p><img src="/post/2019/tmap-styles_files/figure-html/unnamed-chunk-24-1.png" width="768" /></p>
-<p>On the other hand, the <code>&quot;log10&quot;</code> style is a version of a continuous scale.</p>
+<p>On the other hand, the <code>"log10"</code> style is a version of a continuous scale.</p>
 <pre class="r"><code>tm_shape(world_moll) +
   tm_polygons(col = &quot;pop&quot;, 
               style = &quot;log10&quot;) +
@@ -431,11 +431,11 @@ Now you know different color scale styles implemented in <strong>tmap</strong>, 
 <div class="footnotes">
 <hr />
 <ol>
-<li id="fn1"><p><a href="https://www.tandfonline.com/doi/abs/10.1080/01621459.1958.10501479" class="uri">https://www.tandfonline.com/doi/abs/10.1080/01621459.1958.10501479</a><a href="#fnref1" class="footnote-back">↩</a></p></li>
-<li id="fn2"><p><a href="https://en.wikipedia.org/wiki/Jenks_natural_breaks_optimization" class="uri">https://en.wikipedia.org/wiki/Jenks_natural_breaks_optimization</a><a href="#fnref2" class="footnote-back">↩</a></p></li>
-<li id="fn3"><p>See the <code>?hclust</code> documentation for more details.<a href="#fnref3" class="footnote-back">↩</a></p></li>
-<li id="fn4"><p>See the <code>?bclust</code> documentation for more details.<a href="#fnref4" class="footnote-back">↩</a></p></li>
-<li id="fn5"><p>See the <code>?kmeans</code> documentation for more details.<a href="#fnref5" class="footnote-back">↩</a></p></li>
+<li id="fn1"><p><a href="https://www.tandfonline.com/doi/abs/10.1080/01621459.1958.10501479" class="uri">https://www.tandfonline.com/doi/abs/10.1080/01621459.1958.10501479</a><a href="#fnref1" class="footnote-back">↩︎</a></p></li>
+<li id="fn2"><p><a href="https://en.wikipedia.org/wiki/Jenks_natural_breaks_optimization" class="uri">https://en.wikipedia.org/wiki/Jenks_natural_breaks_optimization</a><a href="#fnref2" class="footnote-back">↩︎</a></p></li>
+<li id="fn3"><p>See the <code>?hclust</code> documentation for more details.<a href="#fnref3" class="footnote-back">↩︎</a></p></li>
+<li id="fn4"><p>See the <code>?bclust</code> documentation for more details.<a href="#fnref4" class="footnote-back">↩︎</a></p></li>
+<li id="fn5"><p>See the <code>?kmeans</code> documentation for more details.<a href="#fnref5" class="footnote-back">↩︎</a></p></li>
 </ol>
 </div>
 </div>
@@ -448,6 +448,34 @@ Now you know different color scale styles implemented in <strong>tmap</strong>, 
         <h4 class="page-header">Related</h4>
 
          <div class="item">
+
+    
+    
+    
+
+    
+
+    <h4><a href="/post/2020/mapping-covid-19/">Demo of reproducible geographic data analysis: mapping Covid-19 data with R</a></h4>
+    
+    <div class="post-metadata">
+        Robin Lovelace
+        <br>
+        
+        <span class="post-date">
+          <time datetime="2020-04-21 00:00:00 &#43;0000 UTC" itemprop="datePublished">21 April 2020</time>
+        </span>
+        
+    </div>
+    
+    <h5></h5>
+    
+    <a href="/tags/geocompr"><kbd class="item-tag">geocompr</kbd></a>
+    
+    <a href="/tags/rspatial"><kbd class="item-tag">rspatial</kbd></a>
+    
+
+</div>
+  <div class="item">
 
     
     
@@ -469,19 +497,19 @@ Now you know different color scale styles implemented in <strong>tmap</strong>, 
     
     <h5></h5>
     
-    <a href="https://geocompr.github.io/tags/geocompr"><kbd class="item-tag">geocompr</kbd></a>
+    <a href="/tags/geocompr"><kbd class="item-tag">geocompr</kbd></a>
     
-    <a href="https://geocompr.github.io/tags/rspatial"><kbd class="item-tag">rspatial</kbd></a>
+    <a href="/tags/rspatial"><kbd class="item-tag">rspatial</kbd></a>
     
-    <a href="https://geocompr.github.io/tags/packages"><kbd class="item-tag">packages</kbd></a>
+    <a href="/tags/packages"><kbd class="item-tag">packages</kbd></a>
     
-    <a href="https://geocompr.github.io/tags/gdal"><kbd class="item-tag">gdal</kbd></a>
+    <a href="/tags/gdal"><kbd class="item-tag">gdal</kbd></a>
     
-    <a href="https://geocompr.github.io/tags/geos"><kbd class="item-tag">geos</kbd></a>
+    <a href="/tags/geos"><kbd class="item-tag">geos</kbd></a>
     
-    <a href="https://geocompr.github.io/tags/proj"><kbd class="item-tag">proj</kbd></a>
+    <a href="/tags/proj"><kbd class="item-tag">proj</kbd></a>
     
-    <a href="https://geocompr.github.io/tags/linux"><kbd class="item-tag">linux</kbd></a>
+    <a href="/tags/linux"><kbd class="item-tag">linux</kbd></a>
     
 
 </div>
@@ -507,49 +535,15 @@ Now you know different color scale styles implemented in <strong>tmap</strong>, 
     
     <h5></h5>
     
-    <a href="https://geocompr.github.io/tags/geocompr"><kbd class="item-tag">geocompr</kbd></a>
+    <a href="/tags/geocompr"><kbd class="item-tag">geocompr</kbd></a>
     
-    <a href="https://geocompr.github.io/tags/rspatial"><kbd class="item-tag">rspatial</kbd></a>
+    <a href="/tags/rspatial"><kbd class="item-tag">rspatial</kbd></a>
     
-    <a href="https://geocompr.github.io/tags/ggplot2"><kbd class="item-tag">ggplot2</kbd></a>
+    <a href="/tags/ggplot2"><kbd class="item-tag">ggplot2</kbd></a>
     
-    <a href="https://geocompr.github.io/tags/maps"><kbd class="item-tag">maps</kbd></a>
+    <a href="/tags/maps"><kbd class="item-tag">maps</kbd></a>
     
-    <a href="https://geocompr.github.io/tags/viz"><kbd class="item-tag">viz</kbd></a>
-    
-
-</div>
-  <div class="item">
-
-    
-    
-    
-
-    
-
-    <h4><a href="/post/2019/tmap-grid/">Grids and graticules in the tmap package</a></h4>
-    
-    <div class="post-metadata">
-        Jakub Nowosad
-        <br>
-        
-        <span class="post-date">
-          <time datetime="2019-09-04 00:00:00 &#43;0000 UTC" itemprop="datePublished">4 September 2019</time>
-        </span>
-        
-    </div>
-    
-    <h5></h5>
-    
-    <a href="https://geocompr.github.io/tags/geocompr"><kbd class="item-tag">geocompr</kbd></a>
-    
-    <a href="https://geocompr.github.io/tags/rspatial"><kbd class="item-tag">rspatial</kbd></a>
-    
-    <a href="https://geocompr.github.io/tags/tmap"><kbd class="item-tag">tmap</kbd></a>
-    
-    <a href="https://geocompr.github.io/tags/maps"><kbd class="item-tag">maps</kbd></a>
-    
-    <a href="https://geocompr.github.io/tags/viz"><kbd class="item-tag">viz</kbd></a>
+    <a href="/tags/viz"><kbd class="item-tag">viz</kbd></a>
     
 
 </div>
