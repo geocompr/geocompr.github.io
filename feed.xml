@@ -5,8 +5,287 @@
     <description>Recent content on the Geocomputation with R website</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Mon, 30 Mar 2020 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Thu, 23 Apr 2020 00:00:00 +0000</lastBuildDate>
     <atom:link href="https://geocompr.github.io/feed.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>Demo of reproducible geographic data analysis: mapping Covid-19 data with R</title>
+      <link>https://geocompr.github.io/post/2020/mapping-covid-19/</link>
+      <pubDate>Thu, 23 Apr 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://geocompr.github.io/post/2020/mapping-covid-19/</guid>
+      <description>
+
+
+&lt;div id=&#34;introduction&#34; class=&#34;section level1&#34;&gt;
+&lt;h1&gt;Introduction&lt;/h1&gt;
+&lt;p&gt;The coronavirus pandemic is a global phenomenon that will affect the lives of the majority of the world’s population for years to come.
+Impacts range from physical distancing measures &lt;a href=&#34;https://en.wikipedia.org/wiki/Social_distancing#2019%E2%80%932020_coronavirus_pandemic&#34;&gt;already affecting more than half of Earth’s population&lt;/a&gt; and knock-on impacts such as &lt;a href=&#34;https://www.esa.int/Applications/Observing_the_Earth/Copernicus/Sentinel-5P/Coronavirus_lockdown_leading_to_drop_in_pollution_across_Europe&#34;&gt;changes in air quality&lt;/a&gt; to potentially life threatening illness, with peer reviewed estimates of &lt;a href=&#34;https://www.thelancet.com/pdfs/journals/laninf/PIIS1473-3099(20)30243-7.pdf&#34;&gt;infection fatality rates&lt;/a&gt; showing the disease disproportionately affects the elderly and people with underlying health conditions.&lt;/p&gt;
+&lt;p&gt;Like other global phenomena such as climate change, the impacts of the pandemic vary greatly by geographic location, with effective and early implementation of physical distancing measures and effective contact tracing associated with lower death rates, according to preliminary &lt;a href=&#34;https://www.medrxiv.org/content/10.1101/2020.03.10.20033738v3&#34;&gt;research&lt;/a&gt;, as illustrated in the animation below (source: &lt;a href=&#34;https://www.washingtonpost.com/graphics/2020/world/corona-simulator/&#34;&gt;Washington Post&lt;/a&gt;).&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://www.washingtonpost.com/graphics/2020/world/corona-simulator/&#34;&gt;&lt;img src=&#34;https://upload.wikimedia.org/wikipedia/commons/thumb/8/82/Katapult_importance_social_distancing.gif/350px-Katapult_importance_social_distancing.gif&#34; /&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;This article demonstrates how to download and map open data on the evolving coronavirus pandemic, using reproducible R code.
+The aim is not to provide scientific analysis of the data, but to demonstrate how ‘open science’ enables public access to important international datasets.
+It also provides an opportunity to demonstrate how techniques taught in &lt;em&gt;Geocomputation with R&lt;/em&gt; can be applied to real-world datasets.&lt;/p&gt;
+&lt;p&gt;Before undertaking geographic analysis of ‘rate’ data, such as the number Covid-19 infections per unit area, it is worth acknowledging caveats at the outset.
+Simple graphics of complex phenomena can be misleading.
+This is well-illustrated in the figure below, which shows how the ecological fallacy can affect interpretations of geographical analysis of areal units such countries that we will be using in this research.&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://github.com/willgeary/covid-nyc-dasymetric-map&#34;&gt;&lt;img src=&#34;https://raw.githubusercontent.com/willgeary/covid-nyc-dasymetric-map/master/assets/comparison_table_zip_hex_smoothed.png&#34; /&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;The post is intended more as a taster of geographic visualisation in R than as a gateway to scientific analysis of Covid-19 data.
+See resources such as the &lt;a href=&#34;https://2020.erum.io/covidr-contest/&#34;&gt;eRum2020 CovidR&lt;/a&gt; contest and &lt;a href=&#34;https://towardsdatascience.com/top-5-r-resources-on-covid-19-coronavirus-1d4c8df6d85f&#34;&gt;lists&lt;/a&gt; of online &lt;a href=&#34;https://github.com/HDRUK/covid-19&#34;&gt;resources&lt;/a&gt; for pointers on how to usefully contribute to data-driven efforts to tackle the crisis.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;reproducible-example&#34; class=&#34;section level1&#34;&gt;
+&lt;h1&gt;Reproducible example&lt;/h1&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;library(sf)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## Linking to GEOS 3.8.0, GDAL 3.0.4, PROJ 7.0.0&lt;/code&gt;&lt;/pre&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;library(tmap)
+library(dplyr)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;To get data on official Covid-19 statistics, we will use the &lt;a href=&#34;https://github.com/covid19datahub/COVID19&#34;&gt;&lt;code&gt;COVID19&lt;/code&gt;&lt;/a&gt; R package.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://camo.githubusercontent.com/b627e2aa6edcee3ead77511a35d4e1a5e91aa07f/68747470733a2f2f73746f726167652e636f7669643139646174616875622e696f2f6c6f676f2e737667&#34; width=&#34;50%&#34; style=&#34;display: block; margin: auto;&#34;&gt;&lt;/p&gt;
+&lt;p&gt;This package provides daily updated data on a variety of variables related to the coronavirus pandemic at national, regional and city levels.
+Install it as follows:&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;install.packages(&amp;quot;COVID19&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;To minimise dependencies for reproducing the results in this article, we accessed and uploaded a copy of the data with the following commands:&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;d = COVID19::covid19()
+readr::write_csv(d, paste0(&amp;quot;COVID19-data-&amp;quot;, Sys.Date(), &amp;quot;.csv&amp;quot;))
+piggyback::pb_upload(paste0(&amp;quot;COVID19-data-&amp;quot;, Sys.Date(), &amp;quot;.csv&amp;quot;), repo = &amp;quot;robinlovelace/geocompr&amp;quot;)
+piggyback::pb_download_url(paste0(&amp;quot;COVID19-data-&amp;quot;, Sys.Date(), &amp;quot;.csv&amp;quot;), repo = &amp;quot;robinlovelace/geocompr&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Read-in the Covid19 data from the date this post was written as follows (re-run the code above to get up-to-date data):&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;d = readr::read_csv(&amp;quot;https://github.com/Robinlovelace/geocompr/releases/download/1.2/COVID19-data-2020-04-22.csv&amp;quot;)
+class(d)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## [1] &amp;quot;spec_tbl_df&amp;quot; &amp;quot;tbl_df&amp;quot;      &amp;quot;tbl&amp;quot;         &amp;quot;data.frame&amp;quot;&lt;/code&gt;&lt;/pre&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;ncol(d)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## [1] 24&lt;/code&gt;&lt;/pre&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;nrow(d)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## [1] 17572&lt;/code&gt;&lt;/pre&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;names(d)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;##  [1] &amp;quot;id&amp;quot;             &amp;quot;date&amp;quot;           &amp;quot;deaths&amp;quot;         &amp;quot;confirmed&amp;quot;     
+##  [5] &amp;quot;tests&amp;quot;          &amp;quot;recovered&amp;quot;      &amp;quot;hosp&amp;quot;           &amp;quot;icu&amp;quot;           
+##  [9] &amp;quot;vent&amp;quot;           &amp;quot;driving&amp;quot;        &amp;quot;walking&amp;quot;        &amp;quot;transit&amp;quot;       
+## [13] &amp;quot;country&amp;quot;        &amp;quot;state&amp;quot;          &amp;quot;city&amp;quot;           &amp;quot;lat&amp;quot;           
+## [17] &amp;quot;lng&amp;quot;            &amp;quot;pop&amp;quot;            &amp;quot;pop_14&amp;quot;         &amp;quot;pop_15_64&amp;quot;     
+## [21] &amp;quot;pop_65&amp;quot;         &amp;quot;pop_age&amp;quot;        &amp;quot;pop_density&amp;quot;    &amp;quot;pop_death_rate&amp;quot;&lt;/code&gt;&lt;/pre&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;head(d)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## [90m# A tibble: 6 x 24[39m
+##   id    date       deaths confirmed tests recovered  hosp   icu  vent driving
+##   [3m[90m&amp;lt;chr&amp;gt;[39m[23m [3m[90m&amp;lt;date&amp;gt;[39m[23m      [3m[90m&amp;lt;dbl&amp;gt;[39m[23m     [3m[90m&amp;lt;dbl&amp;gt;[39m[23m [3m[90m&amp;lt;dbl&amp;gt;[39m[23m     [3m[90m&amp;lt;dbl&amp;gt;[39m[23m [3m[90m&amp;lt;dbl&amp;gt;[39m[23m [3m[90m&amp;lt;dbl&amp;gt;[39m[23m [3m[90m&amp;lt;dbl&amp;gt;[39m[23m   [3m[90m&amp;lt;dbl&amp;gt;[39m[23m
+## [90m1[39m AFG   2020-01-22      0         0     0         0     0     0     0       0
+## [90m2[39m AFG   2020-01-23      0         0     0         0     0     0     0       0
+## [90m3[39m AFG   2020-01-24      0         0     0         0     0     0     0       0
+## [90m4[39m AFG   2020-01-25      0         0     0         0     0     0     0       0
+## [90m5[39m AFG   2020-01-26      0         0     0         0     0     0     0       0
+## [90m6[39m AFG   2020-01-27      0         0     0         0     0     0     0       0
+## [90m# … with 14 more variables: walking [3m[90m&amp;lt;dbl&amp;gt;[90m[23m, transit [3m[90m&amp;lt;dbl&amp;gt;[90m[23m, country [3m[90m&amp;lt;chr&amp;gt;[90m[23m,[39m
+## [90m#   state [3m[90m&amp;lt;lgl&amp;gt;[90m[23m, city [3m[90m&amp;lt;lgl&amp;gt;[90m[23m, lat [3m[90m&amp;lt;dbl&amp;gt;[90m[23m, lng [3m[90m&amp;lt;dbl&amp;gt;[90m[23m, pop [3m[90m&amp;lt;dbl&amp;gt;[90m[23m, pop_14 [3m[90m&amp;lt;dbl&amp;gt;[90m[23m,[39m
+## [90m#   pop_15_64 [3m[90m&amp;lt;dbl&amp;gt;[90m[23m, pop_65 [3m[90m&amp;lt;dbl&amp;gt;[90m[23m, pop_age [3m[90m&amp;lt;dbl&amp;gt;[90m[23m, pop_density [3m[90m&amp;lt;dbl&amp;gt;[90m[23m,[39m
+## [90m#   pop_death_rate [3m[90m&amp;lt;dbl&amp;gt;[90m[23m[39m&lt;/code&gt;&lt;/pre&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;world_rnatural = rnaturalearth::ne_download(returnclass = &amp;quot;sf&amp;quot;)
+# names(world_iso) # variables available
+world_iso = world_rnatural %&amp;gt;% 
+  select(NAME_LONG, ISO_A3_EH, POP_EST, GDP_MD_EST, CONTINENT)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;The result of the previous code block, an object representing the world and containing only variables of interest, was uploaded to GitHub and can be loaded from a GeoJSON file as follows:&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;world_iso = sf::read_sf(&amp;quot;https://git.io/JfICT&amp;quot;) &lt;/code&gt;&lt;/pre&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;plot(world_iso)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;https://geocompr.github.io/post/2020/r-spatial-demo-covid-19_files/figure-html/unnamed-chunk-7-1.png&#34; width=&#34;768&#34; /&gt;&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;world_projected = world_iso %&amp;gt;% 
+  st_transform(&amp;quot;+proj=moll&amp;quot;)
+plot(world_projected)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;https://geocompr.github.io/post/2020/r-spatial-demo-covid-19_files/figure-html/unnamed-chunk-7-2.png&#34; width=&#34;768&#34; /&gt;&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;w = dplyr::left_join(world_projected, d, by = c(&amp;quot;ISO_A3_EH&amp;quot;= &amp;quot;id&amp;quot;))
+w_today = w[w$date == Sys.Date() - 1, ]
+plot(w_today)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;https://geocompr.github.io/post/2020/r-spatial-demo-covid-19_files/figure-html/unnamed-chunk-8-1.png&#34; width=&#34;768&#34; /&gt;&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;plot(w_today[&amp;quot;deaths&amp;quot;])&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;https://geocompr.github.io/post/2020/r-spatial-demo-covid-19_files/figure-html/unnamed-chunk-9-1.png&#34; width=&#34;768&#34; /&gt;&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;b = c(0, 10, 100, 1000, 10000, 100000)
+plot(w_today[&amp;quot;deaths&amp;quot;], breaks = b)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;https://geocompr.github.io/post/2020/r-spatial-demo-covid-19_files/figure-html/unnamed-chunk-9-2.png&#34; width=&#34;768&#34; /&gt;&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;w_today %&amp;gt;%
+  dplyr::select(deaths, confirmed, tests, recovered) %&amp;gt;% 
+  plot()&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;https://geocompr.github.io/post/2020/r-spatial-demo-covid-19_files/figure-html/unnamed-chunk-9-3.png&#34; width=&#34;768&#34; /&gt;&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# w_today %&amp;gt;% filter(ISO_A2 == &amp;quot;US&amp;quot;) # check data for us&lt;/code&gt;&lt;/pre&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;tm_shape(w_today) +
+  tm_polygons(c(&amp;quot;deaths&amp;quot;, &amp;quot;recovered&amp;quot;))&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;https://geocompr.github.io/post/2020/r-spatial-demo-covid-19_files/figure-html/unnamed-chunk-10-1.png&#34; width=&#34;768&#34; /&gt;&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;tm_shape(w_today) +
+  tm_polygons(c(&amp;quot;deaths&amp;quot;, &amp;quot;recovered&amp;quot;), 
+              palette = &amp;quot;viridis&amp;quot;, style = &amp;quot;log10_pretty&amp;quot;) &lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;https://geocompr.github.io/post/2020/r-spatial-demo-covid-19_files/figure-html/unnamed-chunk-11-1.png&#34; width=&#34;768&#34; /&gt;&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;g = st_graticule(w_today)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;tm_shape(g) +
+  tm_lines(col = &amp;quot;grey&amp;quot;) +
+  tm_shape(w_today) +
+  tm_polygons(
+    c(&amp;quot;deaths&amp;quot;, &amp;quot;recovered&amp;quot;),
+    palette = &amp;quot;viridis&amp;quot;,
+    style = &amp;quot;log10_pretty&amp;quot;
+    ) +
+  tm_layout(legend.position = c(0.01, 0.25))&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;https://geocompr.github.io/post/2020/r-spatial-demo-covid-19_files/figure-html/unnamed-chunk-13-1.png&#34; width=&#34;768&#34; /&gt;&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;tm_shape(g) +
+  tm_lines(col = &amp;quot;grey&amp;quot;) +
+  tm_shape(w_today) +
+  tm_polygons(
+    c(&amp;quot;deaths&amp;quot;, &amp;quot;recovered&amp;quot;),
+    palette = &amp;quot;viridis&amp;quot;,
+    style = &amp;quot;log10_pretty&amp;quot;
+    ) +
+  tm_layout(legend.position = c(0.01, 0.25)) +
+  tm_shape(w_today) +
+  tm_dots(size = c(&amp;quot;deaths&amp;quot;, &amp;quot;recovered&amp;quot;), col = c(&amp;quot;red&amp;quot;, &amp;quot;green&amp;quot;))&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;https://geocompr.github.io/post/2020/r-spatial-demo-covid-19_files/figure-html/unnamed-chunk-14-1.png&#34; width=&#34;768&#34; /&gt;&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;w$Date = as.character(w$date)
+tm_shape(g) +
+  tm_lines(col = &amp;quot;grey&amp;quot;) +
+  tm_shape(w_today) +
+  tm_polygons(
+    c(&amp;quot;deaths&amp;quot;, &amp;quot;recovered&amp;quot;),
+    palette = &amp;quot;viridis&amp;quot;,
+    style = &amp;quot;log10_pretty&amp;quot;
+    ) +
+  tm_shape(w %&amp;gt;% filter(date &amp;gt; Sys.Date() - 4)) +
+  tm_dots(size = c(&amp;quot;deaths&amp;quot;), col = c(&amp;quot;red&amp;quot;)) +
+  tm_facets(&amp;quot;Date&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;To create an animated map, following instructions in Chapter &lt;a href=&#34;https://geocompr.robinlovelace.net/adv-map.html#animated-maps&#34;&gt;8&lt;/a&gt; of &lt;em&gt;Geocomputation with R&lt;/em&gt;, we need to make some small changes to the code above:&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;m = tm_shape(g) +
+  tm_lines(col = &amp;quot;grey&amp;quot;) +
+  tm_shape(w_today) +
+  tm_polygons(
+    c(&amp;quot;deaths&amp;quot;, &amp;quot;recovered&amp;quot;),
+    palette = &amp;quot;viridis&amp;quot;,
+    style = &amp;quot;log10_pretty&amp;quot;
+    ) +
+  tm_shape(w %&amp;gt;% filter(date &amp;gt; Sys.Date() - 4)) +
+  tm_dots(size = c(&amp;quot;deaths&amp;quot;), col = c(&amp;quot;red&amp;quot;)) +
+  tm_facets(along = &amp;quot;Date&amp;quot;, free.coords = FALSE) +
+  tm_layout(legend.position = c(0.01, 0.25))
+tmap_animation(m, &amp;quot;covid-19-animated-map-test.gif&amp;quot;, width = 800)
+browseURL(&amp;quot;covid-19-animated-map-test.gif&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Not bad, but would benefit from a few adjustments before we plot the results of the whole dataset:&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;world_projected$Area_km = as.numeric(st_area(world_projected)) / 1e6
+world_projected$`Pop/km2` = as.numeric(world_projected$POP_EST) / world_projected$Area_km 
+
+m = tm_shape(g) +
+  tm_lines(col = &amp;quot;grey&amp;quot;) +
+  tm_shape(world_projected) +
+  tm_polygons(
+    &amp;quot;Pop/km2&amp;quot;,
+    palette = &amp;quot;viridis&amp;quot;,
+    style = &amp;quot;log10_pretty&amp;quot;,
+    lwd = 0.5
+    ) +
+  tm_shape(w %&amp;gt;% filter(date &amp;gt; Sys.Date() - 60)) +
+  tm_dots(size = c(&amp;quot;deaths&amp;quot;), col = c(&amp;quot;red&amp;quot;)) +
+  tm_facets(along = &amp;quot;Date&amp;quot;, free.coords = FALSE) +
+  tm_layout(legend.outside = TRUE)
+tmap_animation(m, &amp;quot;covid-19-animated-map.gif&amp;quot;, width = 1200, height = 800)
+browseURL(&amp;quot;covid-19-animated-map.gif&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
+&lt;!--update the file below--&gt;
+&lt;p&gt;&lt;img src=&#34;https://user-images.githubusercontent.com/1825120/79768034-1e60ab80-8322-11ea-9c99-9997b588ee57.gif&#34; /&gt;&lt;/p&gt;
+&lt;details&gt;
+&lt;p&gt;&lt;summary&gt;Session info&lt;/summary&gt;&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;devtools::session_info()&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## ─ Session info ───────────────────────────────────────────────────────────────
+##  setting  value                       
+##  version  R version 3.6.3 (2020-02-29)
+##  os       Ubuntu 18.04.4 LTS          
+##  system   x86_64, linux-gnu           
+##  ui       X11                         
+##  language (EN)                        
+##  collate  C.UTF-8                     
+##  ctype    C.UTF-8                     
+##  tz       UTC                         
+##  date     2020-04-23                  
+## 
+## ─ Packages ───────────────────────────────────────────────────────────────────
+##  package      * version  date       lib source                              
+##  abind          1.4-5    2016-07-21 [1] CRAN (R 3.6.3)                      
+##  assertthat     0.2.1    2019-03-21 [1] CRAN (R 3.6.3)                      
+##  backports      1.1.6    2020-04-05 [1] CRAN (R 3.6.3)                      
+##  base64enc      0.1-3    2015-07-28 [1] CRAN (R 3.6.3)                      
+##  blogdown       0.18.1   2020-04-23 [1] Github (rstudio/blogdown@dbd9ca1)   
+##  bookdown       0.18.1   2020-04-22 [1] Github (rstudio/bookdown@cd97d40)   
+##  callr          3.4.3    2020-03-28 [1] CRAN (R 3.6.3)                      
+##  class          7.3-15   2019-01-01 [2] CRAN (R 3.6.3)                      
+##  classInt       0.4-3    2020-04-07 [1] CRAN (R 3.6.3)                      
+##  cli            2.0.2    2020-02-28 [1] CRAN (R 3.6.3)                      
+##  codetools      0.2-16   2018-12-24 [2] CRAN (R 3.6.3)                      
+##  colorspace     1.4-1    2019-03-18 [1] CRAN (R 3.6.3)                      
+##  crayon         1.3.4    2017-09-16 [1] CRAN (R 3.6.3)                      
+##  crosstalk      1.1.0.1  2020-03-13 [1] CRAN (R 3.6.3)                      
+##  curl           4.3      2019-12-02 [1] CRAN (R 3.6.3)                      
+##  DBI            1.1.0    2019-12-15 [1] CRAN (R 3.6.3)                      
+##  desc           1.2.0    2018-05-01 [1] CRAN (R 3.6.3)                      
+##  devtools       2.3.0    2020-04-10 [1] CRAN (R 3.6.3)                      
+##  dichromat      2.0-0    2013-01-24 [1] CRAN (R 3.6.3)                      
+##  digest         0.6.25   2020-02-23 [1] CRAN (R 3.6.3)                      
+##  dplyr        * 0.8.5    2020-03-07 [1] CRAN (R 3.6.3)                      
+##  e1071          1.7-3    2019-11-26 [1] CRAN (R 3.6.3)                      
+##  ellipsis       0.3.0    2019-09-20 [1] CRAN (R 3.6.3)                      
+##  evaluate       0.14     2019-05-28 [1] CRAN (R 3.6.3)                      
+##  fansi          0.4.1    2020-01-08 [1] CRAN (R 3.6.3)                      
+##  fs             1.4.1    2020-04-04 [1] CRAN (R 3.6.3)                      
+##  glue           1.4.0    2020-04-03 [1] CRAN (R 3.6.3)                      
+##  hms            0.5.3    2020-01-08 [1] CRAN (R 3.6.3)                      
+##  htmltools      0.4.0    2019-10-04 [1] CRAN (R 3.6.3)                      
+##  htmlwidgets    1.5.1    2019-10-08 [1] CRAN (R 3.6.3)                      
+##  KernSmooth     2.23-16  2019-10-15 [2] CRAN (R 3.6.3)                      
+##  knitr          1.28     2020-02-06 [1] CRAN (R 3.6.3)                      
+##  lattice        0.20-38  2018-11-04 [2] CRAN (R 3.6.3)                      
+##  leafem         0.1.1    2020-04-05 [1] CRAN (R 3.6.3)                      
+##  leaflet        2.0.3    2019-11-16 [1] CRAN (R 3.6.3)                      
+##  leafsync       0.1.0    2019-03-05 [1] CRAN (R 3.6.3)                      
+##  lifecycle      0.2.0    2020-03-06 [1] CRAN (R 3.6.3)                      
+##  lwgeom         0.2-3    2020-04-12 [1] CRAN (R 3.6.3)                      
+##  magrittr       1.5      2014-11-22 [1] CRAN (R 3.6.3)                      
+##  memoise        1.1.0    2017-04-21 [1] CRAN (R 3.6.3)                      
+##  munsell        0.5.0    2018-06-12 [1] CRAN (R 3.6.3)                      
+##  pillar         1.4.3    2019-12-20 [1] CRAN (R 3.6.3)                      
+##  pkgbuild       1.0.6    2019-10-09 [1] CRAN (R 3.6.3)                      
+##  pkgconfig      2.0.3    2019-09-22 [1] CRAN (R 3.6.3)                      
+##  pkgload        1.0.2    2018-10-29 [1] CRAN (R 3.6.3)                      
+##  png            0.1-7    2013-12-03 [1] CRAN (R 3.6.3)                      
+##  prettyunits    1.1.1    2020-01-24 [1] CRAN (R 3.6.3)                      
+##  processx       3.4.2    2020-02-09 [1] CRAN (R 3.6.3)                      
+##  ps             1.3.2    2020-02-13 [1] CRAN (R 3.6.3)                      
+##  purrr          0.3.4    2020-04-17 [1] CRAN (R 3.6.3)                      
+##  R6             2.4.1    2019-11-12 [1] CRAN (R 3.6.3)                      
+##  raster         3.1-5    2020-04-19 [1] CRAN (R 3.6.3)                      
+##  RColorBrewer   1.1-2    2014-12-07 [1] CRAN (R 3.6.3)                      
+##  Rcpp           1.0.4.6  2020-04-09 [1] CRAN (R 3.6.3)                      
+##  readr          1.3.1    2018-12-21 [1] CRAN (R 3.6.3)                      
+##  remotes        2.1.1    2020-02-15 [1] CRAN (R 3.6.3)                      
+##  rlang          0.4.5    2020-03-01 [1] CRAN (R 3.6.3)                      
+##  rmarkdown      2.1      2020-01-20 [1] CRAN (R 3.6.3)                      
+##  rprojroot      1.3-2    2018-01-03 [1] CRAN (R 3.6.3)                      
+##  scales         1.1.0    2019-11-18 [1] CRAN (R 3.6.3)                      
+##  sessioninfo    1.1.1    2018-11-05 [1] CRAN (R 3.6.3)                      
+##  sf           * 0.9-2    2020-04-14 [1] CRAN (R 3.6.3)                      
+##  sp             1.4-1    2020-02-28 [1] CRAN (R 3.6.3)                      
+##  stars          0.4-1    2020-04-07 [1] CRAN (R 3.6.3)                      
+##  stringi        1.4.6    2020-02-17 [1] CRAN (R 3.6.3)                      
+##  stringr        1.4.0    2019-02-10 [1] CRAN (R 3.6.3)                      
+##  testthat       2.3.2    2020-03-02 [1] CRAN (R 3.6.3)                      
+##  tibble         3.0.1    2020-04-20 [1] CRAN (R 3.6.3)                      
+##  tidyselect     1.0.0    2020-01-27 [1] CRAN (R 3.6.3)                      
+##  tmap         * 3.0      2020-04-22 [1] Github (mtennekes/tmap@4a9249a)     
+##  tmaptools      3.0-1    2020-04-22 [1] Github (mtennekes/tmaptools@adbf1da)
+##  units          0.6-6    2020-03-16 [1] CRAN (R 3.6.3)                      
+##  usethis        1.6.0    2020-04-09 [1] CRAN (R 3.6.3)                      
+##  utf8           1.1.4    2018-05-24 [1] CRAN (R 3.6.3)                      
+##  vctrs          0.2.4    2020-03-10 [1] CRAN (R 3.6.3)                      
+##  viridisLite    0.3.0    2018-02-01 [1] CRAN (R 3.6.3)                      
+##  withr          2.2.0    2020-04-20 [1] CRAN (R 3.6.3)                      
+##  xfun           0.13     2020-04-13 [1] CRAN (R 3.6.3)                      
+##  XML            3.99-0.3 2020-01-20 [1] CRAN (R 3.6.3)                      
+##  yaml           2.2.1    2020-02-01 [1] CRAN (R 3.6.3)                      
+## 
+## [1] /home/runner/work/_temp/Library
+## [2] /opt/R/3.6.3/lib/R/library&lt;/code&gt;&lt;/pre&gt;
+&lt;/details&gt;
+&lt;/div&gt;
+</description>
+    </item>
     
     <item>
       <title>Installing spatial R packages on Ubuntu</title>

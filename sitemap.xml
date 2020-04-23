@@ -7,17 +7,57 @@
   </url>
   
   <url>
-    <loc>https://geocompr.github.io/categories/</loc>
-    <lastmod>2020-03-30T00:00:00+00:00</lastmod>
+    <loc>https://geocompr.github.io/tags/benchmarks/</loc>
+    <lastmod>2020-04-23T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>https://geocompr.github.io/tags/gdal/</loc>
-    <lastmod>2020-03-30T00:00:00+00:00</lastmod>
+    <loc>https://geocompr.github.io/categories/</loc>
+    <lastmod>2020-04-23T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://geocompr.github.io/categories/demo/</loc>
+    <lastmod>2020-04-23T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://geocompr.github.io/post/2020/mapping-covid-19/</loc>
+    <lastmod>2020-04-23T00:00:00+00:00</lastmod>
   </url>
   
   <url>
     <loc>https://geocompr.github.io/tags/geocompr/</loc>
+    <lastmod>2020-04-23T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://geocompr.github.io/post/</loc>
+    <lastmod>2020-04-23T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://geocompr.github.io/tags/rspatial/</loc>
+    <lastmod>2020-04-23T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://geocompr.github.io/tags/sf/</loc>
+    <lastmod>2020-04-23T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://geocompr.github.io/tags/</loc>
+    <lastmod>2020-04-23T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://geocompr.github.io/</loc>
+    <lastmod>2020-04-23T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://geocompr.github.io/tags/gdal/</loc>
     <lastmod>2020-03-30T00:00:00+00:00</lastmod>
   </url>
   
@@ -42,32 +82,12 @@
   </url>
   
   <url>
-    <loc>https://geocompr.github.io/post/</loc>
-    <lastmod>2020-03-30T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
     <loc>https://geocompr.github.io/tags/proj/</loc>
     <lastmod>2020-03-30T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>https://geocompr.github.io/tags/rspatial/</loc>
-    <lastmod>2020-03-30T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
     <loc>https://geocompr.github.io/categories/setup/</loc>
-    <lastmod>2020-03-30T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://geocompr.github.io/tags/</loc>
-    <lastmod>2020-03-30T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://geocompr.github.io/</loc>
     <lastmod>2020-03-30T00:00:00+00:00</lastmod>
   </url>
   
@@ -118,11 +138,6 @@
   
   <url>
     <loc>https://geocompr.github.io/post/2019/crs-projections-transformations/</loc>
-    <lastmod>2019-08-21T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://geocompr.github.io/tags/sf/</loc>
     <lastmod>2019-08-21T00:00:00+00:00</lastmod>
   </url>
   
