@@ -282,6 +282,13 @@ class(w)</code></pre>
 <pre class="r"><code>nrow(w)</code></pre>
 <pre><code>## [1] 14919</code></pre>
 </div>
+<div id="calculating-area" class="section level1">
+<h1>Calculating area</h1>
+<p>The package <code>sf</code> provides a wide range of functions for calculating geographic variables such as object centroid, bounding boxes, lengths and, as demonstrated below, area.
+We use this area data to calculate the population density of each country as follows:</p>
+<pre class="r"><code>w$Area_km = as.numeric(st_area(w)) / 1e6
+w$`Pop/km2` = as.numeric(w$POP_EST) / w$Area_km </code></pre>
+</div>
 <div id="plotting-international-covid-19-data-for-a-single-day" class="section level1">
 <h1>Plotting international Covid-19 data for a single day</h1>
 <p>The class of <code>w</code> shows that it has geometries for each row.
@@ -289,27 +296,40 @@ Notice that it has many more rows of data than the original world object: geomet
 This is not an efficient way to store data, as it means lots of duplicate geometries.
 On a small dataset that doesn’t matter, but it’s something to be aware of.
 To check that the join has worked, we will take a subset of rows representing the global situation yesterday relative to the date of data access:</p>
-<pre class="r"><code>w_yesterday = w[w$date == (max(w$date, na.rm = T) - 1), ]
+<pre class="r"><code>w_yesterday = w %&gt;% 
+  filter(date == max(date, na.rm = T) - 1)
 plot(w_yesterday)</code></pre>
-<p><img src="/post/2020/r-spatial-demo-covid-19_files/figure-html/unnamed-chunk-13-1.png" width="768" /></p>
-<pre class="r"><code>plot(w_yesterday[&quot;deaths&quot;])</code></pre>
 <p><img src="/post/2020/r-spatial-demo-covid-19_files/figure-html/unnamed-chunk-14-1.png" width="768" /></p>
+<p>The plot method for <code>sf</code> objects is fast and flexible, as documented in <a href="https://r-spatial.github.io/sf/articles/sf5.html"><code>sf</code>’s <em>Plotting Simple Features</em> vignette</a>, which can be accessed with <code>vignette("sf5")</code> from the R console.
+We can set the breaks to better show the difference between countries with no reported deaths and countries with few reported deaths as follows:</p>
+<pre class="r"><code>plot(w_yesterday[&quot;deaths&quot;])</code></pre>
+<p><img src="/post/2020/r-spatial-demo-covid-19_files/figure-html/unnamed-chunk-15-1.png" width="768" /></p>
 <pre class="r"><code>b = c(0, 10, 100, 1000, 10000, 100000)
 plot(w_yesterday[&quot;deaths&quot;], breaks = b)</code></pre>
-<p><img src="/post/2020/r-spatial-demo-covid-19_files/figure-html/unnamed-chunk-14-2.png" width="768" /></p>
+<p><img src="/post/2020/r-spatial-demo-covid-19_files/figure-html/unnamed-chunk-15-2.png" width="768" /></p>
+<p>To plot the other Covid-19 variables, reporting number of confirmed cases, number of tests and number of people who have recovered, we can subset the relevant variables and pipe the result to the <code>plot()</code> function (noting the <a href="https://t.co/NyIrKHQSUy">caveat</a> that code containing pipes may be hard to debug) as follows:</p>
 <pre class="r"><code>w_yesterday %&gt;%
   dplyr::select(deaths, confirmed, tests, recovered) %&gt;% 
   plot()</code></pre>
-<p><img src="/post/2020/r-spatial-demo-covid-19_files/figure-html/unnamed-chunk-14-3.png" width="768" /></p>
-<pre class="r"><code># w_yesterday %&gt;% filter(ISO_A2 == &quot;US&quot;) # check data for us</code></pre>
+<p><img src="/post/2020/r-spatial-demo-covid-19_files/figure-html/unnamed-chunk-16-1.png" width="768" /></p>
+</div>
+<div id="making-maps-with-tmap" class="section level1">
+<h1>Making maps with tmap</h1>
+<p>The <a href="https://geocompr.robinlovelace.net/adv-map.html">mapping chapter</a> of <em>Geocomputation with R</em> shows how the <code>tmap</code> package enables publication-quality maps to be created with concise and relatively commands, such as:</p>
 <pre class="r"><code>tm_shape(w_yesterday) +
   tm_polygons(c(&quot;deaths&quot;, &quot;recovered&quot;))</code></pre>
-<p><img src="/post/2020/r-spatial-demo-covid-19_files/figure-html/unnamed-chunk-15-1.png" width="768" /></p>
+<p><img src="/post/2020/r-spatial-demo-covid-19_files/figure-html/unnamed-chunk-17-1.png" width="768" /></p>
+<p>We can modify the palette and scale as follows:</p>
 <pre class="r"><code>tm_shape(w_yesterday) +
-  tm_polygons(c(&quot;deaths&quot;, &quot;recovered&quot;), 
-              palette = &quot;viridis&quot;, style = &quot;log10_pretty&quot;) </code></pre>
-<p><img src="/post/2020/r-spatial-demo-covid-19_files/figure-html/unnamed-chunk-16-1.png" width="768" /></p>
+  tm_polygons(
+    c(&quot;deaths&quot;, &quot;recovered&quot;),
+    palette = &quot;viridis&quot;,
+    style = &quot;log10_pretty&quot;
+    ) </code></pre>
+<p><img src="/post/2020/r-spatial-demo-covid-19_files/figure-html/unnamed-chunk-18-1.png" width="768" /></p>
+<p>The map can be further improved by adding graticules representing the curvature of the Earth, created as follows:</p>
 <pre class="r"><code>g = st_graticule(w_yesterday)</code></pre>
+<p>It’s also worth moving the legend:</p>
 <pre class="r"><code>tm_shape(g) +
   tm_lines(col = &quot;grey&quot;) +
   tm_shape(w_yesterday) +
@@ -319,67 +339,102 @@ plot(w_yesterday[&quot;deaths&quot;], breaks = b)</code></pre>
     style = &quot;log10_pretty&quot;
     ) +
   tm_layout(legend.position = c(0.01, 0.25))</code></pre>
-<p><img src="/post/2020/r-spatial-demo-covid-19_files/figure-html/unnamed-chunk-18-1.png" width="768" /></p>
+<p><img src="/post/2020/r-spatial-demo-covid-19_files/figure-html/unnamed-chunk-20-1.png" width="768" /></p>
+<p>A problem with choropleth maps is that they can under-represent small areas.
+To overcome this issue we can use dot size instead of color to represent number:</p>
 <pre class="r"><code>tm_shape(g) +
   tm_lines(col = &quot;grey&quot;) +
   tm_shape(w_yesterday) +
-  tm_polygons(
-    c(&quot;deaths&quot;, &quot;recovered&quot;),
-    palette = &quot;viridis&quot;,
-    style = &quot;log10_pretty&quot;
-    ) +
-  tm_layout(legend.position = c(0.01, 0.25)) +
+  tm_polygons() +
+  tm_layout(legend.position = c(0.01, 0)) +
   tm_shape(w_yesterday) +
-  tm_dots(size = c(&quot;deaths&quot;, &quot;recovered&quot;), col = c(&quot;red&quot;, &quot;green&quot;))</code></pre>
-<p><img src="/post/2020/r-spatial-demo-covid-19_files/figure-html/unnamed-chunk-19-1.png" width="768" /></p>
+  tm_dots(
+    col = c(&quot;red&quot;, &quot;green&quot;),
+    size = c(&quot;deaths&quot;, &quot;recovered&quot;),
+    palette = &quot;viridis&quot;
+    )</code></pre>
+<p><img src="/post/2020/r-spatial-demo-covid-19_files/figure-html/unnamed-chunk-21-1.png" width="768" /></p>
+<p>One question I have here: make the size legend have <code>style = "log10_pretty"</code> also?</p>
+</div>
+<div id="making-animated-maps" class="section level1">
+<h1>Making animated maps</h1>
+<p>The animation at the beginning of this article shows how dynamic graphics can communicate change effectively.
+Animated maps are therefore useful for showing evolving geographic phenomena, such as the spread of Covid-19 worldwide.
+As covered in section <a href="https://geocompr.robinlovelace.net/adv-map.html#animated-maps">8.3</a> of <em>Geocomputation with R</em>, animated maps can be created with <code>tmap</code> by extending the <code>tm_facet()</code> functionality.
+So let’s start by creating a facetted map showing the total number of deaths on the first day of each month in our data:</p>
 <pre class="r"><code>w$Date = as.character(w$date)
 tm_shape(g) +
   tm_lines(col = &quot;grey&quot;) +
   tm_shape(w_yesterday) +
   tm_polygons(
-    c(&quot;deaths&quot;, &quot;recovered&quot;),
+    &quot;Pop/km2&quot;,
     palette = &quot;viridis&quot;,
-    style = &quot;log10_pretty&quot;
+    style = &quot;log10_pretty&quot;,
+    n = 3
     ) +
-  tm_shape(w %&gt;% filter(date &gt; Sys.Date() - 4)) +
-  tm_dots(size = c(&quot;deaths&quot;), col = c(&quot;red&quot;)) +
-  tm_facets(&quot;Date&quot;)</code></pre>
+  tm_shape(w %&gt;% filter(grepl(pattern = &quot;01$&quot;, date))) +
+  tm_dots(size = &quot;deaths&quot;, col = &quot;red&quot;) +
+  tm_facets(&quot;Date&quot;, nrow = 1, free.scales.fill = FALSE) +
+  tm_layout(
+    legend.outside.position = &quot;bottom&quot;,
+    legend.stack = &quot;horizontal&quot;
+    )</code></pre>
+<p><img src="/post/2020/r-spatial-demo-covid-19_files/figure-html/unnamed-chunk-22-1.png" width="768" /></p>
 <p>To create an animated map, following instructions in Chapter <a href="https://geocompr.robinlovelace.net/adv-map.html#animated-maps">8</a> of <em>Geocomputation with R</em>, we need to make some small changes to the code above:</p>
 <pre class="r"><code>m = tm_shape(g) +
   tm_lines(col = &quot;grey&quot;) +
   tm_shape(w_yesterday) +
   tm_polygons(
-    c(&quot;deaths&quot;, &quot;recovered&quot;),
+    &quot;Pop/km2&quot;,
     palette = &quot;viridis&quot;,
-    style = &quot;log10_pretty&quot;
+    style = &quot;log10_pretty&quot;,
+    n = 3
     ) +
-  tm_shape(w %&gt;% filter(date &gt; Sys.Date() - 4)) +
-  tm_dots(size = c(&quot;deaths&quot;), col = c(&quot;red&quot;)) +
+  tm_shape(w %&gt;% filter(grepl(pattern = &quot;01$&quot;, date))) +
+  tm_dots(size = &quot;deaths&quot;, col = &quot;red&quot;) +
   tm_facets(along = &quot;Date&quot;, free.coords = FALSE) +
-  tm_layout(legend.position = c(0.01, 0.25))
+  tm_layout(legend.outside = TRUE)
 tmap_animation(m, &quot;covid-19-animated-map-test.gif&quot;, width = 800)
 browseURL(&quot;covid-19-animated-map-test.gif&quot;)</code></pre>
-<p>Not bad, but would benefit from a few adjustments before we plot the results of the whole dataset:</p>
-<pre class="r"><code>world_projected$Area_km = as.numeric(st_area(world_projected)) / 1e6
-world_projected$`Pop/km2` = as.numeric(world_projected$POP_EST) / world_projected$Area_km 
+<p><img src="https://user-images.githubusercontent.com/1825120/80087377-e7bda780-8552-11ea-959f-55b154c715fa.gif" width="40%" /></p>
+<p>We made an animated map!
+The first version is rarely the best though, and the map above clearly could benefit from some adjustments before we plot the results for the whole dataset:</p>
+<pre class="r"><code>w$Date = paste0(&quot;Total deaths from 22nd January 2020 to &quot;, w$date)
 
 m = tm_shape(g) +
   tm_lines(col = &quot;grey&quot;) +
-  tm_shape(world_projected) +
+  tm_shape(w) +
   tm_polygons(
     &quot;Pop/km2&quot;,
     palette = &quot;viridis&quot;,
     style = &quot;log10_pretty&quot;,
     lwd = 0.5
     ) +
-  tm_shape(w %&gt;% filter(date &gt; Sys.Date() - 60)) +
-  tm_dots(size = c(&quot;deaths&quot;), col = c(&quot;red&quot;)) +
+  tm_shape(w) +
+  tm_dots(size = &quot;deaths&quot;, col = &quot;red&quot;) +
   tm_facets(along = &quot;Date&quot;, free.coords = FALSE) +
-  tm_layout(legend.outside = TRUE)
-tmap_animation(m, &quot;covid-19-animated-map.gif&quot;, width = 1200, height = 800)
+  tm_layout(
+    main.title.size = 0.5,
+    legend.outside = TRUE
+    )
+m
+tmap_animation(m, &quot;covid-19-animated-map.gif&quot;, width = 1400, height = 600)
 browseURL(&quot;covid-19-animated-map.gif&quot;)</code></pre>
 <!--update the file below-->
 <p><img src="https://user-images.githubusercontent.com/1825120/79768034-1e60ab80-8322-11ea-9c99-9997b588ee57.gif" /></p>
+</div>
+<div id="conclusion" class="section level1">
+<h1>Conclusion</h1>
+<p>This article has demonstrated how to work with and map geographic data using the free and open source statistical programming language R.
+It demonstrates that by representing analysis in code, research can be made reproducible and more accessible to others, encouraging transparent and open science.
+This has multiple advantages, from education and citizen engagement with the evidence to increased trust in the evidence on which important, life-or-death, decisions are made.</p>
+<p>Although the research did not address any policy issues, it could be extended to do so, and we encourage readers to check-out the following resources for ideas for future research:</p>
+<ul>
+<li>A <a href="https://github.com/paezha/covid19-environmental-correlates#a-spatio-temporal-analysis-of-the-environmental-correlates-of-covid-19-incidence-in-spain">reproducible geographic analysis</a> of Covid-19 data in Spain by <a href="https://www.science.mcmaster.ca/geo/component/comprofiler/userprofile/paezha.html">Antonio Paez</a> and others (challenge: reproduce their findings)</li>
+<li>The eRum2020 <a href="https://2020.erum.io/covidr-contest/">CovidR competition</a> (challenge: enter the contest!)</li>
+</ul>
+<p>For further details on geographic data analysis in R in general, we recommend checkout out in-depth materials such as <a href="https://www.amazon.co.uk/Geocomputation-Chapman-Hall-Robin-Lovelace/dp/1138304514"><em>Geocomputation with R</em></a> and the in-progress open source book <a href="https://keen-swartz-3146c4.netlify.app/"><em>Spatial Data Science</em></a>.</p>
+<p>There is also an <a href="https://www.youtube.com/watch?v=Va0STgco7-4">online talk</a> on the subject on YouTube.</p>
 <details>
 <p><summary>Session info</summary></p>
 <pre class="r"><code>devtools::session_info()</code></pre>

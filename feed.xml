@@ -118,6 +118,13 @@ class(w)&lt;/code&gt;&lt;/pre&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;nrow(w)&lt;/code&gt;&lt;/pre&gt;
 &lt;pre&gt;&lt;code&gt;## [1] 14919&lt;/code&gt;&lt;/pre&gt;
 &lt;/div&gt;
+&lt;div id=&#34;calculating-area&#34; class=&#34;section level1&#34;&gt;
+&lt;h1&gt;Calculating area&lt;/h1&gt;
+&lt;p&gt;The package &lt;code&gt;sf&lt;/code&gt; provides a wide range of functions for calculating geographic variables such as object centroid, bounding boxes, lengths and, as demonstrated below, area.
+We use this area data to calculate the population density of each country as follows:&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;w$Area_km = as.numeric(st_area(w)) / 1e6
+w$`Pop/km2` = as.numeric(w$POP_EST) / w$Area_km &lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
 &lt;div id=&#34;plotting-international-covid-19-data-for-a-single-day&#34; class=&#34;section level1&#34;&gt;
 &lt;h1&gt;Plotting international Covid-19 data for a single day&lt;/h1&gt;
 &lt;p&gt;The class of &lt;code&gt;w&lt;/code&gt; shows that it has geometries for each row.
@@ -125,27 +132,40 @@ Notice that it has many more rows of data than the original world object: geomet
 This is not an efficient way to store data, as it means lots of duplicate geometries.
 On a small dataset that doesn’t matter, but it’s something to be aware of.
 To check that the join has worked, we will take a subset of rows representing the global situation yesterday relative to the date of data access:&lt;/p&gt;
-&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;w_yesterday = w[w$date == (max(w$date, na.rm = T) - 1), ]
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;w_yesterday = w %&amp;gt;% 
+  filter(date == max(date, na.rm = T) - 1)
 plot(w_yesterday)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;https://geocompr.github.io/post/2020/r-spatial-demo-covid-19_files/figure-html/unnamed-chunk-13-1.png&#34; width=&#34;768&#34; /&gt;&lt;/p&gt;
-&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;plot(w_yesterday[&amp;quot;deaths&amp;quot;])&lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;&lt;img src=&#34;https://geocompr.github.io/post/2020/r-spatial-demo-covid-19_files/figure-html/unnamed-chunk-14-1.png&#34; width=&#34;768&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;The plot method for &lt;code&gt;sf&lt;/code&gt; objects is fast and flexible, as documented in &lt;a href=&#34;https://r-spatial.github.io/sf/articles/sf5.html&#34;&gt;&lt;code&gt;sf&lt;/code&gt;’s &lt;em&gt;Plotting Simple Features&lt;/em&gt; vignette&lt;/a&gt;, which can be accessed with &lt;code&gt;vignette(&#34;sf5&#34;)&lt;/code&gt; from the R console.
+We can set the breaks to better show the difference between countries with no reported deaths and countries with few reported deaths as follows:&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;plot(w_yesterday[&amp;quot;deaths&amp;quot;])&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;https://geocompr.github.io/post/2020/r-spatial-demo-covid-19_files/figure-html/unnamed-chunk-15-1.png&#34; width=&#34;768&#34; /&gt;&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;b = c(0, 10, 100, 1000, 10000, 100000)
 plot(w_yesterday[&amp;quot;deaths&amp;quot;], breaks = b)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;https://geocompr.github.io/post/2020/r-spatial-demo-covid-19_files/figure-html/unnamed-chunk-14-2.png&#34; width=&#34;768&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://geocompr.github.io/post/2020/r-spatial-demo-covid-19_files/figure-html/unnamed-chunk-15-2.png&#34; width=&#34;768&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;To plot the other Covid-19 variables, reporting number of confirmed cases, number of tests and number of people who have recovered, we can subset the relevant variables and pipe the result to the &lt;code&gt;plot()&lt;/code&gt; function (noting the &lt;a href=&#34;https://t.co/NyIrKHQSUy&#34;&gt;caveat&lt;/a&gt; that code containing pipes may be hard to debug) as follows:&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;w_yesterday %&amp;gt;%
   dplyr::select(deaths, confirmed, tests, recovered) %&amp;gt;% 
   plot()&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;https://geocompr.github.io/post/2020/r-spatial-demo-covid-19_files/figure-html/unnamed-chunk-14-3.png&#34; width=&#34;768&#34; /&gt;&lt;/p&gt;
-&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# w_yesterday %&amp;gt;% filter(ISO_A2 == &amp;quot;US&amp;quot;) # check data for us&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;https://geocompr.github.io/post/2020/r-spatial-demo-covid-19_files/figure-html/unnamed-chunk-16-1.png&#34; width=&#34;768&#34; /&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;making-maps-with-tmap&#34; class=&#34;section level1&#34;&gt;
+&lt;h1&gt;Making maps with tmap&lt;/h1&gt;
+&lt;p&gt;The &lt;a href=&#34;https://geocompr.robinlovelace.net/adv-map.html&#34;&gt;mapping chapter&lt;/a&gt; of &lt;em&gt;Geocomputation with R&lt;/em&gt; shows how the &lt;code&gt;tmap&lt;/code&gt; package enables publication-quality maps to be created with concise and relatively commands, such as:&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;tm_shape(w_yesterday) +
   tm_polygons(c(&amp;quot;deaths&amp;quot;, &amp;quot;recovered&amp;quot;))&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;https://geocompr.github.io/post/2020/r-spatial-demo-covid-19_files/figure-html/unnamed-chunk-15-1.png&#34; width=&#34;768&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://geocompr.github.io/post/2020/r-spatial-demo-covid-19_files/figure-html/unnamed-chunk-17-1.png&#34; width=&#34;768&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;We can modify the palette and scale as follows:&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;tm_shape(w_yesterday) +
-  tm_polygons(c(&amp;quot;deaths&amp;quot;, &amp;quot;recovered&amp;quot;), 
-              palette = &amp;quot;viridis&amp;quot;, style = &amp;quot;log10_pretty&amp;quot;) &lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;https://geocompr.github.io/post/2020/r-spatial-demo-covid-19_files/figure-html/unnamed-chunk-16-1.png&#34; width=&#34;768&#34; /&gt;&lt;/p&gt;
+  tm_polygons(
+    c(&amp;quot;deaths&amp;quot;, &amp;quot;recovered&amp;quot;),
+    palette = &amp;quot;viridis&amp;quot;,
+    style = &amp;quot;log10_pretty&amp;quot;
+    ) &lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;https://geocompr.github.io/post/2020/r-spatial-demo-covid-19_files/figure-html/unnamed-chunk-18-1.png&#34; width=&#34;768&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;The map can be further improved by adding graticules representing the curvature of the Earth, created as follows:&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;g = st_graticule(w_yesterday)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;It’s also worth moving the legend:&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;tm_shape(g) +
   tm_lines(col = &amp;quot;grey&amp;quot;) +
   tm_shape(w_yesterday) +
@@ -155,67 +175,102 @@ plot(w_yesterday[&amp;quot;deaths&amp;quot;], breaks = b)&lt;/code&gt;&lt;/pre&g
     style = &amp;quot;log10_pretty&amp;quot;
     ) +
   tm_layout(legend.position = c(0.01, 0.25))&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;https://geocompr.github.io/post/2020/r-spatial-demo-covid-19_files/figure-html/unnamed-chunk-18-1.png&#34; width=&#34;768&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://geocompr.github.io/post/2020/r-spatial-demo-covid-19_files/figure-html/unnamed-chunk-20-1.png&#34; width=&#34;768&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;A problem with choropleth maps is that they can under-represent small areas.
+To overcome this issue we can use dot size instead of color to represent number:&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;tm_shape(g) +
   tm_lines(col = &amp;quot;grey&amp;quot;) +
   tm_shape(w_yesterday) +
-  tm_polygons(
-    c(&amp;quot;deaths&amp;quot;, &amp;quot;recovered&amp;quot;),
-    palette = &amp;quot;viridis&amp;quot;,
-    style = &amp;quot;log10_pretty&amp;quot;
-    ) +
-  tm_layout(legend.position = c(0.01, 0.25)) +
+  tm_polygons() +
+  tm_layout(legend.position = c(0.01, 0)) +
   tm_shape(w_yesterday) +
-  tm_dots(size = c(&amp;quot;deaths&amp;quot;, &amp;quot;recovered&amp;quot;), col = c(&amp;quot;red&amp;quot;, &amp;quot;green&amp;quot;))&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;https://geocompr.github.io/post/2020/r-spatial-demo-covid-19_files/figure-html/unnamed-chunk-19-1.png&#34; width=&#34;768&#34; /&gt;&lt;/p&gt;
+  tm_dots(
+    col = c(&amp;quot;red&amp;quot;, &amp;quot;green&amp;quot;),
+    size = c(&amp;quot;deaths&amp;quot;, &amp;quot;recovered&amp;quot;),
+    palette = &amp;quot;viridis&amp;quot;
+    )&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;https://geocompr.github.io/post/2020/r-spatial-demo-covid-19_files/figure-html/unnamed-chunk-21-1.png&#34; width=&#34;768&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;One question I have here: make the size legend have &lt;code&gt;style = &#34;log10_pretty&#34;&lt;/code&gt; also?&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;making-animated-maps&#34; class=&#34;section level1&#34;&gt;
+&lt;h1&gt;Making animated maps&lt;/h1&gt;
+&lt;p&gt;The animation at the beginning of this article shows how dynamic graphics can communicate change effectively.
+Animated maps are therefore useful for showing evolving geographic phenomena, such as the spread of Covid-19 worldwide.
+As covered in section &lt;a href=&#34;https://geocompr.robinlovelace.net/adv-map.html#animated-maps&#34;&gt;8.3&lt;/a&gt; of &lt;em&gt;Geocomputation with R&lt;/em&gt;, animated maps can be created with &lt;code&gt;tmap&lt;/code&gt; by extending the &lt;code&gt;tm_facet()&lt;/code&gt; functionality.
+So let’s start by creating a facetted map showing the total number of deaths on the first day of each month in our data:&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;w$Date = as.character(w$date)
 tm_shape(g) +
   tm_lines(col = &amp;quot;grey&amp;quot;) +
   tm_shape(w_yesterday) +
   tm_polygons(
-    c(&amp;quot;deaths&amp;quot;, &amp;quot;recovered&amp;quot;),
+    &amp;quot;Pop/km2&amp;quot;,
     palette = &amp;quot;viridis&amp;quot;,
-    style = &amp;quot;log10_pretty&amp;quot;
+    style = &amp;quot;log10_pretty&amp;quot;,
+    n = 3
     ) +
-  tm_shape(w %&amp;gt;% filter(date &amp;gt; Sys.Date() - 4)) +
-  tm_dots(size = c(&amp;quot;deaths&amp;quot;), col = c(&amp;quot;red&amp;quot;)) +
-  tm_facets(&amp;quot;Date&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
+  tm_shape(w %&amp;gt;% filter(grepl(pattern = &amp;quot;01$&amp;quot;, date))) +
+  tm_dots(size = &amp;quot;deaths&amp;quot;, col = &amp;quot;red&amp;quot;) +
+  tm_facets(&amp;quot;Date&amp;quot;, nrow = 1, free.scales.fill = FALSE) +
+  tm_layout(
+    legend.outside.position = &amp;quot;bottom&amp;quot;,
+    legend.stack = &amp;quot;horizontal&amp;quot;
+    )&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;https://geocompr.github.io/post/2020/r-spatial-demo-covid-19_files/figure-html/unnamed-chunk-22-1.png&#34; width=&#34;768&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;To create an animated map, following instructions in Chapter &lt;a href=&#34;https://geocompr.robinlovelace.net/adv-map.html#animated-maps&#34;&gt;8&lt;/a&gt; of &lt;em&gt;Geocomputation with R&lt;/em&gt;, we need to make some small changes to the code above:&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;m = tm_shape(g) +
   tm_lines(col = &amp;quot;grey&amp;quot;) +
   tm_shape(w_yesterday) +
   tm_polygons(
-    c(&amp;quot;deaths&amp;quot;, &amp;quot;recovered&amp;quot;),
+    &amp;quot;Pop/km2&amp;quot;,
     palette = &amp;quot;viridis&amp;quot;,
-    style = &amp;quot;log10_pretty&amp;quot;
+    style = &amp;quot;log10_pretty&amp;quot;,
+    n = 3
     ) +
-  tm_shape(w %&amp;gt;% filter(date &amp;gt; Sys.Date() - 4)) +
-  tm_dots(size = c(&amp;quot;deaths&amp;quot;), col = c(&amp;quot;red&amp;quot;)) +
+  tm_shape(w %&amp;gt;% filter(grepl(pattern = &amp;quot;01$&amp;quot;, date))) +
+  tm_dots(size = &amp;quot;deaths&amp;quot;, col = &amp;quot;red&amp;quot;) +
   tm_facets(along = &amp;quot;Date&amp;quot;, free.coords = FALSE) +
-  tm_layout(legend.position = c(0.01, 0.25))
+  tm_layout(legend.outside = TRUE)
 tmap_animation(m, &amp;quot;covid-19-animated-map-test.gif&amp;quot;, width = 800)
 browseURL(&amp;quot;covid-19-animated-map-test.gif&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;Not bad, but would benefit from a few adjustments before we plot the results of the whole dataset:&lt;/p&gt;
-&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;world_projected$Area_km = as.numeric(st_area(world_projected)) / 1e6
-world_projected$`Pop/km2` = as.numeric(world_projected$POP_EST) / world_projected$Area_km 
+&lt;p&gt;&lt;img src=&#34;https://user-images.githubusercontent.com/1825120/80087377-e7bda780-8552-11ea-959f-55b154c715fa.gif&#34; width=&#34;40%&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;We made an animated map!
+The first version is rarely the best though, and the map above clearly could benefit from some adjustments before we plot the results for the whole dataset:&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;w$Date = paste0(&amp;quot;Total deaths from 22nd January 2020 to &amp;quot;, w$date)
 
 m = tm_shape(g) +
   tm_lines(col = &amp;quot;grey&amp;quot;) +
-  tm_shape(world_projected) +
+  tm_shape(w) +
   tm_polygons(
     &amp;quot;Pop/km2&amp;quot;,
     palette = &amp;quot;viridis&amp;quot;,
     style = &amp;quot;log10_pretty&amp;quot;,
     lwd = 0.5
     ) +
-  tm_shape(w %&amp;gt;% filter(date &amp;gt; Sys.Date() - 60)) +
-  tm_dots(size = c(&amp;quot;deaths&amp;quot;), col = c(&amp;quot;red&amp;quot;)) +
+  tm_shape(w) +
+  tm_dots(size = &amp;quot;deaths&amp;quot;, col = &amp;quot;red&amp;quot;) +
   tm_facets(along = &amp;quot;Date&amp;quot;, free.coords = FALSE) +
-  tm_layout(legend.outside = TRUE)
-tmap_animation(m, &amp;quot;covid-19-animated-map.gif&amp;quot;, width = 1200, height = 800)
+  tm_layout(
+    main.title.size = 0.5,
+    legend.outside = TRUE
+    )
+m
+tmap_animation(m, &amp;quot;covid-19-animated-map.gif&amp;quot;, width = 1400, height = 600)
 browseURL(&amp;quot;covid-19-animated-map.gif&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
 &lt;!--update the file below--&gt;
 &lt;p&gt;&lt;img src=&#34;https://user-images.githubusercontent.com/1825120/79768034-1e60ab80-8322-11ea-9c99-9997b588ee57.gif&#34; /&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;conclusion&#34; class=&#34;section level1&#34;&gt;
+&lt;h1&gt;Conclusion&lt;/h1&gt;
+&lt;p&gt;This article has demonstrated how to work with and map geographic data using the free and open source statistical programming language R.
+It demonstrates that by representing analysis in code, research can be made reproducible and more accessible to others, encouraging transparent and open science.
+This has multiple advantages, from education and citizen engagement with the evidence to increased trust in the evidence on which important, life-or-death, decisions are made.&lt;/p&gt;
+&lt;p&gt;Although the research did not address any policy issues, it could be extended to do so, and we encourage readers to check-out the following resources for ideas for future research:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;A &lt;a href=&#34;https://github.com/paezha/covid19-environmental-correlates#a-spatio-temporal-analysis-of-the-environmental-correlates-of-covid-19-incidence-in-spain&#34;&gt;reproducible geographic analysis&lt;/a&gt; of Covid-19 data in Spain by &lt;a href=&#34;https://www.science.mcmaster.ca/geo/component/comprofiler/userprofile/paezha.html&#34;&gt;Antonio Paez&lt;/a&gt; and others (challenge: reproduce their findings)&lt;/li&gt;
+&lt;li&gt;The eRum2020 &lt;a href=&#34;https://2020.erum.io/covidr-contest/&#34;&gt;CovidR competition&lt;/a&gt; (challenge: enter the contest!)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;For further details on geographic data analysis in R in general, we recommend checkout out in-depth materials such as &lt;a href=&#34;https://www.amazon.co.uk/Geocomputation-Chapman-Hall-Robin-Lovelace/dp/1138304514&#34;&gt;&lt;em&gt;Geocomputation with R&lt;/em&gt;&lt;/a&gt; and the in-progress open source book &lt;a href=&#34;https://keen-swartz-3146c4.netlify.app/&#34;&gt;&lt;em&gt;Spatial Data Science&lt;/em&gt;&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;There is also an &lt;a href=&#34;https://www.youtube.com/watch?v=Va0STgco7-4&#34;&gt;online talk&lt;/a&gt; on the subject on YouTube.&lt;/p&gt;
 &lt;details&gt;
 &lt;p&gt;&lt;summary&gt;Session info&lt;/summary&gt;&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;devtools::session_info()&lt;/code&gt;&lt;/pre&gt;
