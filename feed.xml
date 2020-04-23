@@ -25,34 +25,38 @@ Impacts range from physical distancing measures &lt;a href=&#34;https://en.wikip
 &lt;p&gt;&lt;a href=&#34;https://www.washingtonpost.com/graphics/2020/world/corona-simulator/&#34;&gt;&lt;img src=&#34;https://upload.wikimedia.org/wikipedia/commons/thumb/8/82/Katapult_importance_social_distancing.gif/350px-Katapult_importance_social_distancing.gif&#34; /&gt;&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;This article demonstrates how to download and map open data on the evolving coronavirus pandemic, using reproducible R code.
 The aim is not to provide scientific analysis of the data, but to demonstrate how ‘open science’ enables public access to important international datasets.
-It also provides an opportunity to demonstrate how techniques taught in &lt;em&gt;Geocomputation with R&lt;/em&gt; can be applied to real-world datasets.&lt;/p&gt;
+It also provides an opportunity to demonstrate how techniques taught in &lt;a href=&#34;https://geocompr.robinlovelace.net/&#34;&gt;&lt;em&gt;Geocomputation with R&lt;/em&gt;&lt;/a&gt; can be applied to real-world datasets.&lt;/p&gt;
 &lt;p&gt;Before undertaking geographic analysis of ‘rate’ data, such as the number Covid-19 infections per unit area, it is worth acknowledging caveats at the outset.
 Simple graphics of complex phenomena can be misleading.
-This is well-illustrated in the figure below, which shows how the ecological fallacy can affect interpretations of geographical analysis of areal units such countries that we will be using in this research.&lt;/p&gt;
+This is well-illustrated in the figure below by &lt;a href=&#34;https://github.com/willgeary&#34;&gt;Will Geary&lt;/a&gt;, which shows how the ecological fallacy can affect interpretations of geographical analysis of areal units such countries that we will be using in this research.&lt;/p&gt;
 &lt;p&gt;&lt;a href=&#34;https://github.com/willgeary/covid-nyc-dasymetric-map&#34;&gt;&lt;img src=&#34;https://raw.githubusercontent.com/willgeary/covid-nyc-dasymetric-map/master/assets/comparison_table_zip_hex_smoothed.png&#34; /&gt;&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;The post is intended more as a taster of geographic visualisation in R than as a gateway to scientific analysis of Covid-19 data.
 See resources such as the &lt;a href=&#34;https://2020.erum.io/covidr-contest/&#34;&gt;eRum2020 CovidR&lt;/a&gt; contest and &lt;a href=&#34;https://towardsdatascience.com/top-5-r-resources-on-covid-19-coronavirus-1d4c8df6d85f&#34;&gt;lists&lt;/a&gt; of online &lt;a href=&#34;https://github.com/HDRUK/covid-19&#34;&gt;resources&lt;/a&gt; for pointers on how to usefully contribute to data-driven efforts to tackle the crisis.&lt;/p&gt;
 &lt;/div&gt;
-&lt;div id=&#34;reproducible-example&#34; class=&#34;section level1&#34;&gt;
-&lt;h1&gt;Reproducible example&lt;/h1&gt;
+&lt;div id=&#34;set-up&#34; class=&#34;section level1&#34;&gt;
+&lt;h1&gt;Set-up&lt;/h1&gt;
+&lt;p&gt;To reproduce the results presented in this article you will need to have an R installation with up-to-date versions of the following packages installed and loaded.
+(See the &lt;a href=&#34;https://github.com/geocompr/docker&#34;&gt;geocompr/docker&lt;/a&gt; repo and &lt;a href=&#34;https://geocompr.github.io/post/2020/installing-r-spatial-ubuntu/&#34;&gt;Installing R on Ubuntu&lt;/a&gt; article for more on setting up your computer to work with R).&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;library(sf)&lt;/code&gt;&lt;/pre&gt;
 &lt;pre&gt;&lt;code&gt;## Linking to GEOS 3.8.0, GDAL 3.0.4, PROJ 7.0.0&lt;/code&gt;&lt;/pre&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;library(tmap)
 library(dplyr)&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;div id=&#34;getting-international-covid-19-data&#34; class=&#34;section level1&#34;&gt;
+&lt;h1&gt;Getting international Covid-19 data&lt;/h1&gt;
 &lt;p&gt;To get data on official Covid-19 statistics, we will use the &lt;a href=&#34;https://github.com/covid19datahub/COVID19&#34;&gt;&lt;code&gt;COVID19&lt;/code&gt;&lt;/a&gt; R package.&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://camo.githubusercontent.com/b627e2aa6edcee3ead77511a35d4e1a5e91aa07f/68747470733a2f2f73746f726167652e636f7669643139646174616875622e696f2f6c6f676f2e737667&#34; width=&#34;50%&#34; style=&#34;display: block; margin: auto;&#34;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://camo.githubusercontent.com/b627e2aa6edcee3ead77511a35d4e1a5e91aa07f/68747470733a2f2f73746f726167652e636f7669643139646174616875622e696f2f6c6f676f2e737667&#34; width=&#34;20%&#34; style=&#34;display: block; margin: auto;&#34;&gt;&lt;/p&gt;
 &lt;p&gt;This package provides daily updated data on a variety of variables related to the coronavirus pandemic at national, regional and city levels.
 Install it as follows:&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;install.packages(&amp;quot;COVID19&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;To minimise dependencies for reproducing the results in this article, we accessed and uploaded a copy of the data with the following commands:&lt;/p&gt;
-&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;d = COVID19::covid19()
-readr::write_csv(d, paste0(&amp;quot;COVID19-data-&amp;quot;, Sys.Date(), &amp;quot;.csv&amp;quot;))
-piggyback::pb_upload(paste0(&amp;quot;COVID19-data-&amp;quot;, Sys.Date(), &amp;quot;.csv&amp;quot;), repo = &amp;quot;robinlovelace/geocompr&amp;quot;)
-piggyback::pb_download_url(paste0(&amp;quot;COVID19-data-&amp;quot;, Sys.Date(), &amp;quot;.csv&amp;quot;), repo = &amp;quot;robinlovelace/geocompr&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;Read-in the Covid19 data from the date this post was written as follows (re-run the code above to get up-to-date data):&lt;/p&gt;
-&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;d = readr::read_csv(&amp;quot;https://github.com/Robinlovelace/geocompr/releases/download/1.2/COVID19-data-2020-04-22.csv&amp;quot;)
+&lt;p&gt;After the package is installed, you can get up-to-date country-level data as follows:&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;d = COVID19::covid19()&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;To minimise dependencies for reproducing the results in this article, we uploaded a copy of the data, which can be downloaded as follows (re-run the code above to get up-to-date data):&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;d = readr::read_csv(&amp;quot;https://git.io/covid-19-2020-04-23&amp;quot;)
 class(d)&lt;/code&gt;&lt;/pre&gt;
 &lt;pre&gt;&lt;code&gt;## [1] &amp;quot;spec_tbl_df&amp;quot; &amp;quot;tbl_df&amp;quot;      &amp;quot;tbl&amp;quot;         &amp;quot;data.frame&amp;quot;&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;The previous code chunk read a .csv file from online and confirmed, we have loaded a data frame (we will see how to join this with geographic data in the next section).
+We can get a sense of the contents of the data as follows:&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;ncol(d)&lt;/code&gt;&lt;/pre&gt;
 &lt;pre&gt;&lt;code&gt;## [1] 24&lt;/code&gt;&lt;/pre&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;nrow(d)&lt;/code&gt;&lt;/pre&gt;
@@ -78,66 +82,96 @@ class(d)&lt;/code&gt;&lt;/pre&gt;
 ## [90m#   state [3m[90m&amp;lt;lgl&amp;gt;[90m[23m, city [3m[90m&amp;lt;lgl&amp;gt;[90m[23m, lat [3m[90m&amp;lt;dbl&amp;gt;[90m[23m, lng [3m[90m&amp;lt;dbl&amp;gt;[90m[23m, pop [3m[90m&amp;lt;dbl&amp;gt;[90m[23m, pop_14 [3m[90m&amp;lt;dbl&amp;gt;[90m[23m,[39m
 ## [90m#   pop_15_64 [3m[90m&amp;lt;dbl&amp;gt;[90m[23m, pop_65 [3m[90m&amp;lt;dbl&amp;gt;[90m[23m, pop_age [3m[90m&amp;lt;dbl&amp;gt;[90m[23m, pop_density [3m[90m&amp;lt;dbl&amp;gt;[90m[23m,[39m
 ## [90m#   pop_death_rate [3m[90m&amp;lt;dbl&amp;gt;[90m[23m[39m&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;div id=&#34;getting-geographic-data&#34; class=&#34;section level1&#34;&gt;
+&lt;h1&gt;Getting geographic data&lt;/h1&gt;
+&lt;p&gt;We will use a dataset representing countries worldwide from the &lt;code&gt;rnaturalearth&lt;/code&gt; package.
+Assuming you have the package installed you can get the geographic data as follows (see the subsequent code chunk if not):&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;world_rnatural = rnaturalearth::ne_download(returnclass = &amp;quot;sf&amp;quot;)
 # names(world_iso) # variables available
 world_iso = world_rnatural %&amp;gt;% 
   select(NAME_LONG, ISO_A3_EH, POP_EST, GDP_MD_EST, CONTINENT)&lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;The result of the previous code block, an object representing the world and containing only variables of interest, was uploaded to GitHub and can be loaded from a GeoJSON file as follows:&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;world_iso = sf::read_sf(&amp;quot;https://git.io/JfICT&amp;quot;) &lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;To see what’s in the &lt;code&gt;world_iso&lt;/code&gt; object we can plot it, with the default setting in &lt;code&gt;sf&lt;/code&gt; showing the geographic distribution of each variable:&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;plot(world_iso)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;https://geocompr.github.io/post/2020/r-spatial-demo-covid-19_files/figure-html/unnamed-chunk-7-1.png&#34; width=&#34;768&#34; /&gt;&lt;/p&gt;
-&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;world_projected = world_iso %&amp;gt;% 
-  st_transform(&amp;quot;+proj=moll&amp;quot;)
-plot(world_projected)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;https://geocompr.github.io/post/2020/r-spatial-demo-covid-19_files/figure-html/unnamed-chunk-7-2.png&#34; width=&#34;768&#34; /&gt;&lt;/p&gt;
-&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;w = dplyr::left_join(world_projected, d, by = c(&amp;quot;ISO_A3_EH&amp;quot;= &amp;quot;id&amp;quot;))
-w_today = w[w$date == Sys.Date() - 1, ]
-plot(w_today)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;https://geocompr.github.io/post/2020/r-spatial-demo-covid-19_files/figure-html/unnamed-chunk-8-1.png&#34; width=&#34;768&#34; /&gt;&lt;/p&gt;
-&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;plot(w_today[&amp;quot;deaths&amp;quot;])&lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;&lt;img src=&#34;https://geocompr.github.io/post/2020/r-spatial-demo-covid-19_files/figure-html/unnamed-chunk-9-1.png&#34; width=&#34;768&#34; /&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;transforming-geographic-data&#34; class=&#34;section level1&#34;&gt;
+&lt;h1&gt;Transforming geographic data&lt;/h1&gt;
+&lt;p&gt;An issue with the result from a data visualisation perspective is that this unprojected visualisation distorts the world: countries such as Greenland at high latitudes appear bigger than the actually are.
+To overcome this issue we will project the object as follows (see Chapter &lt;a href=&#34;https://geocompr.robinlovelace.net/reproj-geo-data.html&#34;&gt;6&lt;/a&gt; of Geocomputation with R and a recent article on the &lt;a href=&#34;https://www.r-spatial.org/r/2020/03/17/wkt.html&#34;&gt;r-spatial website&lt;/a&gt; for more on coordinate systems):&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;world_projected = world_iso %&amp;gt;% 
+  st_transform(&amp;quot;+proj=moll&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;We can plot just the geometry of the updated object as follows, noting that the result is projected in a way that preserves the true area of countries (noting also that all projections introduce distortions):&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;plot(st_geometry(world_projected))&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;https://geocompr.github.io/post/2020/r-spatial-demo-covid-19_files/figure-html/unnamed-chunk-11-1.png&#34; width=&#34;768&#34; /&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;attribute-joins&#34; class=&#34;section level1&#34;&gt;
+&lt;h1&gt;Attribute joins&lt;/h1&gt;
+&lt;p&gt;As outlined in Chapter &lt;a href=&#34;https://geocompr.robinlovelace.net/attr.html#vector-attribute-joining&#34;&gt;3&lt;/a&gt; of &lt;em&gt;Geocomputation with R&lt;/em&gt;, attribute joins can be used to add additional variables to geographic data via a ‘key variable’ shared between the geographic and non-geographic objects.
+In this case the shared variables are &lt;code&gt;ISO_A3_EH&lt;/code&gt; in the geographic object and &lt;code&gt;id&lt;/code&gt; in the Covid-19 dataset &lt;code&gt;d&lt;/code&gt;.
+We will be concise and call the dataset resulting from this join operation &lt;code&gt;w&lt;/code&gt;.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;w = dplyr::left_join(world_projected, d, by = c(&amp;quot;ISO_A3_EH&amp;quot;= &amp;quot;id&amp;quot;))
+class(w)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## [1] &amp;quot;sf&amp;quot;         &amp;quot;tbl_df&amp;quot;     &amp;quot;tbl&amp;quot;        &amp;quot;data.frame&amp;quot;&lt;/code&gt;&lt;/pre&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;nrow(w)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## [1] 14919&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;div id=&#34;plotting-international-covid-19-data-for-a-single-day&#34; class=&#34;section level1&#34;&gt;
+&lt;h1&gt;Plotting international Covid-19 data for a single day&lt;/h1&gt;
+&lt;p&gt;The class of &lt;code&gt;w&lt;/code&gt; shows that it has geometries for each row.
+Notice that it has many more rows of data than the original world object: geometries are repeated for every year.
+This is not an efficient way to store data, as it means lots of duplicate geometries.
+On a small dataset that doesn’t matter, but it’s something to be aware of.
+To check that the join has worked, we will take a subset of rows representing the global situation yesterday relative to the date of data access:&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;w_yesterday = w[w$date == (max(w$date, na.rm = T) - 1), ]
+plot(w_yesterday)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;https://geocompr.github.io/post/2020/r-spatial-demo-covid-19_files/figure-html/unnamed-chunk-13-1.png&#34; width=&#34;768&#34; /&gt;&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;plot(w_yesterday[&amp;quot;deaths&amp;quot;])&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;https://geocompr.github.io/post/2020/r-spatial-demo-covid-19_files/figure-html/unnamed-chunk-14-1.png&#34; width=&#34;768&#34; /&gt;&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;b = c(0, 10, 100, 1000, 10000, 100000)
-plot(w_today[&amp;quot;deaths&amp;quot;], breaks = b)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;https://geocompr.github.io/post/2020/r-spatial-demo-covid-19_files/figure-html/unnamed-chunk-9-2.png&#34; width=&#34;768&#34; /&gt;&lt;/p&gt;
-&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;w_today %&amp;gt;%
+plot(w_yesterday[&amp;quot;deaths&amp;quot;], breaks = b)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;https://geocompr.github.io/post/2020/r-spatial-demo-covid-19_files/figure-html/unnamed-chunk-14-2.png&#34; width=&#34;768&#34; /&gt;&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;w_yesterday %&amp;gt;%
   dplyr::select(deaths, confirmed, tests, recovered) %&amp;gt;% 
   plot()&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;https://geocompr.github.io/post/2020/r-spatial-demo-covid-19_files/figure-html/unnamed-chunk-9-3.png&#34; width=&#34;768&#34; /&gt;&lt;/p&gt;
-&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# w_today %&amp;gt;% filter(ISO_A2 == &amp;quot;US&amp;quot;) # check data for us&lt;/code&gt;&lt;/pre&gt;
-&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;tm_shape(w_today) +
+&lt;p&gt;&lt;img src=&#34;https://geocompr.github.io/post/2020/r-spatial-demo-covid-19_files/figure-html/unnamed-chunk-14-3.png&#34; width=&#34;768&#34; /&gt;&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# w_yesterday %&amp;gt;% filter(ISO_A2 == &amp;quot;US&amp;quot;) # check data for us&lt;/code&gt;&lt;/pre&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;tm_shape(w_yesterday) +
   tm_polygons(c(&amp;quot;deaths&amp;quot;, &amp;quot;recovered&amp;quot;))&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;https://geocompr.github.io/post/2020/r-spatial-demo-covid-19_files/figure-html/unnamed-chunk-10-1.png&#34; width=&#34;768&#34; /&gt;&lt;/p&gt;
-&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;tm_shape(w_today) +
+&lt;p&gt;&lt;img src=&#34;https://geocompr.github.io/post/2020/r-spatial-demo-covid-19_files/figure-html/unnamed-chunk-15-1.png&#34; width=&#34;768&#34; /&gt;&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;tm_shape(w_yesterday) +
   tm_polygons(c(&amp;quot;deaths&amp;quot;, &amp;quot;recovered&amp;quot;), 
               palette = &amp;quot;viridis&amp;quot;, style = &amp;quot;log10_pretty&amp;quot;) &lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;https://geocompr.github.io/post/2020/r-spatial-demo-covid-19_files/figure-html/unnamed-chunk-11-1.png&#34; width=&#34;768&#34; /&gt;&lt;/p&gt;
-&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;g = st_graticule(w_today)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;https://geocompr.github.io/post/2020/r-spatial-demo-covid-19_files/figure-html/unnamed-chunk-16-1.png&#34; width=&#34;768&#34; /&gt;&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;g = st_graticule(w_yesterday)&lt;/code&gt;&lt;/pre&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;tm_shape(g) +
   tm_lines(col = &amp;quot;grey&amp;quot;) +
-  tm_shape(w_today) +
+  tm_shape(w_yesterday) +
   tm_polygons(
     c(&amp;quot;deaths&amp;quot;, &amp;quot;recovered&amp;quot;),
     palette = &amp;quot;viridis&amp;quot;,
     style = &amp;quot;log10_pretty&amp;quot;
     ) +
   tm_layout(legend.position = c(0.01, 0.25))&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;https://geocompr.github.io/post/2020/r-spatial-demo-covid-19_files/figure-html/unnamed-chunk-13-1.png&#34; width=&#34;768&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://geocompr.github.io/post/2020/r-spatial-demo-covid-19_files/figure-html/unnamed-chunk-18-1.png&#34; width=&#34;768&#34; /&gt;&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;tm_shape(g) +
   tm_lines(col = &amp;quot;grey&amp;quot;) +
-  tm_shape(w_today) +
+  tm_shape(w_yesterday) +
   tm_polygons(
     c(&amp;quot;deaths&amp;quot;, &amp;quot;recovered&amp;quot;),
     palette = &amp;quot;viridis&amp;quot;,
     style = &amp;quot;log10_pretty&amp;quot;
     ) +
   tm_layout(legend.position = c(0.01, 0.25)) +
-  tm_shape(w_today) +
+  tm_shape(w_yesterday) +
   tm_dots(size = c(&amp;quot;deaths&amp;quot;, &amp;quot;recovered&amp;quot;), col = c(&amp;quot;red&amp;quot;, &amp;quot;green&amp;quot;))&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;https://geocompr.github.io/post/2020/r-spatial-demo-covid-19_files/figure-html/unnamed-chunk-14-1.png&#34; width=&#34;768&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://geocompr.github.io/post/2020/r-spatial-demo-covid-19_files/figure-html/unnamed-chunk-19-1.png&#34; width=&#34;768&#34; /&gt;&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;w$Date = as.character(w$date)
 tm_shape(g) +
   tm_lines(col = &amp;quot;grey&amp;quot;) +
-  tm_shape(w_today) +
+  tm_shape(w_yesterday) +
   tm_polygons(
     c(&amp;quot;deaths&amp;quot;, &amp;quot;recovered&amp;quot;),
     palette = &amp;quot;viridis&amp;quot;,
@@ -149,7 +183,7 @@ tm_shape(g) +
 &lt;p&gt;To create an animated map, following instructions in Chapter &lt;a href=&#34;https://geocompr.robinlovelace.net/adv-map.html#animated-maps&#34;&gt;8&lt;/a&gt; of &lt;em&gt;Geocomputation with R&lt;/em&gt;, we need to make some small changes to the code above:&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;m = tm_shape(g) +
   tm_lines(col = &amp;quot;grey&amp;quot;) +
-  tm_shape(w_today) +
+  tm_shape(w_yesterday) +
   tm_polygons(
     c(&amp;quot;deaths&amp;quot;, &amp;quot;recovered&amp;quot;),
     palette = &amp;quot;viridis&amp;quot;,

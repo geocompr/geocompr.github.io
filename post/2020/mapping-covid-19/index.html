@@ -189,34 +189,38 @@ Impacts range from physical distancing measures <a href="https://en.wikipedia.or
 <p><a href="https://www.washingtonpost.com/graphics/2020/world/corona-simulator/"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/82/Katapult_importance_social_distancing.gif/350px-Katapult_importance_social_distancing.gif" /></a></p>
 <p>This article demonstrates how to download and map open data on the evolving coronavirus pandemic, using reproducible R code.
 The aim is not to provide scientific analysis of the data, but to demonstrate how ‘open science’ enables public access to important international datasets.
-It also provides an opportunity to demonstrate how techniques taught in <em>Geocomputation with R</em> can be applied to real-world datasets.</p>
+It also provides an opportunity to demonstrate how techniques taught in <a href="https://geocompr.robinlovelace.net/"><em>Geocomputation with R</em></a> can be applied to real-world datasets.</p>
 <p>Before undertaking geographic analysis of ‘rate’ data, such as the number Covid-19 infections per unit area, it is worth acknowledging caveats at the outset.
 Simple graphics of complex phenomena can be misleading.
-This is well-illustrated in the figure below, which shows how the ecological fallacy can affect interpretations of geographical analysis of areal units such countries that we will be using in this research.</p>
+This is well-illustrated in the figure below by <a href="https://github.com/willgeary">Will Geary</a>, which shows how the ecological fallacy can affect interpretations of geographical analysis of areal units such countries that we will be using in this research.</p>
 <p><a href="https://github.com/willgeary/covid-nyc-dasymetric-map"><img src="https://raw.githubusercontent.com/willgeary/covid-nyc-dasymetric-map/master/assets/comparison_table_zip_hex_smoothed.png" /></a></p>
 <p>The post is intended more as a taster of geographic visualisation in R than as a gateway to scientific analysis of Covid-19 data.
 See resources such as the <a href="https://2020.erum.io/covidr-contest/">eRum2020 CovidR</a> contest and <a href="https://towardsdatascience.com/top-5-r-resources-on-covid-19-coronavirus-1d4c8df6d85f">lists</a> of online <a href="https://github.com/HDRUK/covid-19">resources</a> for pointers on how to usefully contribute to data-driven efforts to tackle the crisis.</p>
 </div>
-<div id="reproducible-example" class="section level1">
-<h1>Reproducible example</h1>
+<div id="set-up" class="section level1">
+<h1>Set-up</h1>
+<p>To reproduce the results presented in this article you will need to have an R installation with up-to-date versions of the following packages installed and loaded.
+(See the <a href="https://github.com/geocompr/docker">geocompr/docker</a> repo and <a href="https://geocompr.github.io/post/2020/installing-r-spatial-ubuntu/">Installing R on Ubuntu</a> article for more on setting up your computer to work with R).</p>
 <pre class="r"><code>library(sf)</code></pre>
 <pre><code>## Linking to GEOS 3.8.0, GDAL 3.0.4, PROJ 7.0.0</code></pre>
 <pre class="r"><code>library(tmap)
 library(dplyr)</code></pre>
+</div>
+<div id="getting-international-covid-19-data" class="section level1">
+<h1>Getting international Covid-19 data</h1>
 <p>To get data on official Covid-19 statistics, we will use the <a href="https://github.com/covid19datahub/COVID19"><code>COVID19</code></a> R package.</p>
-<p><img src="https://camo.githubusercontent.com/b627e2aa6edcee3ead77511a35d4e1a5e91aa07f/68747470733a2f2f73746f726167652e636f7669643139646174616875622e696f2f6c6f676f2e737667" width="50%" style="display: block; margin: auto;"></p>
+<p><img src="https://camo.githubusercontent.com/b627e2aa6edcee3ead77511a35d4e1a5e91aa07f/68747470733a2f2f73746f726167652e636f7669643139646174616875622e696f2f6c6f676f2e737667" width="20%" style="display: block; margin: auto;"></p>
 <p>This package provides daily updated data on a variety of variables related to the coronavirus pandemic at national, regional and city levels.
 Install it as follows:</p>
 <pre class="r"><code>install.packages(&quot;COVID19&quot;)</code></pre>
-<p>To minimise dependencies for reproducing the results in this article, we accessed and uploaded a copy of the data with the following commands:</p>
-<pre class="r"><code>d = COVID19::covid19()
-readr::write_csv(d, paste0(&quot;COVID19-data-&quot;, Sys.Date(), &quot;.csv&quot;))
-piggyback::pb_upload(paste0(&quot;COVID19-data-&quot;, Sys.Date(), &quot;.csv&quot;), repo = &quot;robinlovelace/geocompr&quot;)
-piggyback::pb_download_url(paste0(&quot;COVID19-data-&quot;, Sys.Date(), &quot;.csv&quot;), repo = &quot;robinlovelace/geocompr&quot;)</code></pre>
-<p>Read-in the Covid19 data from the date this post was written as follows (re-run the code above to get up-to-date data):</p>
-<pre class="r"><code>d = readr::read_csv(&quot;https://github.com/Robinlovelace/geocompr/releases/download/1.2/COVID19-data-2020-04-22.csv&quot;)
+<p>After the package is installed, you can get up-to-date country-level data as follows:</p>
+<pre class="r"><code>d = COVID19::covid19()</code></pre>
+<p>To minimise dependencies for reproducing the results in this article, we uploaded a copy of the data, which can be downloaded as follows (re-run the code above to get up-to-date data):</p>
+<pre class="r"><code>d = readr::read_csv(&quot;https://git.io/covid-19-2020-04-23&quot;)
 class(d)</code></pre>
 <pre><code>## [1] &quot;spec_tbl_df&quot; &quot;tbl_df&quot;      &quot;tbl&quot;         &quot;data.frame&quot;</code></pre>
+<p>The previous code chunk read a .csv file from online and confirmed, we have loaded a data frame (we will see how to join this with geographic data in the next section).
+We can get a sense of the contents of the data as follows:</p>
 <pre class="r"><code>ncol(d)</code></pre>
 <pre><code>## [1] 24</code></pre>
 <pre class="r"><code>nrow(d)</code></pre>
@@ -242,66 +246,96 @@ class(d)</code></pre>
 ## [90m#   state [3m[90m&lt;lgl&gt;[90m[23m, city [3m[90m&lt;lgl&gt;[90m[23m, lat [3m[90m&lt;dbl&gt;[90m[23m, lng [3m[90m&lt;dbl&gt;[90m[23m, pop [3m[90m&lt;dbl&gt;[90m[23m, pop_14 [3m[90m&lt;dbl&gt;[90m[23m,[39m
 ## [90m#   pop_15_64 [3m[90m&lt;dbl&gt;[90m[23m, pop_65 [3m[90m&lt;dbl&gt;[90m[23m, pop_age [3m[90m&lt;dbl&gt;[90m[23m, pop_density [3m[90m&lt;dbl&gt;[90m[23m,[39m
 ## [90m#   pop_death_rate [3m[90m&lt;dbl&gt;[90m[23m[39m</code></pre>
+</div>
+<div id="getting-geographic-data" class="section level1">
+<h1>Getting geographic data</h1>
+<p>We will use a dataset representing countries worldwide from the <code>rnaturalearth</code> package.
+Assuming you have the package installed you can get the geographic data as follows (see the subsequent code chunk if not):</p>
 <pre class="r"><code>world_rnatural = rnaturalearth::ne_download(returnclass = &quot;sf&quot;)
 # names(world_iso) # variables available
 world_iso = world_rnatural %&gt;% 
   select(NAME_LONG, ISO_A3_EH, POP_EST, GDP_MD_EST, CONTINENT)</code></pre>
 <p>The result of the previous code block, an object representing the world and containing only variables of interest, was uploaded to GitHub and can be loaded from a GeoJSON file as follows:</p>
 <pre class="r"><code>world_iso = sf::read_sf(&quot;https://git.io/JfICT&quot;) </code></pre>
+<p>To see what’s in the <code>world_iso</code> object we can plot it, with the default setting in <code>sf</code> showing the geographic distribution of each variable:</p>
 <pre class="r"><code>plot(world_iso)</code></pre>
-<p><img src="/post/2020/r-spatial-demo-covid-19_files/figure-html/unnamed-chunk-7-1.png" width="768" /></p>
-<pre class="r"><code>world_projected = world_iso %&gt;% 
-  st_transform(&quot;+proj=moll&quot;)
-plot(world_projected)</code></pre>
-<p><img src="/post/2020/r-spatial-demo-covid-19_files/figure-html/unnamed-chunk-7-2.png" width="768" /></p>
-<pre class="r"><code>w = dplyr::left_join(world_projected, d, by = c(&quot;ISO_A3_EH&quot;= &quot;id&quot;))
-w_today = w[w$date == Sys.Date() - 1, ]
-plot(w_today)</code></pre>
-<p><img src="/post/2020/r-spatial-demo-covid-19_files/figure-html/unnamed-chunk-8-1.png" width="768" /></p>
-<pre class="r"><code>plot(w_today[&quot;deaths&quot;])</code></pre>
 <p><img src="/post/2020/r-spatial-demo-covid-19_files/figure-html/unnamed-chunk-9-1.png" width="768" /></p>
+</div>
+<div id="transforming-geographic-data" class="section level1">
+<h1>Transforming geographic data</h1>
+<p>An issue with the result from a data visualisation perspective is that this unprojected visualisation distorts the world: countries such as Greenland at high latitudes appear bigger than the actually are.
+To overcome this issue we will project the object as follows (see Chapter <a href="https://geocompr.robinlovelace.net/reproj-geo-data.html">6</a> of Geocomputation with R and a recent article on the <a href="https://www.r-spatial.org/r/2020/03/17/wkt.html">r-spatial website</a> for more on coordinate systems):</p>
+<pre class="r"><code>world_projected = world_iso %&gt;% 
+  st_transform(&quot;+proj=moll&quot;)</code></pre>
+<p>We can plot just the geometry of the updated object as follows, noting that the result is projected in a way that preserves the true area of countries (noting also that all projections introduce distortions):</p>
+<pre class="r"><code>plot(st_geometry(world_projected))</code></pre>
+<p><img src="/post/2020/r-spatial-demo-covid-19_files/figure-html/unnamed-chunk-11-1.png" width="768" /></p>
+</div>
+<div id="attribute-joins" class="section level1">
+<h1>Attribute joins</h1>
+<p>As outlined in Chapter <a href="https://geocompr.robinlovelace.net/attr.html#vector-attribute-joining">3</a> of <em>Geocomputation with R</em>, attribute joins can be used to add additional variables to geographic data via a ‘key variable’ shared between the geographic and non-geographic objects.
+In this case the shared variables are <code>ISO_A3_EH</code> in the geographic object and <code>id</code> in the Covid-19 dataset <code>d</code>.
+We will be concise and call the dataset resulting from this join operation <code>w</code>.</p>
+<pre class="r"><code>w = dplyr::left_join(world_projected, d, by = c(&quot;ISO_A3_EH&quot;= &quot;id&quot;))
+class(w)</code></pre>
+<pre><code>## [1] &quot;sf&quot;         &quot;tbl_df&quot;     &quot;tbl&quot;        &quot;data.frame&quot;</code></pre>
+<pre class="r"><code>nrow(w)</code></pre>
+<pre><code>## [1] 14919</code></pre>
+</div>
+<div id="plotting-international-covid-19-data-for-a-single-day" class="section level1">
+<h1>Plotting international Covid-19 data for a single day</h1>
+<p>The class of <code>w</code> shows that it has geometries for each row.
+Notice that it has many more rows of data than the original world object: geometries are repeated for every year.
+This is not an efficient way to store data, as it means lots of duplicate geometries.
+On a small dataset that doesn’t matter, but it’s something to be aware of.
+To check that the join has worked, we will take a subset of rows representing the global situation yesterday relative to the date of data access:</p>
+<pre class="r"><code>w_yesterday = w[w$date == (max(w$date, na.rm = T) - 1), ]
+plot(w_yesterday)</code></pre>
+<p><img src="/post/2020/r-spatial-demo-covid-19_files/figure-html/unnamed-chunk-13-1.png" width="768" /></p>
+<pre class="r"><code>plot(w_yesterday[&quot;deaths&quot;])</code></pre>
+<p><img src="/post/2020/r-spatial-demo-covid-19_files/figure-html/unnamed-chunk-14-1.png" width="768" /></p>
 <pre class="r"><code>b = c(0, 10, 100, 1000, 10000, 100000)
-plot(w_today[&quot;deaths&quot;], breaks = b)</code></pre>
-<p><img src="/post/2020/r-spatial-demo-covid-19_files/figure-html/unnamed-chunk-9-2.png" width="768" /></p>
-<pre class="r"><code>w_today %&gt;%
+plot(w_yesterday[&quot;deaths&quot;], breaks = b)</code></pre>
+<p><img src="/post/2020/r-spatial-demo-covid-19_files/figure-html/unnamed-chunk-14-2.png" width="768" /></p>
+<pre class="r"><code>w_yesterday %&gt;%
   dplyr::select(deaths, confirmed, tests, recovered) %&gt;% 
   plot()</code></pre>
-<p><img src="/post/2020/r-spatial-demo-covid-19_files/figure-html/unnamed-chunk-9-3.png" width="768" /></p>
-<pre class="r"><code># w_today %&gt;% filter(ISO_A2 == &quot;US&quot;) # check data for us</code></pre>
-<pre class="r"><code>tm_shape(w_today) +
+<p><img src="/post/2020/r-spatial-demo-covid-19_files/figure-html/unnamed-chunk-14-3.png" width="768" /></p>
+<pre class="r"><code># w_yesterday %&gt;% filter(ISO_A2 == &quot;US&quot;) # check data for us</code></pre>
+<pre class="r"><code>tm_shape(w_yesterday) +
   tm_polygons(c(&quot;deaths&quot;, &quot;recovered&quot;))</code></pre>
-<p><img src="/post/2020/r-spatial-demo-covid-19_files/figure-html/unnamed-chunk-10-1.png" width="768" /></p>
-<pre class="r"><code>tm_shape(w_today) +
+<p><img src="/post/2020/r-spatial-demo-covid-19_files/figure-html/unnamed-chunk-15-1.png" width="768" /></p>
+<pre class="r"><code>tm_shape(w_yesterday) +
   tm_polygons(c(&quot;deaths&quot;, &quot;recovered&quot;), 
               palette = &quot;viridis&quot;, style = &quot;log10_pretty&quot;) </code></pre>
-<p><img src="/post/2020/r-spatial-demo-covid-19_files/figure-html/unnamed-chunk-11-1.png" width="768" /></p>
-<pre class="r"><code>g = st_graticule(w_today)</code></pre>
+<p><img src="/post/2020/r-spatial-demo-covid-19_files/figure-html/unnamed-chunk-16-1.png" width="768" /></p>
+<pre class="r"><code>g = st_graticule(w_yesterday)</code></pre>
 <pre class="r"><code>tm_shape(g) +
   tm_lines(col = &quot;grey&quot;) +
-  tm_shape(w_today) +
+  tm_shape(w_yesterday) +
   tm_polygons(
     c(&quot;deaths&quot;, &quot;recovered&quot;),
     palette = &quot;viridis&quot;,
     style = &quot;log10_pretty&quot;
     ) +
   tm_layout(legend.position = c(0.01, 0.25))</code></pre>
-<p><img src="/post/2020/r-spatial-demo-covid-19_files/figure-html/unnamed-chunk-13-1.png" width="768" /></p>
+<p><img src="/post/2020/r-spatial-demo-covid-19_files/figure-html/unnamed-chunk-18-1.png" width="768" /></p>
 <pre class="r"><code>tm_shape(g) +
   tm_lines(col = &quot;grey&quot;) +
-  tm_shape(w_today) +
+  tm_shape(w_yesterday) +
   tm_polygons(
     c(&quot;deaths&quot;, &quot;recovered&quot;),
     palette = &quot;viridis&quot;,
     style = &quot;log10_pretty&quot;
     ) +
   tm_layout(legend.position = c(0.01, 0.25)) +
-  tm_shape(w_today) +
+  tm_shape(w_yesterday) +
   tm_dots(size = c(&quot;deaths&quot;, &quot;recovered&quot;), col = c(&quot;red&quot;, &quot;green&quot;))</code></pre>
-<p><img src="/post/2020/r-spatial-demo-covid-19_files/figure-html/unnamed-chunk-14-1.png" width="768" /></p>
+<p><img src="/post/2020/r-spatial-demo-covid-19_files/figure-html/unnamed-chunk-19-1.png" width="768" /></p>
 <pre class="r"><code>w$Date = as.character(w$date)
 tm_shape(g) +
   tm_lines(col = &quot;grey&quot;) +
-  tm_shape(w_today) +
+  tm_shape(w_yesterday) +
   tm_polygons(
     c(&quot;deaths&quot;, &quot;recovered&quot;),
     palette = &quot;viridis&quot;,
@@ -313,7 +347,7 @@ tm_shape(g) +
 <p>To create an animated map, following instructions in Chapter <a href="https://geocompr.robinlovelace.net/adv-map.html#animated-maps">8</a> of <em>Geocomputation with R</em>, we need to make some small changes to the code above:</p>
 <pre class="r"><code>m = tm_shape(g) +
   tm_lines(col = &quot;grey&quot;) +
-  tm_shape(w_today) +
+  tm_shape(w_yesterday) +
   tm_polygons(
     c(&quot;deaths&quot;, &quot;recovered&quot;),
     palette = &quot;viridis&quot;,
