@@ -267,7 +267,9 @@ This has multiple advantages, from education and citizen engagement with the evi
 &lt;ul&gt;
 &lt;li&gt;A &lt;a href=&#34;https://github.com/paezha/covid19-environmental-correlates#a-spatio-temporal-analysis-of-the-environmental-correlates-of-covid-19-incidence-in-spain&#34;&gt;reproducible geographic analysis&lt;/a&gt; of Covid-19 data in Spain by &lt;a href=&#34;https://www.science.mcmaster.ca/geo/component/comprofiler/userprofile/paezha.html&#34;&gt;Antonio Paez&lt;/a&gt; and others (challenge: reproduce their findings)&lt;/li&gt;
 &lt;li&gt;The eRum2020 &lt;a href=&#34;https://2020.erum.io/covidr-contest/&#34;&gt;CovidR competition&lt;/a&gt; (challenge: enter the contest!)&lt;/li&gt;
+&lt;li&gt;Try downloading the the city-level data with this command and exploring the geographic distribution of the outbreak at the city level:&lt;/li&gt;
 &lt;/ul&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;d_city = COVID19::covid19(level = 3)&lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;For further details on geographic data analysis in R in general, we recommend checkout out in-depth materials such as &lt;a href=&#34;https://www.amazon.co.uk/Geocomputation-Chapman-Hall-Robin-Lovelace/dp/1138304514&#34;&gt;&lt;em&gt;Geocomputation with R&lt;/em&gt;&lt;/a&gt; and the in-progress open source book &lt;a href=&#34;https://keen-swartz-3146c4.netlify.app/&#34;&gt;&lt;em&gt;Spatial Data Science&lt;/em&gt;&lt;/a&gt;.&lt;/p&gt;
 &lt;p&gt;There is also an &lt;a href=&#34;https://www.youtube.com/watch?v=Va0STgco7-4&#34;&gt;online talk&lt;/a&gt; on the subject on YouTube.&lt;/p&gt;
 &lt;details&gt;
