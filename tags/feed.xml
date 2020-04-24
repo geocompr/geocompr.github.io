@@ -6,10 +6,73 @@
     <description>Recent content in Tags on the Geocomputation with R website</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Thu, 23 Apr 2020 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Fri, 24 Apr 2020 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="https://geocompr.github.io/tags/feed.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>covid19</title>
+      <link>https://geocompr.github.io/tags/covid19/</link>
+      <pubDate>Fri, 24 Apr 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://geocompr.github.io/tags/covid19/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>docker</title>
+      <link>https://geocompr.github.io/tags/docker/</link>
+      <pubDate>Fri, 24 Apr 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://geocompr.github.io/tags/docker/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>geocompr</title>
+      <link>https://geocompr.github.io/tags/geocompr/</link>
+      <pubDate>Fri, 24 Apr 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://geocompr.github.io/tags/geocompr/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>proj</title>
+      <link>https://geocompr.github.io/tags/proj/</link>
+      <pubDate>Fri, 24 Apr 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://geocompr.github.io/tags/proj/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>raster</title>
+      <link>https://geocompr.github.io/tags/raster/</link>
+      <pubDate>Fri, 24 Apr 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://geocompr.github.io/tags/raster/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>sf</title>
+      <link>https://geocompr.github.io/tags/sf/</link>
+      <pubDate>Fri, 24 Apr 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://geocompr.github.io/tags/sf/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>tmap</title>
+      <link>https://geocompr.github.io/tags/tmap/</link>
+      <pubDate>Fri, 24 Apr 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://geocompr.github.io/tags/tmap/</guid>
+      <description></description>
+    </item>
     
     <item>
       <title>benchmarks</title>
@@ -21,29 +84,11 @@
     </item>
     
     <item>
-      <title>geocompr</title>
-      <link>https://geocompr.github.io/tags/geocompr/</link>
-      <pubDate>Thu, 23 Apr 2020 00:00:00 +0000</pubDate>
-      
-      <guid>https://geocompr.github.io/tags/geocompr/</guid>
-      <description></description>
-    </item>
-    
-    <item>
       <title>rspatial</title>
       <link>https://geocompr.github.io/tags/rspatial/</link>
       <pubDate>Thu, 23 Apr 2020 00:00:00 +0000</pubDate>
       
       <guid>https://geocompr.github.io/tags/rspatial/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>sf</title>
-      <link>https://geocompr.github.io/tags/sf/</link>
-      <pubDate>Thu, 23 Apr 2020 00:00:00 +0000</pubDate>
-      
-      <guid>https://geocompr.github.io/tags/sf/</guid>
       <description></description>
     </item>
     
@@ -84,15 +129,6 @@
     </item>
     
     <item>
-      <title>proj</title>
-      <link>https://geocompr.github.io/tags/proj/</link>
-      <pubDate>Mon, 30 Mar 2020 00:00:00 +0000</pubDate>
-      
-      <guid>https://geocompr.github.io/tags/proj/</guid>
-      <description></description>
-    </item>
-    
-    <item>
       <title>ggplot2</title>
       <link>https://geocompr.github.io/tags/ggplot2/</link>
       <pubDate>Sun, 08 Dec 2019 00:00:00 +0000</pubDate>
@@ -116,15 +152,6 @@
       <pubDate>Sun, 08 Dec 2019 00:00:00 +0000</pubDate>
       
       <guid>https://geocompr.github.io/tags/viz/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>tmap</title>
-      <link>https://geocompr.github.io/tags/tmap/</link>
-      <pubDate>Thu, 17 Oct 2019 00:00:00 +0000</pubDate>
-      
-      <guid>https://geocompr.github.io/tags/tmap/</guid>
       <description></description>
     </item>
     

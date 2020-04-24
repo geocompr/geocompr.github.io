@@ -7,12 +7,72 @@
   </url>
   
   <url>
-    <loc>https://geocompr.github.io/tags/benchmarks/</loc>
-    <lastmod>2020-04-23T00:00:00+00:00</lastmod>
+    <loc>https://geocompr.github.io/categories/announcement/</loc>
+    <lastmod>2020-04-24T00:00:00+00:00</lastmod>
   </url>
   
   <url>
     <loc>https://geocompr.github.io/categories/</loc>
+    <lastmod>2020-04-24T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://geocompr.github.io/tags/covid19/</loc>
+    <lastmod>2020-04-24T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://geocompr.github.io/tags/docker/</loc>
+    <lastmod>2020-04-24T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://geocompr.github.io/tags/geocompr/</loc>
+    <lastmod>2020-04-24T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://geocompr.github.io/post/</loc>
+    <lastmod>2020-04-24T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://geocompr.github.io/tags/proj/</loc>
+    <lastmod>2020-04-24T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://geocompr.github.io/tags/raster/</loc>
+    <lastmod>2020-04-24T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://geocompr.github.io/post/2020/whyr_webinar004/</loc>
+    <lastmod>2020-04-24T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://geocompr.github.io/tags/sf/</loc>
+    <lastmod>2020-04-24T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://geocompr.github.io/tags/</loc>
+    <lastmod>2020-04-24T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://geocompr.github.io/</loc>
+    <lastmod>2020-04-24T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://geocompr.github.io/tags/tmap/</loc>
+    <lastmod>2020-04-24T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://geocompr.github.io/tags/benchmarks/</loc>
     <lastmod>2020-04-23T00:00:00+00:00</lastmod>
   </url>
   
@@ -27,32 +87,7 @@
   </url>
   
   <url>
-    <loc>https://geocompr.github.io/tags/geocompr/</loc>
-    <lastmod>2020-04-23T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://geocompr.github.io/post/</loc>
-    <lastmod>2020-04-23T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
     <loc>https://geocompr.github.io/tags/rspatial/</loc>
-    <lastmod>2020-04-23T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://geocompr.github.io/tags/sf/</loc>
-    <lastmod>2020-04-23T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://geocompr.github.io/tags/</loc>
-    <lastmod>2020-04-23T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://geocompr.github.io/</loc>
     <lastmod>2020-04-23T00:00:00+00:00</lastmod>
   </url>
   
@@ -78,11 +113,6 @@
   
   <url>
     <loc>https://geocompr.github.io/tags/packages/</loc>
-    <lastmod>2020-03-30T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://geocompr.github.io/tags/proj/</loc>
     <lastmod>2020-03-30T00:00:00+00:00</lastmod>
   </url>
   
@@ -118,11 +148,6 @@
   
   <url>
     <loc>https://geocompr.github.io/post/2019/tmap-color-scales/</loc>
-    <lastmod>2019-10-17T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://geocompr.github.io/tags/tmap/</loc>
     <lastmod>2019-10-17T00:00:00+00:00</lastmod>
   </url>
   

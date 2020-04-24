@@ -5,8 +5,48 @@
     <description>Recent content on the Geocomputation with R website</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Thu, 23 Apr 2020 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Fri, 24 Apr 2020 00:00:00 +0000</lastBuildDate>
     <atom:link href="https://geocompr.github.io/feed.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>Recent changes in R spatial and how to be ready for them</title>
+      <link>https://geocompr.github.io/post/2020/whyr_webinar004/</link>
+      <pubDate>Fri, 24 Apr 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://geocompr.github.io/post/2020/whyr_webinar004/</guid>
+      <description>
+
+
+&lt;p&gt;Currently, hundreds of R packages are related to spatial data analysis.
+They range from ecology and earth observation, hydrology and soil science, to transportation and demography.
+These packages support various stages of analysis, including data preparation, visualization, modeling, or communicating the results.
+One common feature of most R spatial packages is that they are built upon some of the main representations of spatial data in R, available in key geographic R packages such as:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;sf&lt;/code&gt;, which replaces &lt;code&gt;sp&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;terra&lt;/code&gt;, which aims to replace raster&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;stars&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Those packages are also not entirely independent.
+They are using external libraries, namely GEOS for spatial data operations, GDAL for reading and writing spatial data, and PROJ for conversions of spatial coordinates.&lt;/p&gt;
+&lt;p&gt;Therefore, R spatial packages are interwoven with each other and depend partially on external software developments.
+This has several positives, including the ability to use cutting-edge features and algorithms.
+On the other hand, it also makes R spatial packages vulnerable to changes in the upstream packages and libraries.&lt;/p&gt;
+&lt;p&gt;In the first part of the talk, we showcase several recent advances in R packages.
+It includes the largest recent change related to the developments in the PROJ library.
+We explain why the changes happened and how they impact R users.
+The second part focus on how to prepare for the changes, including computer set-up and running R spatial packages using Docker (briefly covered in a previous &lt;a href=&#34;https://geocompr.github.io/post/2020/installing-r-spatial-ubuntu/&#34;&gt;post&lt;/a&gt; and outlined in the new &lt;a href=&#34;https://github.com/geocompr/docker#geocomputation-with-r-in-docker&#34;&gt;geocompr/docker&lt;/a&gt; repo).
+We outline important considerations when setting-up operating systems for geographic R packages.
+To reduce set-up times you can use geographic R packages Docker, a flexible and scalable technology containerization technology.
+Docker can run on modern computers and on your browser via services such as Binder, greatly reducing set-up times.
+Discussing these set-up options, and questions of compatibility between geographic R packages and paradigms such as the tidyverse and data.table, ensure that after the talk everyone can empower themselves with open source software for geographic data analysis in a powerful and flexible statistical programming environment.&lt;/p&gt;
+&lt;p&gt;You can find the slides for the talk at &lt;a href=&#34;https://nowosad.github.io/whyr_webinar004/&#34; class=&#34;uri&#34;&gt;https://nowosad.github.io/whyr_webinar004/&lt;/a&gt;.&lt;/p&gt;
+
+&lt;div style=&#34;position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden;&#34;&gt;
+  &lt;iframe src=&#34;https://www.youtube.com/embed/Va0STgco7-4&#34; style=&#34;position: absolute; top: 0; left: 0; width: 100%; height: 100%; border:0;&#34; allowfullscreen title=&#34;YouTube Video&#34;&gt;&lt;/iframe&gt;
+&lt;/div&gt;
+
+</description>
+    </item>
     
     <item>
       <title>Demo of reproducible geographic data analysis: mapping Covid-19 data with R</title>
