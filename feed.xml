@@ -108,20 +108,6 @@ We can get a sense of the contents of the data as follows:&lt;/p&gt;
 ## [13] &amp;quot;country&amp;quot;        &amp;quot;state&amp;quot;          &amp;quot;city&amp;quot;           &amp;quot;lat&amp;quot;           
 ## [17] &amp;quot;lng&amp;quot;            &amp;quot;pop&amp;quot;            &amp;quot;pop_14&amp;quot;         &amp;quot;pop_15_64&amp;quot;     
 ## [21] &amp;quot;pop_65&amp;quot;         &amp;quot;pop_age&amp;quot;        &amp;quot;pop_density&amp;quot;    &amp;quot;pop_death_rate&amp;quot;&lt;/code&gt;&lt;/pre&gt;
-&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;head(d)&lt;/code&gt;&lt;/pre&gt;
-&lt;pre&gt;&lt;code&gt;## [90m# A tibble: 6 x 24[39m
-##   id    date       deaths confirmed tests recovered  hosp   icu  vent driving
-##   [3m[90m&amp;lt;chr&amp;gt;[39m[23m [3m[90m&amp;lt;date&amp;gt;[39m[23m      [3m[90m&amp;lt;dbl&amp;gt;[39m[23m     [3m[90m&amp;lt;dbl&amp;gt;[39m[23m [3m[90m&amp;lt;dbl&amp;gt;[39m[23m     [3m[90m&amp;lt;dbl&amp;gt;[39m[23m [3m[90m&amp;lt;dbl&amp;gt;[39m[23m [3m[90m&amp;lt;dbl&amp;gt;[39m[23m [3m[90m&amp;lt;dbl&amp;gt;[39m[23m   [3m[90m&amp;lt;dbl&amp;gt;[39m[23m
-## [90m1[39m AFG   2020-01-22      0         0     0         0     0     0     0       0
-## [90m2[39m AFG   2020-01-23      0         0     0         0     0     0     0       0
-## [90m3[39m AFG   2020-01-24      0         0     0         0     0     0     0       0
-## [90m4[39m AFG   2020-01-25      0         0     0         0     0     0     0       0
-## [90m5[39m AFG   2020-01-26      0         0     0         0     0     0     0       0
-## [90m6[39m AFG   2020-01-27      0         0     0         0     0     0     0       0
-## [90m# … with 14 more variables: walking [3m[90m&amp;lt;dbl&amp;gt;[90m[23m, transit [3m[90m&amp;lt;dbl&amp;gt;[90m[23m, country [3m[90m&amp;lt;chr&amp;gt;[90m[23m,[39m
-## [90m#   state [3m[90m&amp;lt;lgl&amp;gt;[90m[23m, city [3m[90m&amp;lt;lgl&amp;gt;[90m[23m, lat [3m[90m&amp;lt;dbl&amp;gt;[90m[23m, lng [3m[90m&amp;lt;dbl&amp;gt;[90m[23m, pop [3m[90m&amp;lt;dbl&amp;gt;[90m[23m, pop_14 [3m[90m&amp;lt;dbl&amp;gt;[90m[23m,[39m
-## [90m#   pop_15_64 [3m[90m&amp;lt;dbl&amp;gt;[90m[23m, pop_65 [3m[90m&amp;lt;dbl&amp;gt;[90m[23m, pop_age [3m[90m&amp;lt;dbl&amp;gt;[90m[23m, pop_density [3m[90m&amp;lt;dbl&amp;gt;[90m[23m,[39m
-## [90m#   pop_death_rate [3m[90m&amp;lt;dbl&amp;gt;[90m[23m[39m&lt;/code&gt;&lt;/pre&gt;
 &lt;/div&gt;
 &lt;div id=&#34;getting-geographic-data&#34; class=&#34;section level1&#34;&gt;
 &lt;h1&gt;Getting geographic data&lt;/h1&gt;
@@ -325,7 +311,7 @@ This has multiple advantages, from education and citizen engagement with the evi
 ##  collate  C.UTF-8                     
 ##  ctype    C.UTF-8                     
 ##  tz       UTC                         
-##  date     2020-04-24                  
+##  date     2020-04-25                  
 ## 
 ## ─ Packages ───────────────────────────────────────────────────────────────────
 ##  package      * version  date       lib source                              
@@ -333,7 +319,7 @@ This has multiple advantages, from education and citizen engagement with the evi
 ##  assertthat     0.2.1    2019-03-21 [1] CRAN (R 3.6.3)                      
 ##  backports      1.1.6    2020-04-05 [1] CRAN (R 3.6.3)                      
 ##  base64enc      0.1-3    2015-07-28 [1] CRAN (R 3.6.3)                      
-##  blogdown       0.18.1   2020-04-24 [1] Github (rstudio/blogdown@dbd9ca1)   
+##  blogdown       0.18.1   2020-04-25 [1] Github (rstudio/blogdown@dbd9ca1)   
 ##  bookdown       0.18.1   2020-04-22 [1] Github (rstudio/bookdown@cd97d40)   
 ##  callr          3.4.3    2020-03-28 [1] CRAN (R 3.6.3)                      
 ##  class          7.3-15   2019-01-01 [2] CRAN (R 3.6.3)                      
@@ -402,7 +388,6 @@ This has multiple advantages, from education and citizen engagement with the evi
 ##  tmaptools      3.0-1    2020-04-22 [1] Github (mtennekes/tmaptools@adbf1da)
 ##  units          0.6-6    2020-03-16 [1] CRAN (R 3.6.3)                      
 ##  usethis        1.6.0    2020-04-09 [1] CRAN (R 3.6.3)                      
-##  utf8           1.1.4    2018-05-24 [1] CRAN (R 3.6.3)                      
 ##  vctrs          0.2.4    2020-03-10 [1] CRAN (R 3.6.3)                      
 ##  viridisLite    0.3.0    2018-02-01 [1] CRAN (R 3.6.3)                      
 ##  withr          2.2.0    2020-04-20 [1] CRAN (R 3.6.3)                      
