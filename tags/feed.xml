@@ -6,7 +6,7 @@
     <description>Recent content in Tags on the Geocomputation with R website</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Fri, 24 Apr 2020 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Sat, 25 Apr 2020 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="https://geocompr.github.io/tags/feed.xml" rel="self" type="application/rss+xml" />
     
@@ -14,7 +14,7 @@
     <item>
       <title>covid19</title>
       <link>https://geocompr.github.io/tags/covid19/</link>
-      <pubDate>Fri, 24 Apr 2020 00:00:00 +0000</pubDate>
+      <pubDate>Sat, 25 Apr 2020 00:00:00 +0000</pubDate>
       
       <guid>https://geocompr.github.io/tags/covid19/</guid>
       <description></description>
@@ -23,7 +23,7 @@
     <item>
       <title>docker</title>
       <link>https://geocompr.github.io/tags/docker/</link>
-      <pubDate>Fri, 24 Apr 2020 00:00:00 +0000</pubDate>
+      <pubDate>Sat, 25 Apr 2020 00:00:00 +0000</pubDate>
       
       <guid>https://geocompr.github.io/tags/docker/</guid>
       <description></description>
@@ -32,7 +32,7 @@
     <item>
       <title>geocompr</title>
       <link>https://geocompr.github.io/tags/geocompr/</link>
-      <pubDate>Fri, 24 Apr 2020 00:00:00 +0000</pubDate>
+      <pubDate>Sat, 25 Apr 2020 00:00:00 +0000</pubDate>
       
       <guid>https://geocompr.github.io/tags/geocompr/</guid>
       <description></description>
@@ -41,7 +41,7 @@
     <item>
       <title>proj</title>
       <link>https://geocompr.github.io/tags/proj/</link>
-      <pubDate>Fri, 24 Apr 2020 00:00:00 +0000</pubDate>
+      <pubDate>Sat, 25 Apr 2020 00:00:00 +0000</pubDate>
       
       <guid>https://geocompr.github.io/tags/proj/</guid>
       <description></description>
@@ -50,7 +50,7 @@
     <item>
       <title>raster</title>
       <link>https://geocompr.github.io/tags/raster/</link>
-      <pubDate>Fri, 24 Apr 2020 00:00:00 +0000</pubDate>
+      <pubDate>Sat, 25 Apr 2020 00:00:00 +0000</pubDate>
       
       <guid>https://geocompr.github.io/tags/raster/</guid>
       <description></description>
@@ -59,7 +59,7 @@
     <item>
       <title>sf</title>
       <link>https://geocompr.github.io/tags/sf/</link>
-      <pubDate>Fri, 24 Apr 2020 00:00:00 +0000</pubDate>
+      <pubDate>Sat, 25 Apr 2020 00:00:00 +0000</pubDate>
       
       <guid>https://geocompr.github.io/tags/sf/</guid>
       <description></description>
@@ -68,7 +68,7 @@
     <item>
       <title>tmap</title>
       <link>https://geocompr.github.io/tags/tmap/</link>
-      <pubDate>Fri, 24 Apr 2020 00:00:00 +0000</pubDate>
+      <pubDate>Sat, 25 Apr 2020 00:00:00 +0000</pubDate>
       
       <guid>https://geocompr.github.io/tags/tmap/</guid>
       <description></description>
