@@ -60,7 +60,7 @@
 
 
 <script>$(document).on('click', function() { $('.collapse').collapse('hide'); })</script>
- <meta name="generator" content="Hugo 0.72.0" />
+ <meta name="generator" content="Hugo 0.74.3" />
         
 
         
@@ -424,104 +424,86 @@ This has multiple advantages, from education and citizen engagement with the evi
 <p>There is also an <a href="https://www.youtube.com/watch?v=Va0STgco7-4">online talk</a> on the subject on YouTube.</p>
 <details>
 <p><summary>Session info</summary></p>
-<pre class="r"><code>devtools::session_info()</code></pre>
+<pre class="r"><code>sessioninfo::session_info()</code></pre>
 <pre><code>## ─ Session info ───────────────────────────────────────────────────────────────
 ##  setting  value                       
-##  version  R version 4.0.1 (2020-06-06)
-##  os       Ubuntu 18.04.4 LTS          
+##  version  R version 4.0.2 (2020-06-22)
+##  os       Ubuntu 18.04.5 LTS          
 ##  system   x86_64, linux-gnu           
 ##  ui       X11                         
 ##  language (EN)                        
 ##  collate  C.UTF-8                     
 ##  ctype    C.UTF-8                     
 ##  tz       UTC                         
-##  date     2020-06-18                  
+##  date     2020-09-14                  
 ## 
 ## ─ Packages ───────────────────────────────────────────────────────────────────
-##  package      * version  date       lib source                              
-##  abind          1.4-5    2016-07-21 [1] CRAN (R 4.0.1)                      
-##  assertthat     0.2.1    2019-03-21 [1] CRAN (R 4.0.1)                      
-##  backports      1.1.8    2020-06-17 [1] CRAN (R 4.0.1)                      
-##  base64enc      0.1-3    2015-07-28 [1] CRAN (R 4.0.1)                      
-##  blogdown       0.19.2   2020-06-18 [1] Github (rstudio/blogdown@f1e08d0)   
-##  bookdown       0.19.4   2020-06-18 [1] Github (rstudio/bookdown@7be511b)   
-##  callr          3.4.3    2020-03-28 [1] CRAN (R 4.0.1)                      
-##  class          7.3-17   2020-04-26 [2] CRAN (R 4.0.1)                      
-##  classInt       0.4-3    2020-04-07 [1] CRAN (R 4.0.1)                      
-##  cli            2.0.2    2020-02-28 [1] CRAN (R 4.0.1)                      
-##  codetools      0.2-16   2018-12-24 [2] CRAN (R 4.0.1)                      
-##  colorspace     1.4-1    2019-03-18 [1] CRAN (R 4.0.1)                      
-##  crayon         1.3.4    2017-09-16 [1] CRAN (R 4.0.1)                      
-##  crosstalk      1.1.0.1  2020-03-13 [1] CRAN (R 4.0.1)                      
-##  curl           4.3      2019-12-02 [1] CRAN (R 4.0.1)                      
-##  DBI            1.1.0    2019-12-15 [1] CRAN (R 4.0.1)                      
-##  desc           1.2.0    2018-05-01 [1] CRAN (R 4.0.1)                      
-##  devtools       2.3.0    2020-04-10 [1] CRAN (R 4.0.1)                      
-##  dichromat      2.0-0    2013-01-24 [1] CRAN (R 4.0.1)                      
-##  digest         0.6.25   2020-02-23 [1] CRAN (R 4.0.1)                      
-##  dplyr        * 1.0.0    2020-05-29 [1] CRAN (R 4.0.1)                      
-##  e1071          1.7-3    2019-11-26 [1] CRAN (R 4.0.1)                      
-##  ellipsis       0.3.1    2020-05-15 [1] CRAN (R 4.0.1)                      
-##  evaluate       0.14     2019-05-28 [1] CRAN (R 4.0.1)                      
-##  fansi          0.4.1    2020-01-08 [1] CRAN (R 4.0.1)                      
-##  fs             1.4.1    2020-04-04 [1] CRAN (R 4.0.1)                      
-##  generics       0.0.2    2018-11-29 [1] CRAN (R 4.0.1)                      
-##  glue           1.4.1    2020-05-13 [1] CRAN (R 4.0.1)                      
-##  hms            0.5.3    2020-01-08 [1] CRAN (R 4.0.1)                      
-##  htmltools      0.5.0    2020-06-16 [1] CRAN (R 4.0.1)                      
-##  htmlwidgets    1.5.1    2019-10-08 [1] CRAN (R 4.0.1)                      
-##  KernSmooth     2.23-17  2020-04-26 [2] CRAN (R 4.0.1)                      
-##  knitr          1.28     2020-02-06 [1] CRAN (R 4.0.1)                      
-##  lattice        0.20-41  2020-04-02 [2] CRAN (R 4.0.1)                      
-##  leafem         0.1.1    2020-04-05 [1] CRAN (R 4.0.1)                      
-##  leaflet        2.0.3    2019-11-16 [1] CRAN (R 4.0.1)                      
-##  leafsync       0.1.0    2019-03-05 [1] CRAN (R 4.0.1)                      
-##  lifecycle      0.2.0    2020-03-06 [1] CRAN (R 4.0.1)                      
-##  lwgeom         0.2-5    2020-06-12 [1] CRAN (R 4.0.1)                      
-##  magrittr       1.5      2014-11-22 [1] CRAN (R 4.0.1)                      
-##  memoise        1.1.0    2017-04-21 [1] CRAN (R 4.0.1)                      
-##  munsell        0.5.0    2018-06-12 [1] CRAN (R 4.0.1)                      
-##  pillar         1.4.4    2020-05-05 [1] CRAN (R 4.0.1)                      
-##  pkgbuild       1.0.8    2020-05-07 [1] CRAN (R 4.0.1)                      
-##  pkgconfig      2.0.3    2019-09-22 [1] CRAN (R 4.0.1)                      
-##  pkgload        1.1.0    2020-05-29 [1] CRAN (R 4.0.1)                      
-##  png            0.1-7    2013-12-03 [1] CRAN (R 4.0.1)                      
-##  prettyunits    1.1.1    2020-01-24 [1] CRAN (R 4.0.1)                      
-##  processx       3.4.2    2020-02-09 [1] CRAN (R 4.0.1)                      
-##  ps             1.3.3    2020-05-08 [1] CRAN (R 4.0.1)                      
-##  purrr          0.3.4    2020-04-17 [1] CRAN (R 4.0.1)                      
-##  R6             2.4.1    2019-11-12 [1] CRAN (R 4.0.1)                      
-##  raster         3.1-5    2020-04-19 [1] CRAN (R 4.0.1)                      
-##  RColorBrewer   1.1-2    2014-12-07 [1] CRAN (R 4.0.1)                      
-##  Rcpp           1.0.4.6  2020-04-09 [1] CRAN (R 4.0.1)                      
-##  readr          1.3.1    2018-12-21 [1] CRAN (R 4.0.1)                      
-##  remotes        2.1.1    2020-02-15 [1] CRAN (R 4.0.1)                      
-##  rlang          0.4.6    2020-05-02 [1] CRAN (R 4.0.1)                      
-##  rmarkdown      2.3      2020-06-18 [1] Github (rstudio/rmarkdown@66d27e0)  
-##  rprojroot      1.3-2    2018-01-03 [1] CRAN (R 4.0.1)                      
-##  scales         1.1.1    2020-05-11 [1] CRAN (R 4.0.1)                      
-##  sessioninfo    1.1.1    2018-11-05 [1] CRAN (R 4.0.1)                      
-##  sf           * 0.9-4    2020-06-13 [1] CRAN (R 4.0.1)                      
-##  sp             1.4-2    2020-05-20 [1] CRAN (R 4.0.1)                      
-##  stars          0.4-1    2020-04-07 [1] CRAN (R 4.0.1)                      
-##  stringi        1.4.6    2020-02-17 [1] CRAN (R 4.0.1)                      
-##  stringr        1.4.0    2019-02-10 [1] CRAN (R 4.0.1)                      
-##  testthat       2.3.2    2020-03-02 [1] CRAN (R 4.0.1)                      
-##  tibble         3.0.1    2020-04-20 [1] CRAN (R 4.0.1)                      
-##  tidyselect     1.1.0    2020-05-11 [1] CRAN (R 4.0.1)                      
-##  tmap         * 3.1      2020-06-18 [1] Github (mtennekes/tmap@c9bf5c3)     
-##  tmaptools      3.0-1    2020-06-18 [1] Github (mtennekes/tmaptools@557fb61)
-##  units          0.6-7    2020-06-13 [1] CRAN (R 4.0.1)                      
-##  usethis        1.6.1    2020-04-29 [1] CRAN (R 4.0.1)                      
-##  vctrs          0.3.1    2020-06-05 [1] CRAN (R 4.0.1)                      
-##  viridisLite    0.3.0    2018-02-01 [1] CRAN (R 4.0.1)                      
-##  withr          2.2.0    2020-04-20 [1] CRAN (R 4.0.1)                      
-##  xfun           0.14     2020-05-20 [1] CRAN (R 4.0.1)                      
-##  XML            3.99-0.3 2020-01-20 [1] CRAN (R 4.0.1)                      
-##  yaml           2.2.1    2020-02-01 [1] CRAN (R 4.0.1)                      
+##  package      * version  date       lib source                           
+##  abind          1.4-5    2016-07-21 [1] CRAN (R 4.0.2)                   
+##  assertthat     0.2.1    2019-03-21 [1] CRAN (R 4.0.2)                   
+##  base64enc      0.1-3    2015-07-28 [1] CRAN (R 4.0.2)                   
+##  blogdown       0.20.1   2020-09-14 [1] Github (rstudio/blogdown@d96fe78)
+##  bookdown       0.20     2020-06-23 [1] CRAN (R 4.0.2)                   
+##  class          7.3-17   2020-04-26 [2] CRAN (R 4.0.2)                   
+##  classInt       0.4-3    2020-04-07 [1] CRAN (R 4.0.2)                   
+##  cli            2.0.2    2020-02-28 [1] CRAN (R 4.0.2)                   
+##  codetools      0.2-16   2018-12-24 [2] CRAN (R 4.0.2)                   
+##  crayon         1.3.4    2017-09-16 [1] CRAN (R 4.0.2)                   
+##  crosstalk      1.1.0.1  2020-03-13 [1] CRAN (R 4.0.2)                   
+##  curl           4.3      2019-12-02 [1] CRAN (R 4.0.2)                   
+##  DBI            1.1.0    2019-12-15 [1] CRAN (R 4.0.2)                   
+##  dichromat      2.0-0    2013-01-24 [1] CRAN (R 4.0.2)                   
+##  digest         0.6.25   2020-02-23 [1] CRAN (R 4.0.2)                   
+##  dplyr        * 1.0.2    2020-08-18 [1] CRAN (R 4.0.2)                   
+##  e1071          1.7-3    2019-11-26 [1] CRAN (R 4.0.2)                   
+##  ellipsis       0.3.1    2020-05-15 [1] CRAN (R 4.0.2)                   
+##  evaluate       0.14     2019-05-28 [1] CRAN (R 4.0.2)                   
+##  fansi          0.4.1    2020-01-08 [1] CRAN (R 4.0.2)                   
+##  generics       0.0.2    2018-11-29 [1] CRAN (R 4.0.2)                   
+##  glue           1.4.2    2020-08-27 [1] CRAN (R 4.0.2)                   
+##  hms            0.5.3    2020-01-08 [1] CRAN (R 4.0.2)                   
+##  htmltools      0.5.0    2020-06-16 [1] CRAN (R 4.0.2)                   
+##  htmlwidgets    1.5.1    2019-10-08 [1] CRAN (R 4.0.2)                   
+##  KernSmooth     2.23-17  2020-04-26 [2] CRAN (R 4.0.2)                   
+##  knitr          1.29     2020-06-23 [1] CRAN (R 4.0.2)                   
+##  lattice        0.20-41  2020-04-02 [2] CRAN (R 4.0.2)                   
+##  leafem         0.1.3    2020-07-26 [1] CRAN (R 4.0.2)                   
+##  leaflet        2.0.3    2019-11-16 [1] CRAN (R 4.0.2)                   
+##  leafsync       0.1.0    2019-03-05 [1] CRAN (R 4.0.2)                   
+##  lifecycle      0.2.0    2020-03-06 [1] CRAN (R 4.0.2)                   
+##  lwgeom         0.2-5    2020-06-12 [1] CRAN (R 4.0.2)                   
+##  magrittr       1.5      2014-11-22 [1] CRAN (R 4.0.2)                   
+##  pillar         1.4.6    2020-07-10 [1] CRAN (R 4.0.2)                   
+##  pkgconfig      2.0.3    2019-09-22 [1] CRAN (R 4.0.2)                   
+##  png            0.1-7    2013-12-03 [1] CRAN (R 4.0.2)                   
+##  purrr          0.3.4    2020-04-17 [1] CRAN (R 4.0.2)                   
+##  R6             2.4.1    2019-11-12 [1] CRAN (R 4.0.2)                   
+##  raster         3.3-13   2020-07-17 [1] CRAN (R 4.0.2)                   
+##  RColorBrewer   1.1-2    2014-12-07 [1] CRAN (R 4.0.2)                   
+##  Rcpp           1.0.5    2020-07-06 [1] CRAN (R 4.0.2)                   
+##  readr          1.3.1    2018-12-21 [1] CRAN (R 4.0.2)                   
+##  rlang          0.4.7    2020-07-09 [1] CRAN (R 4.0.2)                   
+##  rmarkdown      2.3      2020-06-18 [1] CRAN (R 4.0.2)                   
+##  sessioninfo    1.1.1    2018-11-05 [1] CRAN (R 4.0.2)                   
+##  sf           * 0.9-6    2020-09-13 [1] CRAN (R 4.0.2)                   
+##  sp             1.4-2    2020-05-20 [1] CRAN (R 4.0.2)                   
+##  stars          0.4-3    2020-07-08 [1] CRAN (R 4.0.2)                   
+##  stringi        1.5.3    2020-09-09 [1] CRAN (R 4.0.2)                   
+##  stringr        1.4.0    2019-02-10 [1] CRAN (R 4.0.2)                   
+##  tibble         3.0.3    2020-07-10 [1] CRAN (R 4.0.2)                   
+##  tidyselect     1.1.0    2020-05-11 [1] CRAN (R 4.0.2)                   
+##  tmap         * 3.1      2020-07-09 [1] CRAN (R 4.0.2)                   
+##  tmaptools      3.1      2020-07-01 [1] CRAN (R 4.0.2)                   
+##  units          0.6-7    2020-06-13 [1] CRAN (R 4.0.2)                   
+##  vctrs          0.3.4    2020-08-29 [1] CRAN (R 4.0.2)                   
+##  viridisLite    0.3.0    2018-02-01 [1] CRAN (R 4.0.2)                   
+##  withr          2.2.0    2020-04-20 [1] CRAN (R 4.0.2)                   
+##  xfun           0.17     2020-09-09 [1] CRAN (R 4.0.2)                   
+##  XML            3.99-0.5 2020-07-23 [1] CRAN (R 4.0.2)                   
+##  yaml           2.2.1    2020-02-01 [1] CRAN (R 4.0.2)                   
 ## 
 ## [1] /home/runner/work/_temp/Library
-## [2] /opt/R/4.0.1/lib/R/library</code></pre>
+## [2] /opt/R/4.0.2/lib/R/library</code></pre>
 </details>
 </div>
 </div>
