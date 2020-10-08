@@ -5,47 +5,6 @@
     <link>https://geocompr.github.io/categories/</link>
     <description>Recent content in Categories on the Geocomputation with R website</description>
     <generator>Hugo -- gohugo.io</generator>
-    <language>en-us</language>
-    <lastBuildDate>Sat, 25 Apr 2020 00:00:00 +0000</lastBuildDate>
-    
-	<atom:link href="https://geocompr.github.io/categories/feed.xml" rel="self" type="application/rss+xml" />
-    
-    
-    <item>
-      <title>announcement</title>
-      <link>https://geocompr.github.io/categories/announcement/</link>
-      <pubDate>Sat, 25 Apr 2020 00:00:00 +0000</pubDate>
-      
-      <guid>https://geocompr.github.io/categories/announcement/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>demo</title>
-      <link>https://geocompr.github.io/categories/demo/</link>
-      <pubDate>Thu, 23 Apr 2020 00:00:00 +0000</pubDate>
-      
-      <guid>https://geocompr.github.io/categories/demo/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>setup</title>
-      <link>https://geocompr.github.io/categories/setup/</link>
-      <pubDate>Mon, 30 Mar 2020 00:00:00 +0000</pubDate>
-      
-      <guid>https://geocompr.github.io/categories/setup/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>vignette</title>
-      <link>https://geocompr.github.io/categories/vignette/</link>
-      <pubDate>Sun, 08 Dec 2019 00:00:00 +0000</pubDate>
-      
-      <guid>https://geocompr.github.io/categories/vignette/</guid>
-      <description></description>
-    </item>
-    
+    <language>en-us</language><atom:link href="https://geocompr.github.io/categories/feed.xml" rel="self" type="application/rss+xml" />
   </channel>
 </rss>
