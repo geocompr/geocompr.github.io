@@ -5,7 +5,247 @@
     <description>Recent content on the Geocomputation with R website</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
+    <lastBuildDate>Wed, 21 Aug 2019 00:00:00 +0000</lastBuildDate>
     <atom:link href="https://geocompr.github.io/feed.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>Geographic projections and transformations</title>
+      <link>https://geocompr.github.io/post/2019/crs-projections-transformations/</link>
+      <pubDate>Wed, 21 Aug 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://geocompr.github.io/post/2019/crs-projections-transformations/</guid>
+      <description>
+&lt;script src=&#34;https://geocompr.github.io/rmarkdown-libs/header-attrs/header-attrs.js&#34;&gt;&lt;/script&gt;
+&lt;link href=&#34;https://geocompr.github.io/rmarkdown-libs/anchor-sections/anchor-sections.css&#34; rel=&#34;stylesheet&#34; /&gt;
+&lt;script src=&#34;https://geocompr.github.io/rmarkdown-libs/anchor-sections/anchor-sections.js&#34;&gt;&lt;/script&gt;
+
+
+&lt;div id=&#34;introduction&#34; class=&#34;section level1&#34;&gt;
+&lt;h1&gt;Introduction&lt;/h1&gt;
+&lt;p&gt;This workbook outlines key concepts and functions related to map projections — also referred to as coordinate reference systems (CRSs) — and transformation of geographic data from one projection to another.
+It is based on the open source book &lt;a href=&#34;https://geocompr.robinlovelace.net&#34;&gt;&lt;em&gt;Geocomputation with R&lt;/em&gt;&lt;/a&gt;, and Chapter &lt;a href=&#34;https://geocompr.robinlovelace.net/reproj-geo-data.html&#34;&gt;6&lt;/a&gt; in particular.&lt;/p&gt;
+&lt;p&gt;It was developed for the ‘&lt;a href=&#34;https://bonnie-buyuklieva.github.io/SS_ASM19/&#34;&gt;CASA Summer School&lt;/a&gt;’, or the Doctoral Summer School for Advanced Spatial Modelling: Skills Workshop and Hackathon, 21&lt;sup&gt;st&lt;/sup&gt; to 23&lt;sup&gt;rd&lt;/sup&gt; August 2019, for its full name!
+It should be of use to anyone interested in projections, beyond the summer school, so we posted it on our newly updated &lt;a href=&#34;https://geocompr.github.io/&#34;&gt;website&lt;/a&gt; for maximum benefit.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;prerequisites&#34; class=&#34;section level1 unnumbered&#34;&gt;
+&lt;h1&gt;Prerequisites&lt;/h1&gt;
+&lt;p&gt;Before you get started, make sure you have the packages installed:&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;library(sf)
+library(dplyr)
+library(spData)&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;div id=&#34;introduction-1&#34; class=&#34;section level1&#34;&gt;
+&lt;h1&gt;Introduction&lt;/h1&gt;
+&lt;p&gt;Before we get started, why use R for geographic data?&lt;/p&gt;
+&lt;p&gt;Simple answer: because it works, excels at spatial statistics and visualisation and has a huge user community.&lt;/p&gt;
+&lt;p&gt;It can be used for a wide range of things such as:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Book on Geocomputation: &lt;a href=&#34;https://geocompr.robinlovelace.net/&#34; class=&#34;uri&#34;&gt;https://geocompr.robinlovelace.net/&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Propensity to Cycle Tool: &lt;a href=&#34;https://pct.bike/&#34; class=&#34;uri&#34;&gt;https://pct.bike/&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Geographic data relies on a frame of reference.
+There are two main types of CRS:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Geographic&lt;/strong&gt;, where the frame of reference is the globe and how many degrees north or east from the position (0, 0) you are&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Projected&lt;/strong&gt;, where the frame of reference is a flat representation of part of the Earth’s surface&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class=&#34;figure&#34;&gt;&lt;span id=&#34;fig:vectorplots&#34;&gt;&lt;/span&gt;
+&lt;img src=&#34;https://geocompr.robinlovelace.net/figures/vector_lonlat.png&#34; alt=&#34;Illustration of vector (point) data in which location of London (the red X) is represented with reference to an origin (the blue circle). The left plot represents a geographic CRS with an origin at 0° longitude and latitude. The right plot represents a projected CRS with an origin located in the sea west of the South West Peninsula.&#34; width=&#34;49%&#34; /&gt;&lt;img src=&#34;https://geocompr.robinlovelace.net/figures/vector_projected.png&#34; alt=&#34;Illustration of vector (point) data in which location of London (the red X) is represented with reference to an origin (the blue circle). The left plot represents a geographic CRS with an origin at 0° longitude and latitude. The right plot represents a projected CRS with an origin located in the sea west of the South West Peninsula.&#34; width=&#34;49%&#34; /&gt;
+&lt;p class=&#34;caption&#34;&gt;
+Figure 1: Illustration of vector (point) data in which location of London (the red X) is represented with reference to an origin (the blue circle). The left plot represents a geographic CRS with an origin at 0° longitude and latitude. The right plot represents a projected CRS with an origin located in the sea west of the South West Peninsula.
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id=&#34;tldr&#34; class=&#34;section level1&#34;&gt;
+&lt;h1&gt;TLDR&lt;/h1&gt;
+&lt;p&gt;The ‘too long didn’t read’ (TLDR) take away messages from this text are:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Be aware of projections&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Decide an appropriate CRS for your project and ensure everything is in that CRS&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Use a projected CRS when doing geometric operations&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;EPSG codes such as 27700 and 4326 refer to specific coordinate systems&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;It is worth checking if there is an officially supported projection for the region — that is often a good option&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;In R, you can check, set and transform CRS with &lt;code&gt;st_crs()&lt;/code&gt; and &lt;code&gt;st_transform()&lt;/code&gt; as follows:&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;zones_london = lnd
+st_crs(zones_london)                                         # find out the CRS
+#&amp;gt; Coordinate Reference System:
+#&amp;gt;   User input: EPSG:4326 
+#&amp;gt;   wkt:
+#&amp;gt; GEOGCS[&amp;quot;WGS 84&amp;quot;,
+#&amp;gt;     DATUM[&amp;quot;WGS_1984&amp;quot;,
+#&amp;gt;         SPHEROID[&amp;quot;WGS 84&amp;quot;,6378137,298.257223563,
+#&amp;gt;             AUTHORITY[&amp;quot;EPSG&amp;quot;,&amp;quot;7030&amp;quot;]],
+#&amp;gt;         AUTHORITY[&amp;quot;EPSG&amp;quot;,&amp;quot;6326&amp;quot;]],
+#&amp;gt;     PRIMEM[&amp;quot;Greenwich&amp;quot;,0,
+#&amp;gt;         AUTHORITY[&amp;quot;EPSG&amp;quot;,&amp;quot;8901&amp;quot;]],
+#&amp;gt;     UNIT[&amp;quot;degree&amp;quot;,0.0174532925199433,
+#&amp;gt;         AUTHORITY[&amp;quot;EPSG&amp;quot;,&amp;quot;9122&amp;quot;]],
+#&amp;gt;     AUTHORITY[&amp;quot;EPSG&amp;quot;,&amp;quot;4326&amp;quot;]]
+zones_london_projected = st_transform(zones_london, 27700)   # transform CRS
+st_crs(zones_london) = NA                                    # set CRS
+st_crs(zones_london) = 4326                                  # set CRS&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;If you ignore CRSs, bad things can happen.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;why-are-projections-needed&#34; class=&#34;section level1&#34;&gt;
+&lt;h1&gt;Why are projections needed?&lt;/h1&gt;
+&lt;p&gt;Without a coordinate system, we have no context:&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://geocompr.github.io/post/2019/crs-projections-transformations_files/figure-html/unnamed-chunk-2-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;Which country is it?&lt;/p&gt;
+&lt;p&gt;Location on Earth is measured in degrees so, even when axes are equal, maps are highly distorted representations of reality far from the equator:&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://geocompr.github.io/post/2019/crs-projections-transformations_files/figure-html/unnamed-chunk-3-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;Along which axis is the image over-represented?&lt;/p&gt;
+&lt;p&gt;Even when we compensate for this, the cylindrical projection is misleading:&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://geocompr.github.io/post/2019/crs-projections-transformations_files/figure-html/unnamed-chunk-4-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;By default, most software (including R) plots data with geographic lon/lat coordinates a cylindrical projection, leading to maps like this:&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;plot(canada$geom)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;https://geocompr.github.io/post/2019/crs-projections-transformations_files/figure-html/unnamed-chunk-5-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;plot(world)
+#&amp;gt; Warning: plotting the first 9 out of 10 attributes; use max.plot = 10 to plot
+#&amp;gt; all&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;https://geocompr.github.io/post/2019/crs-projections-transformations_files/figure-html/unnamed-chunk-5-2.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;Across the whole world, the results look like this:&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;plot(st_geometry(world), col = &amp;quot;grey&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;https://geocompr.github.io/post/2019/crs-projections-transformations_files/figure-html/unnamed-chunk-6-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;There is no single ‘correct’ CRS that can represent everywhere well: it is physically impossible to ‘peal’ the surface of the Earth onto a flat screen (credit: &lt;a href=&#34;https://unsplash.com/@awarnerway&#34;&gt;Awar Jahfar&lt;/a&gt;):&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://images.unsplash.com/photo-1564509398619-622e40ad5a5e?ixlib=rb-1.2.1&amp;amp;auto=format&amp;amp;fit=crop&amp;amp;w=633&amp;amp;q=80&#34; /&gt;&lt;!-- --&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;At best we can comply with two out of three spatial properties (distance, area, direction).
+Therefore, the task at hand determines which projection to choose.
+For instance, if we are interested in a density (points per grid cell or inhabitants per grid cell), we should use an equal-area projection.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;ul&gt;
+&lt;li&gt;There is also a fourth property, shape.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;div id=&#34;which-projection-to-use&#34; class=&#34;section level1&#34;&gt;
+&lt;h1&gt;Which projection to use?&lt;/h1&gt;
+&lt;p&gt;A range of CRSs is available:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;A Lambert azimuthal equal-area (&lt;a href=&#34;https://en.wikipedia.org/wiki/Lambert_azimuthal_equal-area_projection&#34;&gt;LAEA&lt;/a&gt;) projection for a custom local projection (set &lt;code&gt;lon_0&lt;/code&gt; and &lt;code&gt;lat_0&lt;/code&gt; to the center of the study area), which is an equal-area projection at all locations but distorts shapes beyond thousands of kilometers.&lt;/li&gt;
+&lt;li&gt;Azimuthal equidistant (&lt;a href=&#34;https://en.wikipedia.org/wiki/Azimuthal_equidistant_projection&#34;&gt;AEQD&lt;/a&gt;) projections for a specifically accurate straight-line distance between a point and the center point of the local projection.&lt;/li&gt;
+&lt;li&gt;Lambert conformal conic (&lt;a href=&#34;https://en.wikipedia.org/wiki/Lambert_conformal_conic_projection&#34;&gt;LCC&lt;/a&gt;) projections for regions covering thousands of kilometers, with the cone set to keep distance and area properties reasonable between the secant lines.&lt;/li&gt;
+&lt;li&gt;Stereographic (&lt;a href=&#34;https://en.wikipedia.org/wiki/Stereographic_projection&#34;&gt;STERE&lt;/a&gt;) projections for polar regions, but taking care not to rely on area and distance calculations thousands of kilometers from the center.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;This is how it works in R:&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;world_laea1_g = world %&amp;gt;%
+  st_transform(&amp;quot;+proj=laea +x_0=0 +y_0=0 +lon_0=0 +lat_0=0&amp;quot;) %&amp;gt;% 
+  st_geometry()
+plot(world_laea1_g)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;https://geocompr.github.io/post/2019/crs-projections-transformations_files/figure-html/unnamed-chunk-8-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;world %&amp;gt;%
+  st_transform(&amp;quot;+proj=aeqd +x_0=0 +y_0=0 +lon_0=0 +lat_0=0&amp;quot;) %&amp;gt;% 
+  st_geometry() %&amp;gt;% 
+  plot()&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;https://geocompr.github.io/post/2019/crs-projections-transformations_files/figure-html/unnamed-chunk-9-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;world %&amp;gt;%
+  st_transform(&amp;quot;+proj=moll&amp;quot;) %&amp;gt;% 
+  st_geometry() %&amp;gt;% 
+  plot()&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;https://geocompr.github.io/post/2019/crs-projections-transformations_files/figure-html/unnamed-chunk-10-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;How to add graticules?&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;world %&amp;gt;%
+  st_transform(&amp;quot;+proj=moll&amp;quot;) %&amp;gt;% 
+  st_geometry() %&amp;gt;% 
+  plot()
+g = st_graticule(x = world) %&amp;gt;% 
+  st_transform(&amp;quot;+proj=moll&amp;quot;) %&amp;gt;% 
+  st_geometry()
+plot(g, add = TRUE)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;https://geocompr.github.io/post/2019/crs-projections-transformations_files/figure-html/unnamed-chunk-11-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;canada_centroid = st_coordinates(st_centroid(canada))
+#&amp;gt; Warning in st_centroid.sf(canada): st_centroid assumes attributes are constant
+#&amp;gt; over geometries of x
+#&amp;gt; Warning in st_centroid.sfc(st_geometry(x), of_largest_polygon =
+#&amp;gt; of_largest_polygon): st_centroid does not give correct centroids for longitude/
+#&amp;gt; latitude data
+canada_laea_crs = paste0(&amp;quot;+proj=laea +x_0=0 +y_0=0 +lon_0=&amp;quot;,
+                         canada_centroid[1],
+                         &amp;quot; +lat_0=&amp;quot;,
+                         canada_centroid[2])
+canada_laea = st_transform(canada, crs = canada_laea_crs)
+world_laea = st_transform(world, crs = canada_laea_crs)
+plot(st_geometry(canada_laea))
+plot(world_laea, add = TRUE)
+#&amp;gt; Warning in plot.sf(world_laea, add = TRUE): ignoring all but the first attribute&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;https://geocompr.github.io/post/2019/crs-projections-transformations_files/figure-html/unnamed-chunk-12-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;canada_centroid = st_coordinates(st_centroid(canada))
+#&amp;gt; Warning in st_centroid.sf(canada): st_centroid assumes attributes are constant
+#&amp;gt; over geometries of x
+#&amp;gt; Warning in st_centroid.sfc(st_geometry(x), of_largest_polygon =
+#&amp;gt; of_largest_polygon): st_centroid does not give correct centroids for longitude/
+#&amp;gt; latitude data
+canada_laea_crs = paste0(&amp;quot;+proj=laea +x_0=0 +y_0=0 +lon_0=&amp;quot;,
+                         canada_centroid[1],
+                         &amp;quot; +lat_0=&amp;quot;,
+                         canada_centroid[2])
+canada_laea = st_transform(canada, crs = canada_laea_crs)
+world_laea = st_transform(world, crs = canada_laea_crs)
+plot(st_geometry(canada_laea))
+plot(world_laea, add = TRUE)
+#&amp;gt; Warning in plot.sf(world_laea, add = TRUE): ignoring all but the first attribute&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;https://geocompr.github.io/post/2019/crs-projections-transformations_files/figure-html/unnamed-chunk-13-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;epsg-codes&#34; class=&#34;section level1&#34;&gt;
+&lt;h1&gt;EPSG codes&lt;/h1&gt;
+&lt;p&gt;EPSG codes are standard codes for projections.
+See them in R with:&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;epsg_codes = rgdal::make_EPSG()
+# View(epsg_codes) # open in interactive spreadsheet&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;In the UK, the EPSG code of official data is &lt;a href=&#34;https://epsg.io/27700&#34;&gt;27700&lt;/a&gt;.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;geographic-data-in-r&#34; class=&#34;section level1&#34;&gt;
+&lt;h1&gt;Geographic data in R&lt;/h1&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;london_df = data.frame(name = &amp;quot;london&amp;quot;, population = 1e7,
+                       lon = -0.1, lat = 51.5)
+class(london_df)
+#&amp;gt; [1] &amp;quot;data.frame&amp;quot;
+london = st_as_sf(london_df, coords = c(&amp;quot;lon&amp;quot;, &amp;quot;lat&amp;quot;))
+class(london)
+#&amp;gt; [1] &amp;quot;sf&amp;quot;         &amp;quot;data.frame&amp;quot;
+st_is_longlat(london)
+#&amp;gt; [1] NA
+plot(zones_london_projected$geometry)
+plot(london$geometry, add = TRUE, pch = 9) # not there&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;https://geocompr.github.io/post/2019/crs-projections-transformations_files/figure-html/unnamed-chunk-15-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;issues-with-geometric-operations&#34; class=&#34;section level1&#34;&gt;
+&lt;h1&gt;Issues with geometric operations&lt;/h1&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;london_buff1 = st_buffer(london, 0.1)
+plot(london_buff1)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;https://geocompr.github.io/post/2019/crs-projections-transformations_files/figure-html/unnamed-chunk-16-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;plot(zones_london$geometry)
+plot(london_buff1, add = T)
+#&amp;gt; Warning in plot.sf(london_buff1, add = T): ignoring all but the first attribute&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;https://geocompr.github.io/post/2019/crs-projections-transformations_files/figure-html/unnamed-chunk-16-2.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;st_crs(london) = 4326
+london_projected = st_transform(london, 27700)
+london_buff2 = st_buffer(london_projected, 10000)
+st_is_longlat(london_projected)
+#&amp;gt; [1] FALSE
+plot(zones_london_projected$geometry)
+plot(london_buff2, add = TRUE)
+#&amp;gt; Warning in plot.sf(london_buff2, add = TRUE): ignoring all but the first
+#&amp;gt; attribute&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;https://geocompr.github.io/post/2019/crs-projections-transformations_files/figure-html/unnamed-chunk-17-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;further-reading&#34; class=&#34;section level1&#34;&gt;
+&lt;h1&gt;Further reading&lt;/h1&gt;
+&lt;p&gt;If you’re interested in learning more on this, check out &lt;em&gt;Geocomputations with R&lt;/em&gt;.&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://geocompr.robinlovelace.net/&#34;&gt;&lt;img src=&#34;https://geocompr.robinlovelace.net/images/cover.png&#34; /&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;More specific resources on projections include:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Excellent tutorial on coordinate systems on the Manifold website: &lt;a href=&#34;http://www.manifold.net/doc/mfd9/projections_tutorial.htm&#34; class=&#34;uri&#34;&gt;http://www.manifold.net/doc/mfd9/projections_tutorial.htm&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;An introduction to vector geographic data in &lt;em&gt;Geocomputation with R&lt;/em&gt; (Section &lt;a href=&#34;https://geocompr.robinlovelace.net/spatial-class.html#vector-data&#34;&gt;2.2&lt;/a&gt;)&lt;/li&gt;
+&lt;li&gt;An introduction to CRSs in R (Section &lt;a href=&#34;https://geocompr.robinlovelace.net/spatial-class.html#crs-intro&#34;&gt;2.4&lt;/a&gt;)&lt;/li&gt;
+&lt;li&gt;The contents and exercises of Chapter &lt;a href=&#34;https://geocompr.robinlovelace.net/reproj-geo-data.html&#34;&gt;6&lt;/a&gt;, solutions to which you can find at &lt;a href=&#34;https://geocompr.github.io/geocompkg/articles/index.html&#34; class=&#34;uri&#34;&gt;https://geocompr.github.io/geocompkg/articles/index.html&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;For a fun take on projections, see &lt;a href=&#34;https://xkcd.com/977/&#34; class=&#34;uri&#34;&gt;https://xkcd.com/977/&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Chapter in upcoming book on CRSs by Edzer Pebesma and Roger Bivand: &lt;a href=&#34;https://github.com/edzer/sdsr&#34; class=&#34;uri&#34;&gt;https://github.com/edzer/sdsr&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Check out the questions in the exercises section of Chapter 6 of Geocomputation with R.&lt;/p&gt;
+&lt;/div&gt;
+</description>
+    </item>
     
   </channel>
 </rss>

@@ -5,7 +5,44 @@
     <link>https://geocompr.github.io/tags/</link>
     <description>Recent content in Tags on the Geocomputation with R website</description>
     <generator>Hugo -- gohugo.io</generator>
-    <language>en-us</language><atom:link href="https://geocompr.github.io/tags/feed.xml" rel="self" type="application/rss+xml" />
+    <language>en-us</language>
+    <lastBuildDate>Wed, 21 Aug 2019 00:00:00 +0000</lastBuildDate><atom:link href="https://geocompr.github.io/tags/feed.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>crs</title>
+      <link>https://geocompr.github.io/tags/crs/</link>
+      <pubDate>Wed, 21 Aug 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://geocompr.github.io/tags/crs/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>geocompr</title>
+      <link>https://geocompr.github.io/tags/geocompr/</link>
+      <pubDate>Wed, 21 Aug 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://geocompr.github.io/tags/geocompr/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>rspatial</title>
+      <link>https://geocompr.github.io/tags/rspatial/</link>
+      <pubDate>Wed, 21 Aug 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://geocompr.github.io/tags/rspatial/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>sf</title>
+      <link>https://geocompr.github.io/tags/sf/</link>
+      <pubDate>Wed, 21 Aug 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://geocompr.github.io/tags/sf/</guid>
+      <description></description>
+    </item>
+    
     <item>
       <title>go</title>
       <link>https://geocompr.github.io/tags/go/</link>

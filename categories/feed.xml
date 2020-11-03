@@ -5,6 +5,16 @@
     <link>https://geocompr.github.io/categories/</link>
     <description>Recent content in Categories on the Geocomputation with R website</description>
     <generator>Hugo -- gohugo.io</generator>
-    <language>en-us</language><atom:link href="https://geocompr.github.io/categories/feed.xml" rel="self" type="application/rss+xml" />
+    <language>en-us</language>
+    <lastBuildDate>Wed, 21 Aug 2019 00:00:00 +0000</lastBuildDate><atom:link href="https://geocompr.github.io/categories/feed.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>vignette</title>
+      <link>https://geocompr.github.io/categories/vignette/</link>
+      <pubDate>Wed, 21 Aug 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://geocompr.github.io/categories/vignette/</guid>
+      <description></description>
+    </item>
+    
   </channel>
 </rss>
