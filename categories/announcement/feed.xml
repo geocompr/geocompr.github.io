@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>announcement on the Geocomputation with R website</title>
+    <link>https://geocompr.github.io/categories/announcement/</link>
+    <description>Recent content in announcement on the Geocomputation with R website</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Sat, 25 Apr 2020 00:00:00 +0000</lastBuildDate><atom:link href="https://geocompr.github.io/categories/announcement/feed.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Recent changes in R spatial and how to be ready for them</title>
+      <link>https://geocompr.github.io/post/2020/whyr_webinar004/</link>
+      <pubDate>Sat, 25 Apr 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://geocompr.github.io/post/2020/whyr_webinar004/</guid>
+      <description>Currently, hundreds of R packages are related to spatial data analysis. They range from ecology and earth observation, hydrology and soil science, to transportation and demography. These packages support various stages of analysis, including data preparation, visualization, modeling, or communicating the results. One common feature of most R spatial packages is that they are built upon some of the main representations of spatial data in R, available in key geographic R packages such as:</description>
+    </item>
+    
+  </channel>
+</rss>
