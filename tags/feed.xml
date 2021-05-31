@@ -71,24 +71,6 @@
     </item>
     
     <item>
-      <title>benchmarks</title>
-      <link>https://geocompr.github.io/tags/benchmarks/</link>
-      <pubDate>Thu, 23 Apr 2020 00:00:00 +0000</pubDate>
-      
-      <guid>https://geocompr.github.io/tags/benchmarks/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>rspatial</title>
-      <link>https://geocompr.github.io/tags/rspatial/</link>
-      <pubDate>Thu, 23 Apr 2020 00:00:00 +0000</pubDate>
-      
-      <guid>https://geocompr.github.io/tags/rspatial/</guid>
-      <description></description>
-    </item>
-    
-    <item>
       <title>gdal</title>
       <link>https://geocompr.github.io/tags/gdal/</link>
       <pubDate>Mon, 30 Mar 2020 00:00:00 +0000</pubDate>
@@ -121,6 +103,15 @@
       <pubDate>Mon, 30 Mar 2020 00:00:00 +0000</pubDate>
       
       <guid>https://geocompr.github.io/tags/packages/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>rspatial</title>
+      <link>https://geocompr.github.io/tags/rspatial/</link>
+      <pubDate>Mon, 30 Mar 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://geocompr.github.io/tags/rspatial/</guid>
       <description></description>
     </item>
     
