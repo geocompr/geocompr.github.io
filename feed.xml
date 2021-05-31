@@ -15,9 +15,6 @@
       
       <guid>https://geocompr.github.io/post/2020/whyr_webinar004/</guid>
       <description>
-&lt;script src=&#34;https://geocompr.github.io/rmarkdown-libs/header-attrs/header-attrs.js&#34;&gt;&lt;/script&gt;
-&lt;link href=&#34;https://geocompr.github.io/rmarkdown-libs/anchor-sections/anchor-sections.css&#34; rel=&#34;stylesheet&#34; /&gt;
-&lt;script src=&#34;https://geocompr.github.io/rmarkdown-libs/anchor-sections/anchor-sections.js&#34;&gt;&lt;/script&gt;
 
 
 &lt;p&gt;Currently, hundreds of R packages are related to spatial data analysis.
@@ -43,11 +40,352 @@ To reduce set-up times you can use geographic R packages Docker, a flexible and 
 Docker can run on modern computers and on your browser via services such as Binder, greatly reducing set-up times.
 Discussing these set-up options, and questions of compatibility between geographic R packages and paradigms such as the tidyverse and data.table, ensure that after the talk everyone can empower themselves with open source software for geographic data analysis in a powerful and flexible statistical programming environment.&lt;/p&gt;
 &lt;p&gt;You can find the slides for the talk at &lt;a href=&#34;https://nowosad.github.io/whyr_webinar004/&#34; class=&#34;uri&#34;&gt;https://nowosad.github.io/whyr_webinar004/&lt;/a&gt;.&lt;/p&gt;
-
+&lt;p&gt;
 &lt;div style=&#34;position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden;&#34;&gt;
   &lt;iframe src=&#34;https://www.youtube.com/embed/Va0STgco7-4&#34; style=&#34;position: absolute; top: 0; left: 0; width: 100%; height: 100%; border:0;&#34; allowfullscreen title=&#34;YouTube Video&#34;&gt;&lt;/iframe&gt;
 &lt;/div&gt;
+&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Demo of reproducible geographic data analysis: mapping Covid-19 data with R</title>
+      <link>https://geocompr.github.io/post/wip/mapping-covid-19/</link>
+      <pubDate>Thu, 23 Apr 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://geocompr.github.io/post/wip/mapping-covid-19/</guid>
+      <description>
 
+
+&lt;div id=&#34;introduction&#34; class=&#34;section level1&#34;&gt;
+&lt;h1&gt;Introduction&lt;/h1&gt;
+&lt;p&gt;The coronavirus pandemic is a global phenomenon that will affect the lives of the majority of the world’s population for years to come.
+Impacts range from physical distancing measures &lt;a href=&#34;https://en.wikipedia.org/wiki/Social_distancing#2019%E2%80%932020_coronavirus_pandemic&#34;&gt;already affecting more than half of Earth’s population&lt;/a&gt; and knock-on impacts such as &lt;a href=&#34;https://www.esa.int/Applications/Observing_the_Earth/Copernicus/Sentinel-5P/Coronavirus_lockdown_leading_to_drop_in_pollution_across_Europe&#34;&gt;changes in air quality&lt;/a&gt; to potentially life threatening illness, with peer reviewed estimates of &lt;a href=&#34;https://www.thelancet.com/pdfs/journals/laninf/PIIS1473-3099(20)30243-7.pdf&#34;&gt;infection fatality rates&lt;/a&gt; showing the disease disproportionately affects the elderly and people with underlying health conditions.&lt;/p&gt;
+&lt;p&gt;Like other global phenomena such as climate change, the impacts of the pandemic vary greatly by geographic location, with effective and early implementation of physical distancing measures and effective contact tracing associated with lower death rates, according to preliminary &lt;a href=&#34;https://www.medrxiv.org/content/10.1101/2020.03.10.20033738v3&#34;&gt;research&lt;/a&gt;, as illustrated in the animation below (source: &lt;a href=&#34;https://www.washingtonpost.com/graphics/2020/world/corona-simulator/&#34;&gt;Washington Post&lt;/a&gt;).&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://www.washingtonpost.com/graphics/2020/world/corona-simulator/&#34;&gt;&lt;img src=&#34;https://upload.wikimedia.org/wikipedia/commons/thumb/8/82/Katapult_importance_social_distancing.gif/350px-Katapult_importance_social_distancing.gif&#34; /&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;This article demonstrates how to download and map open data on the evolving coronavirus pandemic, using reproducible R code.
+The aim is not to provide scientific analysis of the data, but to demonstrate how ‘open science’ enables public access to important international datasets.
+It also provides an opportunity to demonstrate how techniques taught in &lt;a href=&#34;https://geocompr.robinlovelace.net/&#34;&gt;&lt;em&gt;Geocomputation with R&lt;/em&gt;&lt;/a&gt; can be applied to real-world datasets.&lt;/p&gt;
+&lt;p&gt;Before undertaking geographic analysis of ‘rate’ data, such as the number Covid-19 infections per unit area, it is worth acknowledging caveats at the outset.
+Simple graphics of complex phenomena can be misleading.
+This is well-illustrated in the figure below by &lt;a href=&#34;https://github.com/willgeary&#34;&gt;Will Geary&lt;/a&gt;, which shows how the ecological fallacy can affect interpretations of geographical analysis of areal units such countries that we will be using in this research.&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://github.com/willgeary/covid-nyc-dasymetric-map&#34;&gt;&lt;img src=&#34;https://raw.githubusercontent.com/willgeary/covid-nyc-dasymetric-map/master/assets/comparison_table_zip_hex_smoothed.png&#34; /&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;The post is intended more as a taster of geographic visualisation in R than as a gateway to scientific analysis of Covid-19 data.
+See resources such as the &lt;a href=&#34;https://2020.erum.io/covidr-contest/&#34;&gt;eRum2020 CovidR&lt;/a&gt; contest and &lt;a href=&#34;https://towardsdatascience.com/top-5-r-resources-on-covid-19-coronavirus-1d4c8df6d85f&#34;&gt;lists&lt;/a&gt; of online &lt;a href=&#34;https://github.com/HDRUK/covid-19&#34;&gt;resources&lt;/a&gt; for pointers on how to usefully contribute to data-driven efforts to tackle the crisis.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;set-up&#34; class=&#34;section level1&#34;&gt;
+&lt;h1&gt;Set-up&lt;/h1&gt;
+&lt;p&gt;To reproduce the results presented in this article you will need to have an R installation with up-to-date versions of the following packages installed and loaded.
+(See the &lt;a href=&#34;https://github.com/geocompr/docker&#34;&gt;geocompr/docker&lt;/a&gt; repo and &lt;a href=&#34;https://geocompr.github.io/post/2020/installing-r-spatial-ubuntu/&#34;&gt;Installing R on Ubuntu&lt;/a&gt; article for more on setting up your computer to work with R).&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;library(sf)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## Linking to GEOS 3.9.0, GDAL 3.2.1, PROJ 7.2.1&lt;/code&gt;&lt;/pre&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;library(tmap)
+library(dplyr)&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;div id=&#34;getting-international-covid-19-data&#34; class=&#34;section level1&#34;&gt;
+&lt;h1&gt;Getting international Covid-19 data&lt;/h1&gt;
+&lt;p&gt;To get data on official Covid-19 statistics, we will use the &lt;a href=&#34;https://github.com/covid19datahub/COVID19&#34;&gt;&lt;code&gt;COVID19&lt;/code&gt;&lt;/a&gt; R package.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://camo.githubusercontent.com/b627e2aa6edcee3ead77511a35d4e1a5e91aa07f/68747470733a2f2f73746f726167652e636f7669643139646174616875622e696f2f6c6f676f2e737667&#34; width=&#34;20%&#34; style=&#34;display: block; margin: auto;&#34;&gt;&lt;/p&gt;
+&lt;p&gt;This package provides daily updated data on a variety of variables related to the coronavirus pandemic at national, regional and city levels.
+Install it as follows:&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;install.packages(&amp;quot;COVID19&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;After the package is installed, you can get up-to-date country-level data as follows:&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;d = COVID19::covid19()&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;To minimise dependencies for reproducing the results in this article, we uploaded a copy of the data, which can be downloaded as follows (re-run the code above to get up-to-date data):&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;d = readr::read_csv(&amp;quot;https://git.io/covid-19-2020-04-23&amp;quot;)
+class(d)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## [1] &amp;quot;spec_tbl_df&amp;quot; &amp;quot;tbl_df&amp;quot;      &amp;quot;tbl&amp;quot;         &amp;quot;data.frame&amp;quot;&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;The previous code chunk read a .csv file from online and confirmed, we have loaded a data frame (we will see how to join this with geographic data in the next section).
+We can get a sense of the contents of the data as follows:&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;ncol(d)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## [1] 24&lt;/code&gt;&lt;/pre&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;nrow(d)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## [1] 17572&lt;/code&gt;&lt;/pre&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;names(d)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;##  [1] &amp;quot;id&amp;quot;             &amp;quot;date&amp;quot;           &amp;quot;deaths&amp;quot;         &amp;quot;confirmed&amp;quot;     
+##  [5] &amp;quot;tests&amp;quot;          &amp;quot;recovered&amp;quot;      &amp;quot;hosp&amp;quot;           &amp;quot;icu&amp;quot;           
+##  [9] &amp;quot;vent&amp;quot;           &amp;quot;driving&amp;quot;        &amp;quot;walking&amp;quot;        &amp;quot;transit&amp;quot;       
+## [13] &amp;quot;country&amp;quot;        &amp;quot;state&amp;quot;          &amp;quot;city&amp;quot;           &amp;quot;lat&amp;quot;           
+## [17] &amp;quot;lng&amp;quot;            &amp;quot;pop&amp;quot;            &amp;quot;pop_14&amp;quot;         &amp;quot;pop_15_64&amp;quot;     
+## [21] &amp;quot;pop_65&amp;quot;         &amp;quot;pop_age&amp;quot;        &amp;quot;pop_density&amp;quot;    &amp;quot;pop_death_rate&amp;quot;&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;div id=&#34;getting-geographic-data&#34; class=&#34;section level1&#34;&gt;
+&lt;h1&gt;Getting geographic data&lt;/h1&gt;
+&lt;p&gt;We will use a dataset representing countries worldwide from the &lt;code&gt;rnaturalearth&lt;/code&gt; package.
+Assuming you have the package installed you can get the geographic data as follows (see the subsequent code chunk if not):&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;world_rnatural = rnaturalearth::ne_download(returnclass = &amp;quot;sf&amp;quot;)
+# names(world_iso) # variables available
+world_iso = world_rnatural %&amp;gt;% 
+  select(NAME_LONG, ISO_A3_EH, POP_EST, GDP_MD_EST, CONTINENT)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;The result of the previous code block, an object representing the world and containing only variables of interest, was uploaded to GitHub and can be loaded from a GeoJSON file as follows:&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;world_iso = sf::read_sf(&amp;quot;https://git.io/JfICT&amp;quot;) &lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;To see what’s in the &lt;code&gt;world_iso&lt;/code&gt; object we can plot it, with the default setting in &lt;code&gt;sf&lt;/code&gt; showing the geographic distribution of each variable:&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;plot(world_iso)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;https://geocompr.github.io/post/wip/r-spatial-demo-covid-19_files/figure-html/unnamed-chunk-9-1.png&#34; width=&#34;768&#34; /&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;transforming-geographic-data&#34; class=&#34;section level1&#34;&gt;
+&lt;h1&gt;Transforming geographic data&lt;/h1&gt;
+&lt;p&gt;An issue with the result from a data visualisation perspective is that this unprojected visualisation distorts the world: countries such as Greenland at high latitudes appear bigger than the actually are.
+To overcome this issue we will project the object as follows (see Chapter &lt;a href=&#34;https://geocompr.robinlovelace.net/reproj-geo-data.html&#34;&gt;6&lt;/a&gt; of Geocomputation with R and a recent article on the &lt;a href=&#34;https://www.r-spatial.org/r/2020/03/17/wkt.html&#34;&gt;r-spatial website&lt;/a&gt; for more on coordinate systems):&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;world_projected = world_iso %&amp;gt;% 
+  st_transform(&amp;quot;+proj=moll&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;We can plot just the geometry of the updated object as follows, noting that the result is projected in a way that preserves the true area of countries (noting also that all projections introduce distortions):&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;plot(st_geometry(world_projected))&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;https://geocompr.github.io/post/wip/r-spatial-demo-covid-19_files/figure-html/unnamed-chunk-11-1.png&#34; width=&#34;768&#34; /&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;attribute-joins&#34; class=&#34;section level1&#34;&gt;
+&lt;h1&gt;Attribute joins&lt;/h1&gt;
+&lt;p&gt;As outlined in Chapter &lt;a href=&#34;https://geocompr.robinlovelace.net/attr.html#vector-attribute-joining&#34;&gt;3&lt;/a&gt; of &lt;em&gt;Geocomputation with R&lt;/em&gt;, attribute joins can be used to add additional variables to geographic data via a ‘key variable’ shared between the geographic and non-geographic objects.
+In this case the shared variables are &lt;code&gt;ISO_A3_EH&lt;/code&gt; in the geographic object and &lt;code&gt;id&lt;/code&gt; in the Covid-19 dataset &lt;code&gt;d&lt;/code&gt;.
+We will be concise and call the dataset resulting from this join operation &lt;code&gt;w&lt;/code&gt;.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;w = dplyr::left_join(world_projected, d, by = c(&amp;quot;ISO_A3_EH&amp;quot;= &amp;quot;id&amp;quot;))
+class(w)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## [1] &amp;quot;sf&amp;quot;         &amp;quot;tbl_df&amp;quot;     &amp;quot;tbl&amp;quot;        &amp;quot;data.frame&amp;quot;&lt;/code&gt;&lt;/pre&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;nrow(w)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## [1] 14919&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;div id=&#34;calculating-area&#34; class=&#34;section level1&#34;&gt;
+&lt;h1&gt;Calculating area&lt;/h1&gt;
+&lt;p&gt;The package &lt;code&gt;sf&lt;/code&gt; provides a wide range of functions for calculating geographic variables such as object centroid, bounding boxes, lengths and, as demonstrated below, area.
+We use this area data to calculate the population density of each country as follows:&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;w$Area_km = as.numeric(st_area(w)) / 1e6
+w$`Pop/km2` = as.numeric(w$POP_EST) / w$Area_km &lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;div id=&#34;plotting-international-covid-19-data-for-a-single-day&#34; class=&#34;section level1&#34;&gt;
+&lt;h1&gt;Plotting international Covid-19 data for a single day&lt;/h1&gt;
+&lt;p&gt;The class of &lt;code&gt;w&lt;/code&gt; shows that it has geometries for each row.
+Notice that it has many more rows of data than the original world object: geometries are repeated for every year.
+This is not an efficient way to store data, as it means lots of duplicate geometries.
+On a small dataset that doesn’t matter, but it’s something to be aware of.
+To check that the join has worked, we will take a subset of rows representing the global situation yesterday relative to the date of data access:&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;w_yesterday = w %&amp;gt;% 
+  filter(date == max(date, na.rm = T) - 1)
+plot(w_yesterday)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;https://geocompr.github.io/post/wip/r-spatial-demo-covid-19_files/figure-html/unnamed-chunk-14-1.png&#34; width=&#34;768&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;The plot method for &lt;code&gt;sf&lt;/code&gt; objects is fast and flexible, as documented in &lt;a href=&#34;https://r-spatial.github.io/sf/articles/sf5.html&#34;&gt;&lt;code&gt;sf&lt;/code&gt;’s &lt;em&gt;Plotting Simple Features&lt;/em&gt; vignette&lt;/a&gt;, which can be accessed with &lt;code&gt;vignette(&#34;sf5&#34;)&lt;/code&gt; from the R console.
+We can set the breaks to better show the difference between countries with no reported deaths and countries with few reported deaths as follows:&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;plot(w_yesterday[&amp;quot;deaths&amp;quot;])&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;https://geocompr.github.io/post/wip/r-spatial-demo-covid-19_files/figure-html/unnamed-chunk-15-1.png&#34; width=&#34;768&#34; /&gt;&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;b = c(0, 10, 100, 1000, 10000, 100000)
+plot(w_yesterday[&amp;quot;deaths&amp;quot;], breaks = b)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;https://geocompr.github.io/post/wip/r-spatial-demo-covid-19_files/figure-html/unnamed-chunk-15-2.png&#34; width=&#34;768&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;To plot the other Covid-19 variables, reporting number of confirmed cases, number of tests and number of people who have recovered, we can subset the relevant variables and pipe the result to the &lt;code&gt;plot()&lt;/code&gt; function (noting the &lt;a href=&#34;https://t.co/NyIrKHQSUy&#34;&gt;caveat&lt;/a&gt; that code containing pipes may be hard to debug) as follows:&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;w_yesterday %&amp;gt;%
+  dplyr::select(deaths, confirmed, tests, recovered) %&amp;gt;% 
+  plot()&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;https://geocompr.github.io/post/wip/r-spatial-demo-covid-19_files/figure-html/unnamed-chunk-16-1.png&#34; width=&#34;768&#34; /&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;making-maps-with-tmap&#34; class=&#34;section level1&#34;&gt;
+&lt;h1&gt;Making maps with tmap&lt;/h1&gt;
+&lt;p&gt;The &lt;a href=&#34;https://geocompr.robinlovelace.net/adv-map.html&#34;&gt;mapping chapter&lt;/a&gt; of &lt;em&gt;Geocomputation with R&lt;/em&gt; shows how the &lt;code&gt;tmap&lt;/code&gt; package enables publication-quality maps to be created with concise and relatively commands, such as:&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;tm_shape(w_yesterday) +
+  tm_polygons(c(&amp;quot;deaths&amp;quot;, &amp;quot;recovered&amp;quot;))&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;https://geocompr.github.io/post/wip/r-spatial-demo-covid-19_files/figure-html/unnamed-chunk-17-1.png&#34; width=&#34;768&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;We can modify the palette and scale as follows:&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;tm_shape(w_yesterday) +
+  tm_polygons(
+    c(&amp;quot;deaths&amp;quot;, &amp;quot;recovered&amp;quot;),
+    palette = &amp;quot;viridis&amp;quot;,
+    style = &amp;quot;order&amp;quot;
+    ) &lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;https://geocompr.github.io/post/wip/r-spatial-demo-covid-19_files/figure-html/unnamed-chunk-18-1.png&#34; width=&#34;768&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;The map can be further improved by adding graticules representing the curvature of the Earth, created as follows:&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;g = st_graticule(w_yesterday)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;It’s also worth moving the legend:&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;tm_shape(g) +
+  tm_lines(col = &amp;quot;grey&amp;quot;) +
+  tm_shape(w_yesterday) +
+  tm_polygons(
+    c(&amp;quot;deaths&amp;quot;, &amp;quot;recovered&amp;quot;),
+    palette = &amp;quot;viridis&amp;quot;,
+    style = &amp;quot;order&amp;quot;
+    ) +
+  tm_layout(legend.position = c(0.01, 0.25))&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;https://geocompr.github.io/post/wip/r-spatial-demo-covid-19_files/figure-html/unnamed-chunk-20-1.png&#34; width=&#34;768&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;A problem with choropleth maps is that they can under-represent small areas.
+To overcome this issue we can use dot size instead of color to represent number:&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;tm_shape(g) +
+  tm_lines(col = &amp;quot;grey&amp;quot;) +
+  tm_shape(w_yesterday) +
+  tm_polygons() +
+  tm_layout(legend.position = c(0.01, 0)) +
+  tm_shape(w_yesterday) +
+  tm_dots(
+    col = c(&amp;quot;red&amp;quot;, &amp;quot;green&amp;quot;),
+    size = c(&amp;quot;deaths&amp;quot;, &amp;quot;recovered&amp;quot;),
+    palette = &amp;quot;viridis&amp;quot;
+    )&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;https://geocompr.github.io/post/wip/r-spatial-demo-covid-19_files/figure-html/unnamed-chunk-21-1.png&#34; width=&#34;768&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;One question I have here: make the size legend have &lt;code&gt;style = &#34;log10_pretty&#34;&lt;/code&gt; also?&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;making-animated-maps&#34; class=&#34;section level1&#34;&gt;
+&lt;h1&gt;Making animated maps&lt;/h1&gt;
+&lt;p&gt;The animation at the beginning of this article shows how dynamic graphics can communicate change effectively.
+Animated maps are therefore useful for showing evolving geographic phenomena, such as the spread of Covid-19 worldwide.
+As covered in section &lt;a href=&#34;https://geocompr.robinlovelace.net/adv-map.html#animated-maps&#34;&gt;8.3&lt;/a&gt; of &lt;em&gt;Geocomputation with R&lt;/em&gt;, animated maps can be created with &lt;code&gt;tmap&lt;/code&gt; by extending the &lt;code&gt;tm_facet()&lt;/code&gt; functionality.
+So let’s start by creating a facetted map showing the total number of deaths on the first day of each month in our data:&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;w$Date = as.character(w$date)
+tm_shape(g) +
+  tm_lines(col = &amp;quot;grey&amp;quot;) +
+  tm_shape(w_yesterday) +
+  tm_polygons(
+    &amp;quot;Pop/km2&amp;quot;,
+    palette = &amp;quot;viridis&amp;quot;,
+    style = &amp;quot;log10_pretty&amp;quot;,
+    n = 3
+    ) +
+  tm_shape(w %&amp;gt;% filter(grepl(pattern = &amp;quot;01$&amp;quot;, date))) +
+  tm_dots(size = &amp;quot;deaths&amp;quot;, col = &amp;quot;red&amp;quot;) +
+  tm_facets(&amp;quot;Date&amp;quot;, nrow = 1, free.scales.fill = FALSE) +
+  tm_layout(
+    legend.outside.position = &amp;quot;bottom&amp;quot;,
+    legend.stack = &amp;quot;horizontal&amp;quot;
+    )&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;https://geocompr.github.io/post/wip/r-spatial-demo-covid-19_files/figure-html/unnamed-chunk-22-1.png&#34; width=&#34;768&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;To create an animated map, following instructions in Chapter &lt;a href=&#34;https://geocompr.robinlovelace.net/adv-map.html#animated-maps&#34;&gt;8&lt;/a&gt; of &lt;em&gt;Geocomputation with R&lt;/em&gt;, we need to make some small changes to the code above:&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;m = tm_shape(g) +
+  tm_lines(col = &amp;quot;grey&amp;quot;) +
+  tm_shape(w_yesterday) +
+  tm_polygons(
+    &amp;quot;Pop/km2&amp;quot;,
+    palette = &amp;quot;viridis&amp;quot;,
+    style = &amp;quot;log10_pretty&amp;quot;,
+    n = 3
+    ) +
+  tm_shape(w %&amp;gt;% filter(grepl(pattern = &amp;quot;01$&amp;quot;, date))) +
+  tm_dots(size = &amp;quot;deaths&amp;quot;, col = &amp;quot;red&amp;quot;) +
+  tm_facets(along = &amp;quot;Date&amp;quot;, free.coords = FALSE) +
+  tm_layout(legend.outside = TRUE)
+tmap_animation(m, &amp;quot;covid-19-animated-map-test.gif&amp;quot;, width = 800)
+browseURL(&amp;quot;covid-19-animated-map-test.gif&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;https://user-images.githubusercontent.com/1825120/80087377-e7bda780-8552-11ea-959f-55b154c715fa.gif&#34; width=&#34;40%&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;We made an animated map!
+The first version is rarely the best though, and the map above clearly could benefit from some adjustments before we plot the results for the whole dataset:&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;w$Date = paste0(&amp;quot;Total deaths from 22nd January 2020 to &amp;quot;, w$date)
+
+m = tm_shape(g) +
+  tm_lines(col = &amp;quot;grey&amp;quot;) +
+  tm_shape(w) +
+  tm_polygons(
+    &amp;quot;Pop/km2&amp;quot;,
+    palette = &amp;quot;viridis&amp;quot;,
+    style = &amp;quot;log10_pretty&amp;quot;,
+    lwd = 0.5
+    ) +
+  tm_shape(w) +
+  tm_dots(size = &amp;quot;deaths&amp;quot;, col = &amp;quot;red&amp;quot;) +
+  tm_facets(along = &amp;quot;Date&amp;quot;, free.coords = FALSE) +
+  tm_layout(
+    main.title.size = 0.5,
+    legend.outside = TRUE
+    )
+tmap_animation(m, &amp;quot;covid-19-animated-map.gif&amp;quot;, width = 1400, height = 600)
+browseURL(&amp;quot;covid-19-animated-map.gif&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
+&lt;!--update the file below--&gt;
+&lt;p&gt;&lt;img src=&#34;https://user-images.githubusercontent.com/1825120/80092918-7f26f880-855b-11ea-8017-c4ec6e382209.gif&#34; /&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;conclusion&#34; class=&#34;section level1&#34;&gt;
+&lt;h1&gt;Conclusion&lt;/h1&gt;
+&lt;p&gt;This article has demonstrated how to work with and map geographic data using the free and open source statistical programming language R.
+It demonstrates that by representing analysis in code, research can be made reproducible and more accessible to others, encouraging transparent and open science.
+This has multiple advantages, from education and citizen engagement with the evidence to increased trust in the evidence on which important, life-or-death, decisions are made.&lt;/p&gt;
+&lt;p&gt;Although the research did not address any policy issues, it could be extended to do so, and we encourage readers to check-out the following resources for ideas for future research:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;A &lt;a href=&#34;https://github.com/paezha/covid19-environmental-correlates#a-spatio-temporal-analysis-of-the-environmental-correlates-of-covid-19-incidence-in-spain&#34;&gt;reproducible geographic analysis&lt;/a&gt; of Covid-19 data in Spain by &lt;a href=&#34;https://www.science.mcmaster.ca/geo/component/comprofiler/userprofile/paezha.html&#34;&gt;Antonio Paez&lt;/a&gt; and others (challenge: reproduce their findings)&lt;/li&gt;
+&lt;li&gt;The eRum2020 &lt;a href=&#34;https://2020.erum.io/covidr-contest/&#34;&gt;CovidR competition&lt;/a&gt; (challenge: enter the contest!)&lt;/li&gt;
+&lt;li&gt;Try downloading the the city-level data with this command and exploring the geographic distribution of the outbreak at the city level:&lt;/li&gt;
+&lt;/ul&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;d_city = COVID19::covid19(level = 3)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;For further details on geographic data analysis in R in general, we recommend checkout out in-depth materials such as &lt;a href=&#34;https://www.amazon.co.uk/Geocomputation-Chapman-Hall-Robin-Lovelace/dp/1138304514&#34;&gt;&lt;em&gt;Geocomputation with R&lt;/em&gt;&lt;/a&gt; and the in-progress open source book &lt;a href=&#34;https://keen-swartz-3146c4.netlify.app/&#34;&gt;&lt;em&gt;Spatial Data Science&lt;/em&gt;&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;There is also an &lt;a href=&#34;https://www.youtube.com/watch?v=Va0STgco7-4&#34;&gt;online talk&lt;/a&gt; on the subject on YouTube.&lt;/p&gt;
+&lt;details&gt;
+&lt;p&gt;&lt;summary&gt;Session info&lt;/summary&gt;&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;sessioninfo::session_info()&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## ─ Session info ───────────────────────────────────────────────────────────────
+##  setting  value                       
+##  version  R version 4.1.0 (2021-05-18)
+##  os       Ubuntu 20.04.2 LTS          
+##  system   x86_64, linux-gnu           
+##  ui       X11                         
+##  language (EN)                        
+##  collate  C.UTF-8                     
+##  ctype    C.UTF-8                     
+##  tz       UTC                         
+##  date     2021-05-31                  
+## 
+## ─ Packages ───────────────────────────────────────────────────────────────────
+##  package      * version  date       lib source                           
+##  abind          1.4-5    2016-07-21 [1] CRAN (R 4.1.0)                   
+##  base64enc      0.1-3    2015-07-28 [1] CRAN (R 4.1.0)                   
+##  blogdown       1.3.2    2021-05-31 [1] Github (rstudio/blogdown@00a2090)
+##  bookdown       0.22     2021-04-22 [1] CRAN (R 4.1.0)                   
+##  class          7.3-19   2021-05-03 [2] CRAN (R 4.1.0)                   
+##  classInt       0.4-3    2020-04-07 [1] CRAN (R 4.1.0)                   
+##  cli            2.5.0    2021-04-26 [1] CRAN (R 4.1.0)                   
+##  codetools      0.2-18   2020-11-04 [2] CRAN (R 4.1.0)                   
+##  crayon         1.4.1    2021-02-08 [1] CRAN (R 4.1.0)                   
+##  crosstalk      1.1.1    2021-01-12 [1] CRAN (R 4.1.0)                   
+##  curl           4.3.1    2021-04-30 [1] CRAN (R 4.1.0)                   
+##  DBI            1.1.1    2021-01-15 [1] CRAN (R 4.1.0)                   
+##  dichromat      2.0-0    2013-01-24 [1] CRAN (R 4.1.0)                   
+##  digest         0.6.27   2020-10-24 [1] CRAN (R 4.1.0)                   
+##  dplyr        * 1.0.6    2021-05-05 [1] CRAN (R 4.1.0)                   
+##  e1071          1.7-7    2021-05-23 [1] CRAN (R 4.1.0)                   
+##  ellipsis       0.3.2    2021-04-29 [1] CRAN (R 4.1.0)                   
+##  evaluate       0.14     2019-05-28 [1] CRAN (R 4.1.0)                   
+##  fansi          0.5.0    2021-05-25 [1] CRAN (R 4.1.0)                   
+##  generics       0.1.0    2020-10-31 [1] CRAN (R 4.1.0)                   
+##  glue           1.4.2    2020-08-27 [1] CRAN (R 4.1.0)                   
+##  highr          0.9      2021-04-16 [1] CRAN (R 4.1.0)                   
+##  hms            1.1.0    2021-05-17 [1] CRAN (R 4.1.0)                   
+##  htmltools      0.5.1.1  2021-01-22 [1] CRAN (R 4.1.0)                   
+##  htmlwidgets    1.5.3    2020-12-10 [1] CRAN (R 4.1.0)                   
+##  KernSmooth     2.23-20  2021-05-03 [2] CRAN (R 4.1.0)                   
+##  knitr          1.33     2021-04-24 [1] CRAN (R 4.1.0)                   
+##  lattice        0.20-44  2021-05-02 [2] CRAN (R 4.1.0)                   
+##  leafem         0.1.6    2021-05-24 [1] CRAN (R 4.1.0)                   
+##  leaflet        2.0.4.1  2021-01-07 [1] CRAN (R 4.1.0)                   
+##  leafsync       0.1.0    2019-03-05 [1] CRAN (R 4.1.0)                   
+##  lifecycle      1.0.0    2021-02-15 [1] CRAN (R 4.1.0)                   
+##  lwgeom         0.2-6    2021-04-02 [1] CRAN (R 4.1.0)                   
+##  magrittr       2.0.1    2020-11-17 [1] CRAN (R 4.1.0)                   
+##  pillar         1.6.1    2021-05-16 [1] CRAN (R 4.1.0)                   
+##  pkgconfig      2.0.3    2019-09-22 [1] CRAN (R 4.1.0)                   
+##  png            0.1-7    2013-12-03 [1] CRAN (R 4.1.0)                   
+##  proxy          0.4-25   2021-03-05 [1] CRAN (R 4.1.0)                   
+##  ps             1.6.0    2021-02-28 [1] CRAN (R 4.1.0)                   
+##  purrr          0.3.4    2020-04-17 [1] CRAN (R 4.1.0)                   
+##  R6             2.5.0    2020-10-28 [1] CRAN (R 4.1.0)                   
+##  raster         3.4-10   2021-05-03 [1] CRAN (R 4.1.0)                   
+##  RColorBrewer   1.1-2    2014-12-07 [1] CRAN (R 4.1.0)                   
+##  Rcpp           1.0.6    2021-01-15 [1] CRAN (R 4.1.0)                   
+##  readr          1.4.0    2020-10-05 [1] CRAN (R 4.1.0)                   
+##  rlang          0.4.11   2021-04-30 [1] CRAN (R 4.1.0)                   
+##  rmarkdown      2.8      2021-05-07 [1] CRAN (R 4.1.0)                   
+##  rstudioapi     0.13     2020-11-12 [1] CRAN (R 4.1.0)                   
+##  sessioninfo    1.1.1    2018-11-05 [1] CRAN (R 4.1.0)                   
+##  sf           * 0.9-8    2021-03-17 [1] CRAN (R 4.1.0)                   
+##  sp             1.4-5    2021-01-10 [1] CRAN (R 4.1.0)                   
+##  stars          0.5-2    2021-03-17 [1] CRAN (R 4.1.0)                   
+##  stringi        1.6.2    2021-05-17 [1] CRAN (R 4.1.0)                   
+##  stringr        1.4.0    2019-02-10 [1] CRAN (R 4.1.0)                   
+##  tibble         3.1.2    2021-05-16 [1] CRAN (R 4.1.0)                   
+##  tidyselect     1.1.1    2021-04-30 [1] CRAN (R 4.1.0)                   
+##  tmap         * 3.3-1    2021-03-15 [1] CRAN (R 4.1.0)                   
+##  tmaptools      3.1-1    2021-01-19 [1] CRAN (R 4.1.0)                   
+##  units          0.7-1    2021-03-16 [1] CRAN (R 4.1.0)                   
+##  utf8           1.2.1    2021-03-12 [1] CRAN (R 4.1.0)                   
+##  vctrs          0.3.8    2021-04-29 [1] CRAN (R 4.1.0)                   
+##  viridisLite    0.4.0    2021-04-13 [1] CRAN (R 4.1.0)                   
+##  withr          2.4.2    2021-04-18 [1] CRAN (R 4.1.0)                   
+##  xfun           0.23     2021-05-15 [1] CRAN (R 4.1.0)                   
+##  XML            3.99-0.6 2021-03-16 [1] CRAN (R 4.1.0)                   
+##  yaml           2.2.1    2020-02-01 [1] CRAN (R 4.1.0)                   
+## 
+## [1] /home/runner/work/_temp/Library
+## [2] /opt/R/4.1.0/lib/R/library&lt;/code&gt;&lt;/pre&gt;
+&lt;/details&gt;
+&lt;/div&gt;
 </description>
     </item>
     
@@ -58,9 +396,6 @@ Discussing these set-up options, and questions of compatibility between geograph
       
       <guid>https://geocompr.github.io/post/2020/installing-r-spatial-ubuntu/</guid>
       <description>
-&lt;script src=&#34;https://geocompr.github.io/rmarkdown-libs/header-attrs/header-attrs.js&#34;&gt;&lt;/script&gt;
-&lt;link href=&#34;https://geocompr.github.io/rmarkdown-libs/anchor-sections/anchor-sections.css&#34; rel=&#34;stylesheet&#34; /&gt;
-&lt;script src=&#34;https://geocompr.github.io/rmarkdown-libs/anchor-sections/anchor-sections.js&#34;&gt;&lt;/script&gt;
 
 
 &lt;p&gt;This post explains how to quickly get key R packages for geographic research installed on &lt;a href=&#34;https://ubuntu.com/&#34;&gt;Ubuntu&lt;/a&gt;, a popular Linux distribution.&lt;/p&gt;
@@ -220,16 +555,13 @@ A sensible next step is to sharpen you system administration (sysadmin) and shel
       
       <guid>https://geocompr.github.io/post/2019/ggplot2-inset-maps/</guid>
       <description>
-&lt;script src=&#34;https://geocompr.github.io/rmarkdown-libs/header-attrs/header-attrs.js&#34;&gt;&lt;/script&gt;
-&lt;link href=&#34;https://geocompr.github.io/rmarkdown-libs/anchor-sections/anchor-sections.css&#34; rel=&#34;stylesheet&#34; /&gt;
-&lt;script src=&#34;https://geocompr.github.io/rmarkdown-libs/anchor-sections/anchor-sections.js&#34;&gt;&lt;/script&gt;
 
 
 &lt;p&gt;Inset maps enable multiple places to be shown in the same geographic data visualisation, as described in the &lt;a href=&#34;https://geocompr.robinlovelace.net/adv-map.html#inset-maps&#34;&gt;Inset maps section (8.2.7)&lt;/a&gt; of our open source book Geocomputation with R.
 The topic of inset maps has gained attention and recently &lt;a href=&#34;https://twitter.com/espinielli/&#34;&gt;Enrico Spinielli&lt;/a&gt; asked inset maps could be created for data in unusual coordinate systems:&lt;/p&gt;
-&lt;blockquote class=&#34;twitter-tweet&#34;&gt;&lt;p lang=&#34;en&#34; dir=&#34;ltr&#34;&gt;Speaking of insets, do you know of any ggplot2 examples with an inset for showing where the (bbox of the) map is in an orthographic/satellite proj? It is usually done to provide geographic context... NYT/WP have fantastic maps like that&lt;/p&gt;&amp;mdash; espinielli (@espinielli) &lt;a href=&#34;https://twitter.com/espinielli/status/1191452410394361863?ref_src=twsrc%5Etfw&#34;&gt;November 4, 2019&lt;/a&gt;&lt;/blockquote&gt;
+&lt;p&gt;&lt;blockquote class=&#34;twitter-tweet&#34;&gt;&lt;p lang=&#34;en&#34; dir=&#34;ltr&#34;&gt;Speaking of insets, do you know of any ggplot2 examples with an inset for showing where the (bbox of the) map is in an orthographic/satellite proj? It is usually done to provide geographic context... NYT/WP have fantastic maps like that&lt;/p&gt;&amp;mdash; espinielli (@espinielli) &lt;a href=&#34;https://twitter.com/espinielli/status/1191452410394361863?ref_src=twsrc%5Etfw&#34;&gt;November 4, 2019&lt;/a&gt;&lt;/blockquote&gt;
 &lt;script async src=&#34;https://platform.twitter.com/widgets.js&#34; charset=&#34;utf-8&#34;&gt;&lt;/script&gt;
-
+&lt;/p&gt;
 &lt;p&gt;R’s flexibility allows inset maps to be created in various ways, using different approaches and packages.
 However, the main idea stays the same: we need to create at least two maps: a larger one, called the main map, that shows the central story and a smaller one, called the inset map, that puts the main map in context.&lt;/p&gt;
 &lt;p&gt;This blog post shows how to create inset maps with &lt;strong&gt;ggplot2&lt;/strong&gt; for visualization.
@@ -405,9 +737,6 @@ Try different approaches on your own data and decide what works best for you!&lt
       
       <guid>https://geocompr.github.io/post/2019/tmap-color-scales/</guid>
       <description>
-&lt;script src=&#34;https://geocompr.github.io/rmarkdown-libs/header-attrs/header-attrs.js&#34;&gt;&lt;/script&gt;
-&lt;link href=&#34;https://geocompr.github.io/rmarkdown-libs/anchor-sections/anchor-sections.css&#34; rel=&#34;stylesheet&#34; /&gt;
-&lt;script src=&#34;https://geocompr.github.io/rmarkdown-libs/anchor-sections/anchor-sections.js&#34;&gt;&lt;/script&gt;
 
 
 &lt;p&gt;This vignette builds on the &lt;a href=&#34;https://geocompr.robinlovelace.net/adv-map.html&#34;&gt;making maps chapter&lt;/a&gt; of &lt;a href=&#34;https://geocompr.github.io/&#34;&gt;the Geocomputation with R book&lt;/a&gt;.
@@ -482,6 +811,7 @@ This style rounds breaks into whole numbers where possible and spaces them evenl
               legend.hist = TRUE) +
   tm_layout(legend.outside = TRUE) &lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;&lt;img src=&#34;https://geocompr.github.io/post/2019/tmap-styles_files/figure-html/unnamed-chunk-8-1.png&#34; width=&#34;768&#34; /&gt;&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;## [1] &amp;quot;#FFFBD4&amp;quot; &amp;quot;#FEECA5&amp;quot; &amp;quot;#FECF66&amp;quot; &amp;quot;#FEA332&amp;quot; &amp;quot;#EC7114&amp;quot; &amp;quot;#C74A02&amp;quot; &amp;quot;#8E3004&amp;quot;&lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;A histogram is added using &lt;code&gt;legend.hist = TRUE&lt;/code&gt; in this and several next examples to show how the selected map style relates to the distribution of values.&lt;/p&gt;
 &lt;p&gt;It is possible to indicate a preferred number of classes using the &lt;code&gt;n&lt;/code&gt; argument.
 Importantly, not every &lt;code&gt;n&lt;/code&gt; is possible depending on the range of the values in the data.&lt;/p&gt;
@@ -491,6 +821,7 @@ Importantly, not every &lt;code&gt;n&lt;/code&gt; is possible depending on the r
               n = 4) +
   tm_layout(legend.outside = TRUE) &lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;&lt;img src=&#34;https://geocompr.github.io/post/2019/tmap-styles_files/figure-html/unnamed-chunk-9-1.png&#34; width=&#34;768&#34; /&gt;&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;## [1] &amp;quot;#FEF6BA&amp;quot; &amp;quot;#FECF66&amp;quot; &amp;quot;#F88B22&amp;quot; &amp;quot;#CC4C02&amp;quot;&lt;/code&gt;&lt;/pre&gt;
 &lt;/div&gt;
 &lt;div id=&#34;fixed&#34; class=&#34;section level2&#34;&gt;
 &lt;h2&gt;Fixed&lt;/h2&gt;
@@ -502,6 +833,7 @@ Importantly, not every &lt;code&gt;n&lt;/code&gt; is possible depending on the r
               legend.hist = TRUE) +
   tm_layout(legend.outside = TRUE) &lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;&lt;img src=&#34;https://geocompr.github.io/post/2019/tmap-styles_files/figure-html/unnamed-chunk-10-1.png&#34; width=&#34;768&#34; /&gt;&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;## [1] &amp;quot;#FEF3B3&amp;quot; &amp;quot;#FEB13E&amp;quot; &amp;quot;#D85A09&amp;quot;&lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;Additionally, the default labels can be overwritten using the &lt;code&gt;labels&lt;/code&gt; argument.&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;tm_shape(world_moll) +
   tm_polygons(col = &amp;quot;lifeExp&amp;quot;, 
@@ -511,6 +843,7 @@ Importantly, not every &lt;code&gt;n&lt;/code&gt; is possible depending on the r
               legend.hist = TRUE) +
   tm_layout(legend.outside = TRUE) &lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;&lt;img src=&#34;https://geocompr.github.io/post/2019/tmap-styles_files/figure-html/unnamed-chunk-11-1.png&#34; width=&#34;768&#34; /&gt;&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;## [1] &amp;quot;#FEF3B3&amp;quot; &amp;quot;#FEB13E&amp;quot; &amp;quot;#D85A09&amp;quot;&lt;/code&gt;&lt;/pre&gt;
 &lt;/div&gt;
 &lt;div id=&#34;breaks-based-on-the-standard-deviation-value&#34; class=&#34;section level2&#34;&gt;
 &lt;h2&gt;Breaks based on the standard deviation value&lt;/h2&gt;
@@ -521,6 +854,7 @@ Importantly, not every &lt;code&gt;n&lt;/code&gt; is possible depending on the r
               legend.hist = TRUE) +
   tm_layout(legend.outside = TRUE)&lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;&lt;img src=&#34;https://geocompr.github.io/post/2019/tmap-styles_files/figure-html/unnamed-chunk-12-1.png&#34; width=&#34;768&#34; /&gt;&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;## [1] &amp;quot;#FFF8C4&amp;quot; &amp;quot;#FEDE86&amp;quot; &amp;quot;#FEAA38&amp;quot; &amp;quot;#EA6E13&amp;quot; &amp;quot;#B74202&amp;quot;&lt;/code&gt;&lt;/pre&gt;
 &lt;/div&gt;
 &lt;div id=&#34;fisher-algorithm&#34; class=&#34;section level2&#34;&gt;
 &lt;h2&gt;Fisher algorithm&lt;/h2&gt;
@@ -531,6 +865,7 @@ Importantly, not every &lt;code&gt;n&lt;/code&gt; is possible depending on the r
               legend.hist = TRUE) +
   tm_layout(legend.outside = TRUE) &lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;&lt;img src=&#34;https://geocompr.github.io/post/2019/tmap-styles_files/figure-html/unnamed-chunk-13-1.png&#34; width=&#34;768&#34; /&gt;&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;## [1] &amp;quot;#FFF8C4&amp;quot; &amp;quot;#FEDE86&amp;quot; &amp;quot;#FEAA38&amp;quot; &amp;quot;#EA6E13&amp;quot; &amp;quot;#B74202&amp;quot;&lt;/code&gt;&lt;/pre&gt;
 &lt;/div&gt;
 &lt;div id=&#34;jenks-natural-breaks&#34; class=&#34;section level2&#34;&gt;
 &lt;h2&gt;Jenks natural breaks&lt;/h2&gt;
@@ -541,6 +876,7 @@ Importantly, not every &lt;code&gt;n&lt;/code&gt; is possible depending on the r
               legend.hist = TRUE) +
   tm_layout(legend.outside = TRUE) &lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;&lt;img src=&#34;https://geocompr.github.io/post/2019/tmap-styles_files/figure-html/unnamed-chunk-14-1.png&#34; width=&#34;768&#34; /&gt;&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;## [1] &amp;quot;#FFF8C4&amp;quot; &amp;quot;#FEDE86&amp;quot; &amp;quot;#FEAA38&amp;quot; &amp;quot;#EA6E13&amp;quot; &amp;quot;#B74202&amp;quot;&lt;/code&gt;&lt;/pre&gt;
 &lt;/div&gt;
 &lt;div id=&#34;hierarchical-clustering&#34; class=&#34;section level2&#34;&gt;
 &lt;h2&gt;Hierarchical clustering&lt;/h2&gt;
@@ -551,6 +887,7 @@ Importantly, not every &lt;code&gt;n&lt;/code&gt; is possible depending on the r
               legend.hist = TRUE) +
   tm_layout(legend.outside = TRUE) &lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;&lt;img src=&#34;https://geocompr.github.io/post/2019/tmap-styles_files/figure-html/unnamed-chunk-15-1.png&#34; width=&#34;768&#34; /&gt;&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;## [1] &amp;quot;#FFF8C4&amp;quot; &amp;quot;#FEDE86&amp;quot; &amp;quot;#FEAA38&amp;quot; &amp;quot;#EA6E13&amp;quot; &amp;quot;#B74202&amp;quot;&lt;/code&gt;&lt;/pre&gt;
 &lt;/div&gt;
 &lt;div id=&#34;bagged-clustering&#34; class=&#34;section level2&#34;&gt;
 &lt;h2&gt;Bagged clustering&lt;/h2&gt;
@@ -562,7 +899,8 @@ Importantly, not every &lt;code&gt;n&lt;/code&gt; is possible depending on the r
   tm_layout(legend.outside = TRUE) &lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;&lt;img src=&#34;https://geocompr.github.io/post/2019/tmap-styles_files/figure-html/unnamed-chunk-16-1.png&#34; width=&#34;768&#34; /&gt;&lt;/p&gt;
 &lt;pre&gt;&lt;code&gt;## Committee Member: 1(1) 2(1) 3(1) 4(1) 5(1) 6(1) 7(1) 8(1) 9(1) 10(1)
-## Computing Hierarchical Clustering&lt;/code&gt;&lt;/pre&gt;
+## Computing Hierarchical Clustering
+## [1] &amp;quot;#FFF8C4&amp;quot; &amp;quot;#FEDE86&amp;quot; &amp;quot;#FEAA38&amp;quot; &amp;quot;#EA6E13&amp;quot; &amp;quot;#B74202&amp;quot;&lt;/code&gt;&lt;/pre&gt;
 &lt;/div&gt;
 &lt;div id=&#34;k-means-clustering&#34; class=&#34;section level2&#34;&gt;
 &lt;h2&gt;k-means clustering&lt;/h2&gt;
@@ -573,6 +911,7 @@ Importantly, not every &lt;code&gt;n&lt;/code&gt; is possible depending on the r
               legend.hist = TRUE) +
   tm_layout(legend.outside = TRUE) &lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;&lt;img src=&#34;https://geocompr.github.io/post/2019/tmap-styles_files/figure-html/unnamed-chunk-17-1.png&#34; width=&#34;768&#34; /&gt;&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;## [1] &amp;quot;#FFF8C4&amp;quot; &amp;quot;#FEDE86&amp;quot; &amp;quot;#FEAA38&amp;quot; &amp;quot;#EA6E13&amp;quot; &amp;quot;#B74202&amp;quot;&lt;/code&gt;&lt;/pre&gt;
 &lt;/div&gt;
 &lt;div id=&#34;quantile-breaks&#34; class=&#34;section level2&#34;&gt;
 &lt;h2&gt;Quantile breaks&lt;/h2&gt;
@@ -583,6 +922,7 @@ Importantly, not every &lt;code&gt;n&lt;/code&gt; is possible depending on the r
               legend.hist = TRUE) +
   tm_layout(legend.outside = TRUE) &lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;&lt;img src=&#34;https://geocompr.github.io/post/2019/tmap-styles_files/figure-html/unnamed-chunk-18-1.png&#34; width=&#34;768&#34; /&gt;&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;## [1] &amp;quot;#FFF8C4&amp;quot; &amp;quot;#FEDE86&amp;quot; &amp;quot;#FEAA38&amp;quot; &amp;quot;#EA6E13&amp;quot; &amp;quot;#B74202&amp;quot;&lt;/code&gt;&lt;/pre&gt;
 &lt;/div&gt;
 &lt;div id=&#34;equal-breaks&#34; class=&#34;section level2&#34;&gt;
 &lt;h2&gt;Equal breaks&lt;/h2&gt;
@@ -594,6 +934,7 @@ It is not recommended for variables with a skewed distribution as the resulting 
               legend.hist = TRUE) +
   tm_layout(legend.outside = TRUE) &lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;&lt;img src=&#34;https://geocompr.github.io/post/2019/tmap-styles_files/figure-html/unnamed-chunk-19-1.png&#34; width=&#34;768&#34; /&gt;&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;## [1] &amp;quot;#FFF8C4&amp;quot; &amp;quot;#FEDE86&amp;quot; &amp;quot;#FEAA38&amp;quot; &amp;quot;#EA6E13&amp;quot; &amp;quot;#B74202&amp;quot;&lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;Learn more about the implementation of discrete scales in &lt;a href=&#34;https://r-spatial.github.io/classInt/index.html&#34;&gt;the &lt;strong&gt;classInt&lt;/strong&gt; package’s documentation&lt;/a&gt;.&lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
@@ -675,9 +1016,6 @@ Now you know different color scale styles implemented in &lt;strong&gt;tmap&lt;/
       
       <guid>https://geocompr.github.io/post/2019/tmap-grid/</guid>
       <description>
-&lt;script src=&#34;https://geocompr.github.io/rmarkdown-libs/header-attrs/header-attrs.js&#34;&gt;&lt;/script&gt;
-&lt;link href=&#34;https://geocompr.github.io/rmarkdown-libs/anchor-sections/anchor-sections.css&#34; rel=&#34;stylesheet&#34; /&gt;
-&lt;script src=&#34;https://geocompr.github.io/rmarkdown-libs/anchor-sections/anchor-sections.js&#34;&gt;&lt;/script&gt;
 
 
 &lt;p&gt;This vignette builds on the &lt;a href=&#34;https://geocompr.robinlovelace.net/adv-map.html&#34;&gt;making maps chapter&lt;/a&gt; of &lt;a href=&#34;https://geocompr.github.io/&#34;&gt;the Geocomputation with R book&lt;/a&gt;.
@@ -773,9 +1111,6 @@ However, it does not look perfect for world maps.&lt;/p&gt;
       
       <guid>https://geocompr.github.io/post/2019/crs-projections-transformations/</guid>
       <description>
-&lt;script src=&#34;https://geocompr.github.io/rmarkdown-libs/header-attrs/header-attrs.js&#34;&gt;&lt;/script&gt;
-&lt;link href=&#34;https://geocompr.github.io/rmarkdown-libs/anchor-sections/anchor-sections.css&#34; rel=&#34;stylesheet&#34; /&gt;
-&lt;script src=&#34;https://geocompr.github.io/rmarkdown-libs/anchor-sections/anchor-sections.js&#34;&gt;&lt;/script&gt;
 
 
 &lt;div id=&#34;introduction&#34; class=&#34;section level1&#34;&gt;
