@@ -5,8 +5,318 @@
     <description>Recent content on the Geocomputation with R website</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sat, 25 Apr 2020 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Thu, 17 Jun 2021 00:00:00 +0000</lastBuildDate>
     <atom:link href="https://geocompr.github.io/feed.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>Conversions between different spatial classes in R</title>
+      <link>https://geocompr.github.io/post/2021/spatial-classes-conversion/</link>
+      <pubDate>Thu, 17 Jun 2021 00:00:00 +0000</pubDate>
+      
+      <guid>https://geocompr.github.io/post/2021/spatial-classes-conversion/</guid>
+      <description>
+&lt;script src=&#34;https://geocompr.github.io/rmarkdown-libs/header-attrs/header-attrs.js&#34;&gt;&lt;/script&gt;
+&lt;script src=&#34;https://geocompr.github.io/rmarkdown-libs/kePrint/kePrint.js&#34;&gt;&lt;/script&gt;
+&lt;link href=&#34;https://geocompr.github.io/rmarkdown-libs/lightable/lightable.css&#34; rel=&#34;stylesheet&#34; /&gt;
+
+
+&lt;p&gt;The R programming language has, over the past two decades, evolved substantial spatial data analysis capabilities, and is now one of the most powerful environments for undertaking geographic research using a reproducible command line interface.
+Currently, dedicated R packages allow to read spatial data and apply a plethora of different kinds of spatial methods in a reproducible fashion.&lt;/p&gt;
+&lt;p&gt;There are two main&lt;a href=&#34;#fn1&#34; class=&#34;footnote-ref&#34; id=&#34;fnref1&#34;&gt;&lt;sup&gt;1&lt;/sup&gt;&lt;/a&gt; spatial data models - spatial vector data and spatial raster data.
+Natively R does not support spatial data and does not have a definition of spatial classes.
+Therefore, there had been &lt;a href=&#34;https://geocompr.robinlovelace.net/intro.html#the-history-of-r-spatial&#34;&gt;a need to create R tools able to represent spatial vector and raster data&lt;/a&gt;.
+Spatial classes are slightly different from regular R objects, such as data frames or matrices, as they need to not only store values, but also information about spatial locations and their &lt;a href=&#34;https://geocompr.robinlovelace.net/spatial-class.html#crs-intro&#34;&gt;coordinate reference systems&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;Nowadays, the most prominent packages to represent spatial vector data are &lt;strong&gt;sf&lt;/strong&gt; &lt;span class=&#34;citation&#34;&gt;(Pebesma &lt;a href=&#34;#ref-R-sf&#34; role=&#34;doc-biblioref&#34;&gt;2021&lt;/a&gt;&lt;a href=&#34;#ref-R-sf&#34; role=&#34;doc-biblioref&#34;&gt;a&lt;/a&gt;)&lt;/span&gt; and its predecessor &lt;strong&gt;sp&lt;/strong&gt; &lt;span class=&#34;citation&#34;&gt;(Pebesma and Bivand &lt;a href=&#34;#ref-R-sp&#34; role=&#34;doc-biblioref&#34;&gt;2021&lt;/a&gt;)&lt;/span&gt;, however, the &lt;strong&gt;terra&lt;/strong&gt; &lt;span class=&#34;citation&#34;&gt;(Hijmans &lt;a href=&#34;#ref-R-terra&#34; role=&#34;doc-biblioref&#34;&gt;2021&lt;/a&gt;&lt;a href=&#34;#ref-R-terra&#34; role=&#34;doc-biblioref&#34;&gt;b&lt;/a&gt;)&lt;/span&gt; package also has its own spatial class for vector data.
+Spatial raster data can be stored as objects from &lt;strong&gt;terra&lt;/strong&gt; &lt;span class=&#34;citation&#34;&gt;(Hijmans &lt;a href=&#34;#ref-R-terra&#34; role=&#34;doc-biblioref&#34;&gt;2021&lt;/a&gt;&lt;a href=&#34;#ref-R-terra&#34; role=&#34;doc-biblioref&#34;&gt;b&lt;/a&gt;)&lt;/span&gt; and its predecessor &lt;strong&gt;raster&lt;/strong&gt; &lt;span class=&#34;citation&#34;&gt;(Hijmans &lt;a href=&#34;#ref-R-raster&#34; role=&#34;doc-biblioref&#34;&gt;2021&lt;/a&gt;&lt;a href=&#34;#ref-R-raster&#34; role=&#34;doc-biblioref&#34;&gt;a&lt;/a&gt;)&lt;/span&gt;, or alternatively the &lt;strong&gt;stars&lt;/strong&gt; package &lt;span class=&#34;citation&#34;&gt;(Pebesma &lt;a href=&#34;#ref-R-stars&#34; role=&#34;doc-biblioref&#34;&gt;2021&lt;/a&gt;&lt;a href=&#34;#ref-R-stars&#34; role=&#34;doc-biblioref&#34;&gt;b&lt;/a&gt;)&lt;/span&gt;.&lt;/p&gt;
+&lt;p&gt;As you could see in &lt;a href=&#34;https://geocompr.github.io/post/2020/whyr_webinar004/&#34;&gt;our Why R? webinar talk&lt;/a&gt;, the spatial capabilities of R constantly expand, but also evolve.
+New packages are being developed, while old ones are modified or superseded.
+In this process, new methods are created, higher performance code is added, and possible workflows are expanded.
+Alternative approaches allow for a (hopefully) healthy competition, resulting in better packages.
+Of course, having more than one package (with its own spatial class/es) for a vector or raster data model could be problematic, especially for new or inexperienced users.&lt;/p&gt;
+&lt;p&gt;First, it takes time to understand how different spatial classes are organized.
+To illustrate this, let’s read the same spatial data, &lt;code&gt;srtm.tif&lt;/code&gt; from the &lt;strong&gt;spDataLarge&lt;/strong&gt; package &lt;span class=&#34;citation&#34;&gt;(Nowosad and Lovelace &lt;a href=&#34;#ref-R-spDataLarge&#34; role=&#34;doc-biblioref&#34;&gt;2021&lt;/a&gt;)&lt;/span&gt;, using &lt;strong&gt;raster&lt;/strong&gt; and &lt;strong&gt;stars&lt;/strong&gt;.
+The &lt;strong&gt;raster&lt;/strong&gt; object:&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;raster_file_path = system.file(&amp;quot;raster/srtm.tif&amp;quot;, package = &amp;quot;spDataLarge&amp;quot;)
+library(raster)
+srtm_raster = raster(raster_file_path)
+srtm_raster&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## class      : RasterLayer 
+## dimensions : 457, 465, 212505  (nrow, ncol, ncell)
+## resolution : 0.0008333333, 0.0008333333  (x, y)
+## extent     : -113.2396, -112.8521, 37.13208, 37.51292  (xmin, xmax, ymin, ymax)
+## crs        : +proj=longlat +datum=WGS84 +no_defs 
+## source     : srtm.tif 
+## names      : srtm 
+## values     : 1024, 2892  (min, max)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;The &lt;strong&gt;stars&lt;/strong&gt; object:&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;library(stars)
+srtm_stars = read_stars(raster_file_path)
+srtm_stars&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## stars object with 2 dimensions and 1 attribute
+## attribute(s):
+##           Min. 1st Qu. Median     Mean 3rd Qu. Max.
+## srtm.tif  1024    1535   1837 1842.548    2114 2892
+## dimension(s):
+##   from  to  offset        delta refsys point values x/y
+## x    1 465 -113.24  0.000833333 WGS 84 FALSE   NULL [x]
+## y    1 457 37.5129 -0.000833333 WGS 84 FALSE   NULL [y]&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Secondly, other packages with methods we want to use, could only accept one specific spatial class, but not the other.
+For example, the current version of the &lt;strong&gt;sabre&lt;/strong&gt; package &lt;span class=&#34;citation&#34;&gt;(Nowosad and Stepinski &lt;a href=&#34;#ref-R-sabre&#34; role=&#34;doc-biblioref&#34;&gt;2019&lt;/a&gt;)&lt;/span&gt; (0.3.2) accepts objects from the &lt;strong&gt;raster&lt;/strong&gt; package, but not ones from &lt;strong&gt;terra&lt;/strong&gt; or &lt;strong&gt;stars&lt;/strong&gt;&lt;a href=&#34;#fn2&#34; class=&#34;footnote-ref&#34; id=&#34;fnref2&#34;&gt;&lt;sup&gt;2&lt;/sup&gt;&lt;/a&gt;.
+The &lt;code&gt;partitions1&lt;/code&gt; and &lt;code&gt;partitions2&lt;/code&gt; objects are of the &lt;code&gt;RasterLayer&lt;/code&gt; class from &lt;strong&gt;raster&lt;/strong&gt;, so the &lt;code&gt;vmeasure_calc()&lt;/code&gt; function works correctly.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;library(sabre)
+library(raster)
+data(&amp;quot;partitions1&amp;quot;)
+data(&amp;quot;partitions2&amp;quot;)
+vmeasure_calc(partitions1, partitions2)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## The SABRE results:
+## 
+##  V-measure: 0.36 
+##  Homogeneity: 0.32 
+##  Completeness: 0.42 
+## 
+##  The spatial objects can be retrieved with:
+##  $map1 - the first map
+##  $map2 - the second map&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;However, when the input object (representing the same spatial data!) is of the &lt;code&gt;SpatRaster&lt;/code&gt; class from &lt;strong&gt;terra&lt;/strong&gt;, the calculation results in error.&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;vmeasure_calc(partitions1_terra, partitions1_terra)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## Error in UseMethod(&amp;quot;vmeasure_calc&amp;quot;) : 
+##  no applicable method for &amp;#39;vmeasure_calc&amp;#39; applied to an object of class &amp;quot;SpatRaster&amp;quot;&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Some packages, such as &lt;strong&gt;tmap&lt;/strong&gt; &lt;span class=&#34;citation&#34;&gt;(Tennekes &lt;a href=&#34;#ref-R-tmap&#34; role=&#34;doc-biblioref&#34;&gt;2021&lt;/a&gt;)&lt;/span&gt;, accept many R spatial classes, however, this takes a lot of effort from package creators to make it possible and to maintain it.
+Gladly, a number of functions exist that allow to convert between different R spatial classes.
+Using them, we can work with our favorite spatial data representation, switch to some other representation just for a certain calculation, and then convert the result back into our class.
+The next two sections showcase how to move between different spatial vector and raster data classes in R.&lt;/p&gt;
+&lt;div id=&#34;spatial-vector-data&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Spatial vector data&lt;/h2&gt;
+&lt;p&gt;The &lt;code&gt;world.gpkg&lt;/code&gt; file from the &lt;strong&gt;spData&lt;/strong&gt; &lt;span class=&#34;citation&#34;&gt;(Bivand, Nowosad, and Lovelace &lt;a href=&#34;#ref-R-spData&#34; role=&#34;doc-biblioref&#34;&gt;2020&lt;/a&gt;)&lt;/span&gt; contains spatial vector data with world countries.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;world_path = system.file(&amp;quot;shapes/world.gpkg&amp;quot;, package = &amp;quot;spData&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Now, we can read this file, for example, as an &lt;code&gt;sf&lt;/code&gt; object, and convert it into other spatial vector data classes.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;library(sf)
+library(sp)
+library(terra)
+
+# read as sf
+world = read_sf(world_path)
+
+# sf to sp
+world_sp1 = as(world, &amp;quot;Spatial&amp;quot;)
+
+# sf to terra vect
+world_terra1 = vect(world)
+
+# sp to terra vect
+world_terra2 = vect(world_sp1)
+
+# sp to sf
+world_sf2 = st_as_sf(world_sp1)
+
+# terra vect to sf
+world_sf3 = st_as_sf(world_terra1)
+
+# terra vect to sp
+world_sp2 = as(world_terra1, &amp;quot;Spatial&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;In summary, &lt;code&gt;st_as_sf()&lt;/code&gt; converts other classes into &lt;code&gt;sf&lt;/code&gt;, &lt;code&gt;vect()&lt;/code&gt; transform other classes into &lt;strong&gt;terra&lt;/strong&gt;’s &lt;code&gt;SpatVector&lt;/code&gt;, and with &lt;code&gt;as(x, &#34;Spatial&#34;)&lt;/code&gt; it is possible to get &lt;strong&gt;sp&lt;/strong&gt;’s vectors.&lt;/p&gt;
+&lt;table class=&#34;table&#34; style=&#34;margin-left: auto; margin-right: auto;&#34;&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th style=&#34;text-align:left;&#34;&gt;
+FROM/TO
+&lt;/th&gt;
+&lt;th style=&#34;text-align:left;&#34;&gt;
+sf
+&lt;/th&gt;
+&lt;th style=&#34;text-align:left;&#34;&gt;
+sp
+&lt;/th&gt;
+&lt;th style=&#34;text-align:left;&#34;&gt;
+terra
+&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td style=&#34;text-align:left;border-right:1px solid;font-weight: bold;&#34;&gt;
+sf
+&lt;/td&gt;
+&lt;td style=&#34;text-align:left;border-right:1px solid;font-style: italic;&#34;&gt;
+&lt;/td&gt;
+&lt;td style=&#34;text-align:left;border-right:1px solid;font-style: italic;&#34;&gt;
+as(x, “Spatial”)
+&lt;/td&gt;
+&lt;td style=&#34;text-align:left;font-style: italic;&#34;&gt;
+vect()
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=&#34;text-align:left;border-right:1px solid;font-weight: bold;&#34;&gt;
+sp
+&lt;/td&gt;
+&lt;td style=&#34;text-align:left;border-right:1px solid;font-style: italic;&#34;&gt;
+st_as_sf()
+&lt;/td&gt;
+&lt;td style=&#34;text-align:left;border-right:1px solid;font-style: italic;&#34;&gt;
+&lt;/td&gt;
+&lt;td style=&#34;text-align:left;font-style: italic;&#34;&gt;
+vect()
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=&#34;text-align:left;border-right:1px solid;font-weight: bold;&#34;&gt;
+terra
+&lt;/td&gt;
+&lt;td style=&#34;text-align:left;border-right:1px solid;font-style: italic;&#34;&gt;
+st_as_sf()
+&lt;/td&gt;
+&lt;td style=&#34;text-align:left;border-right:1px solid;font-style: italic;&#34;&gt;
+as(x, “Spatial”)
+&lt;/td&gt;
+&lt;td style=&#34;text-align:left;font-style: italic;&#34;&gt;
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;/div&gt;
+&lt;div id=&#34;spatial-raster-data&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Spatial raster data&lt;/h2&gt;
+&lt;p&gt;The &lt;code&gt;srtm.tif&lt;/code&gt; file from the &lt;strong&gt;spDataLarge&lt;/strong&gt; &lt;span class=&#34;citation&#34;&gt;(Nowosad and Lovelace &lt;a href=&#34;#ref-R-spDataLarge&#34; role=&#34;doc-biblioref&#34;&gt;2021&lt;/a&gt;)&lt;/span&gt; contains a raster elevation model for the Zion National Park in the USA.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;srtm_path = system.file(&amp;quot;raster/srtm.tif&amp;quot;, package = &amp;quot;spDataLarge&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Now, we can read this file, for example, as a &lt;strong&gt;raster&lt;/strong&gt; object, and convert it into other spatial vector data classes.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;library(raster)
+library(stars)
+library(terra)
+
+srtm_raster1 = raster(srtm_path)
+
+# raster to terra
+srtm_terra1 = rast(srtm_raster1)
+
+# terra to raster
+srtm_raster2 = raster(srtm_terra1)
+
+# raster to stars
+srtm_stars1 = st_as_stars(srtm_raster1)
+
+# stars to raster
+srtm_raster2 = as(srtm_stars1, &amp;quot;Raster&amp;quot;)
+
+# terra to stars
+srtm_stars2 = st_as_stars(srtm_terra1)
+
+# stars to terra?
+srtm_raster2a = as(srtm_stars1, &amp;quot;Raster&amp;quot;)
+srtm_terra1a = rast(srtm_raster2a)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;As you can see - in most cases, we can just use one function to move from one class to another.
+The only exception is from &lt;strong&gt;stars&lt;/strong&gt; to &lt;strong&gt;terra&lt;/strong&gt; - currently, there is not a dedicated custom function for that conversion.
+I plan to update this post, if/when this function will be created.&lt;/p&gt;
+&lt;table class=&#34;table&#34; style=&#34;margin-left: auto; margin-right: auto;&#34;&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th style=&#34;text-align:left;&#34;&gt;
+FROM/TO
+&lt;/th&gt;
+&lt;th style=&#34;text-align:left;&#34;&gt;
+raster
+&lt;/th&gt;
+&lt;th style=&#34;text-align:left;&#34;&gt;
+terra
+&lt;/th&gt;
+&lt;th style=&#34;text-align:left;&#34;&gt;
+stars
+&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td style=&#34;text-align:left;border-right:1px solid;font-weight: bold;&#34;&gt;
+raster
+&lt;/td&gt;
+&lt;td style=&#34;text-align:left;border-right:1px solid;font-style: italic;&#34;&gt;
+&lt;/td&gt;
+&lt;td style=&#34;text-align:left;border-right:1px solid;font-style: italic;&#34;&gt;
+rast()
+&lt;/td&gt;
+&lt;td style=&#34;text-align:left;font-style: italic;&#34;&gt;
+st_as_stars()
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=&#34;text-align:left;border-right:1px solid;font-weight: bold;&#34;&gt;
+terra
+&lt;/td&gt;
+&lt;td style=&#34;text-align:left;border-right:1px solid;font-style: italic;&#34;&gt;
+raster()
+&lt;/td&gt;
+&lt;td style=&#34;text-align:left;border-right:1px solid;font-style: italic;&#34;&gt;
+&lt;/td&gt;
+&lt;td style=&#34;text-align:left;font-style: italic;&#34;&gt;
+st_as_stars()
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=&#34;text-align:left;border-right:1px solid;font-weight: bold;&#34;&gt;
+stars
+&lt;/td&gt;
+&lt;td style=&#34;text-align:left;border-right:1px solid;font-style: italic;&#34;&gt;
+raster()
+&lt;/td&gt;
+&lt;td style=&#34;text-align:left;border-right:1px solid;font-style: italic;&#34;&gt;
+as(x, “Raster”) + rast()
+&lt;/td&gt;
+&lt;td style=&#34;text-align:left;font-style: italic;&#34;&gt;
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;/div&gt;
+&lt;div id=&#34;summary&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Summary&lt;/h2&gt;
+&lt;p&gt;This blog post summarizes how to move between different R spatial vector and raster classes.
+All of the functions mentioned above have one role: to change classes of input objects.
+They do not, however, change geometries or underlining values in the data.&lt;/p&gt;
+&lt;p&gt;Additionally, switching from the spatial vector data model to the spatial raster data model (and vice versa) is also possible.
+These operations are known as rasterization and vectorization, and they could impact spatial and nonspatial information in the input data.
+To learn more about them, read &lt;a href=&#34;https://geocompr.robinlovelace.net/geometric-operations.html#raster-vector&#34;&gt;the Raster-Vector Interactions section&lt;/a&gt; in &lt;a href=&#34;https://geocompr.robinlovelace.net/&#34;&gt;Geocomputation with R&lt;/a&gt;.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;references&#34; class=&#34;section level2 unnumbered&#34;&gt;
+&lt;h2&gt;References&lt;/h2&gt;
+&lt;div id=&#34;refs&#34; class=&#34;references hanging-indent&#34;&gt;
+&lt;div id=&#34;ref-R-spData&#34;&gt;
+&lt;p&gt;Bivand, Roger, Jakub Nowosad, and Robin Lovelace. 2020. &lt;em&gt;SpData: Datasets for Spatial Analysis&lt;/em&gt;. &lt;a href=&#34;https://nowosad.github.io/spData/&#34;&gt;https://nowosad.github.io/spData/&lt;/a&gt;.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;ref-R-raster&#34;&gt;
+&lt;p&gt;Hijmans, Robert J. 2021a. &lt;em&gt;Raster: Geographic Data Analysis and Modeling&lt;/em&gt;. &lt;a href=&#34;https://rspatial.org/raster&#34;&gt;https://rspatial.org/raster&lt;/a&gt;.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;ref-R-terra&#34;&gt;
+&lt;p&gt;———. 2021b. &lt;em&gt;Terra: Spatial Data Analysis&lt;/em&gt;. &lt;a href=&#34;https://rspatial.org/terra&#34;&gt;https://rspatial.org/terra&lt;/a&gt;.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;ref-R-spDataLarge&#34;&gt;
+&lt;p&gt;Nowosad, Jakub, and Robin Lovelace. 2021. &lt;em&gt;SpDataLarge: Large Datasets for Spatial Analysis&lt;/em&gt;. &lt;a href=&#34;https://github.com/Nowosad/spData&#34;&gt;https://github.com/Nowosad/spData&lt;/a&gt;.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;ref-R-sabre&#34;&gt;
+&lt;p&gt;Nowosad, Jakub, and Tomasz Stepinski. 2019. &lt;em&gt;Sabre: Spatial Association Between Regionalizations&lt;/em&gt;. &lt;a href=&#34;https://nowosad.github.io/sabre/&#34;&gt;https://nowosad.github.io/sabre/&lt;/a&gt;.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;ref-R-sf&#34;&gt;
+&lt;p&gt;Pebesma, Edzer. 2021a. &lt;em&gt;Sf: Simple Features for R&lt;/em&gt;.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;ref-R-stars&#34;&gt;
+&lt;p&gt;———. 2021b. &lt;em&gt;Stars: Spatiotemporal Arrays, Raster and Vector Data Cubes&lt;/em&gt;.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;ref-R-sp&#34;&gt;
+&lt;p&gt;Pebesma, Edzer, and Roger Bivand. 2021. &lt;em&gt;Sp: Classes and Methods for Spatial Data&lt;/em&gt;. &lt;a href=&#34;https://CRAN.R-project.org/package=sp&#34;&gt;https://CRAN.R-project.org/package=sp&lt;/a&gt;.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;ref-R-tmap&#34;&gt;
+&lt;p&gt;Tennekes, Martijn. 2021. &lt;em&gt;Tmap: Thematic Maps&lt;/em&gt;. &lt;a href=&#34;https://github.com/mtennekes/tmap&#34;&gt;https://github.com/mtennekes/tmap&lt;/a&gt;.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&#34;footnotes&#34;&gt;
+&lt;hr /&gt;
+&lt;ol&gt;
+&lt;li id=&#34;fn1&#34;&gt;&lt;p&gt;There are also other spatial data models, including meshes or point clouds.&lt;a href=&#34;#fnref1&#34; class=&#34;footnote-back&#34;&gt;↩︎&lt;/a&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;li id=&#34;fn2&#34;&gt;&lt;p&gt;I plan to improve that in a future release.&lt;a href=&#34;#fnref2&#34; class=&#34;footnote-back&#34;&gt;↩︎&lt;/a&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/div&gt;
+</description>
+    </item>
     
     <item>
       <title>Recent changes in R spatial and how to be ready for them</title>
