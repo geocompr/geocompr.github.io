@@ -6,7 +6,16 @@
     <description>Recent content in vignette on the Geocomputation with R website</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Thu, 17 Jun 2021 00:00:00 +0000</lastBuildDate><atom:link href="https://geocompr.github.io/categories/vignette/feed.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Mon, 06 Sep 2021 00:00:00 +0000</lastBuildDate><atom:link href="https://geocompr.github.io/categories/vignette/feed.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Geocomputation with R: Second Edition feedback</title>
+      <link>https://geocompr.github.io/post/2021/geocompr2-bp1/</link>
+      <pubDate>Mon, 06 Sep 2021 00:00:00 +0000</pubDate>
+      
+      <guid>https://geocompr.github.io/post/2021/geocompr2-bp1/</guid>
+      <description>It’s been almost 3 years since the first edition of Geocomputation with R was published back in 2019. It’s been an amazing journey for this open source book on geographic data analysis, visualization and modeling since then. We have reached almost 500k people via the website at https://geocompr.robinlovelace.net/ and the physical book. The book now contributes to many university courses, lectures, and personal development as outlined at https://geocompr.github.io/guestbook/ - where you can add you own comments.</description>
+    </item>
+    
     <item>
       <title>Conversions between different spatial classes in R</title>
       <link>https://geocompr.github.io/post/2021/spatial-classes-conversion/</link>
