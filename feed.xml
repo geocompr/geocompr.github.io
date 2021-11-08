@@ -65,8 +65,10 @@ Of course, having more than one package (with its own spatial class/es) for a ve
 To illustrate this, let’s read the same spatial data, &lt;code&gt;srtm.tif&lt;/code&gt; from the &lt;strong&gt;spDataLarge&lt;/strong&gt; package &lt;span class=&#34;citation&#34;&gt;(Nowosad and Lovelace &lt;a href=&#34;#ref-R-spDataLarge&#34; role=&#34;doc-biblioref&#34;&gt;2021&lt;/a&gt;)&lt;/span&gt;, using &lt;strong&gt;raster&lt;/strong&gt; and &lt;strong&gt;stars&lt;/strong&gt;.
 The &lt;strong&gt;raster&lt;/strong&gt; object:&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;raster_file_path = system.file(&amp;quot;raster/srtm.tif&amp;quot;, package = &amp;quot;spDataLarge&amp;quot;)
-library(raster)
-srtm_raster = raster(raster_file_path)
+library(raster)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## Warning: no function found corresponding to methods exports from &amp;#39;raster&amp;#39; for:
+## &amp;#39;area&amp;#39;&lt;/code&gt;&lt;/pre&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;srtm_raster = raster(raster_file_path)
 srtm_raster&lt;/code&gt;&lt;/pre&gt;
 &lt;pre&gt;&lt;code&gt;## class      : RasterLayer 
 ## dimensions : 457, 465, 212505  (nrow, ncol, ncell)
@@ -229,12 +231,9 @@ srtm_raster2 = as(srtm_stars1, &amp;quot;Raster&amp;quot;)
 # terra to stars
 srtm_stars2 = st_as_stars(srtm_terra1)
 
-# stars to terra?
-srtm_raster2a = as(srtm_stars1, &amp;quot;Raster&amp;quot;)
-srtm_terra1a = rast(srtm_raster2a)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;As you can see - in most cases, we can just use one function to move from one class to another.
-The only exception is from &lt;strong&gt;stars&lt;/strong&gt; to &lt;strong&gt;terra&lt;/strong&gt; - currently, there is not a dedicated custom function for that conversion.
-I plan to update this post, if/when this function will be created.&lt;/p&gt;
+# stars to terra
+srtm_terra1a = as(srtm_stars1, &amp;quot;SpatRaster&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;As you can see - in most cases, we can just use one function to move from one class to another.&lt;/p&gt;
 &lt;table class=&#34;table&#34; style=&#34;margin-left: auto; margin-right: auto;&#34;&gt;
 &lt;thead&gt;
 &lt;tr&gt;
@@ -287,7 +286,7 @@ stars
 raster()
 &lt;/td&gt;
 &lt;td style=&#34;text-align:left;border-right:1px solid;font-style: italic;&#34;&gt;
-as(x, “Raster”) + rast()
+as(x, “SpatRaster”)
 &lt;/td&gt;
 &lt;td style=&#34;text-align:left;font-style: italic;&#34;&gt;
 &lt;/td&gt;
