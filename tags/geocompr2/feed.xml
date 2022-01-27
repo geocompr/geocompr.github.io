@@ -6,7 +6,17 @@
     <description>Recent content in geocompr2 on the Geocomputation with R website</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Mon, 06 Sep 2021 00:00:00 +0000</lastBuildDate><atom:link href="https://geocompr.github.io/tags/geocompr2/feed.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Thu, 27 Jan 2022 00:00:00 +0000</lastBuildDate><atom:link href="https://geocompr.github.io/tags/geocompr2/feed.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Progress update: Geocomputation with R Second Edition Part 1</title>
+      <link>https://geocompr.github.io/post/2022/geocompr2-bp2/</link>
+      <pubDate>Thu, 27 Jan 2022 00:00:00 +0000</pubDate>
+      
+      <guid>https://geocompr.github.io/post/2022/geocompr2-bp2/</guid>
+      <description>Geocomputation with R is a book on geographic data analysis, visualization, and modeling. The First Edition was first published as a physical book in 2019 and we have reached 500k people through via the website at https://geocompr.robinlovelace.net/ and the physical book since then.
+The book has also become a key part of many university courses, lectures, and has been endorsed by many people who have found it vital for their work and for learning new geographic skills, as outlined in our guestbook at geocompr.</description>
+    </item>
+    
     <item>
       <title>Geocomputation with R: Second Edition feedback</title>
       <link>https://geocompr.github.io/post/2021/geocompr2-bp1/</link>

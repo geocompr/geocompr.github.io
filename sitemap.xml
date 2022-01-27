@@ -4,49 +4,61 @@
   <url>
     <loc>https://geocompr.github.io/project/project1/</loc>
   </url><url>
-    <loc>https://geocompr.github.io/categories/announcement/</loc>
-    <lastmod>2021-09-06T00:00:00+00:00</lastmod>
-  </url><url>
     <loc>https://geocompr.github.io/categories/</loc>
-    <lastmod>2021-09-06T00:00:00+00:00</lastmod>
+    <lastmod>2022-01-27T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://geocompr.github.io/tags/geocompr/</loc>
-    <lastmod>2021-09-06T00:00:00+00:00</lastmod>
+    <lastmod>2022-01-27T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://geocompr.github.io/tags/geocompr2/</loc>
+    <lastmod>2022-01-27T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://geocompr.github.io/post/</loc>
+    <lastmod>2022-01-27T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://geocompr.github.io/post/2022/geocompr2-bp2/</loc>
+    <lastmod>2022-01-27T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://geocompr.github.io/tags/raster/</loc>
+    <lastmod>2022-01-27T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://geocompr.github.io/tags/rgdal/</loc>
+    <lastmod>2022-01-27T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://geocompr.github.io/tags/rstats/</loc>
+    <lastmod>2022-01-27T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://geocompr.github.io/tags/s2/</loc>
+    <lastmod>2022-01-27T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://geocompr.github.io/tags/sf/</loc>
+    <lastmod>2022-01-27T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://geocompr.github.io/tags/stars/</loc>
+    <lastmod>2022-01-27T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://geocompr.github.io/tags/</loc>
+    <lastmod>2022-01-27T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://geocompr.github.io/tags/terra/</loc>
+    <lastmod>2022-01-27T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://geocompr.github.io/</loc>
+    <lastmod>2022-01-27T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://geocompr.github.io/categories/updates/</loc>
+    <lastmod>2022-01-27T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://geocompr.github.io/categories/announcement/</loc>
     <lastmod>2021-09-06T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://geocompr.github.io/post/2021/geocompr2-bp1/</loc>
     <lastmod>2021-09-06T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://geocompr.github.io/post/</loc>
-    <lastmod>2021-09-06T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>https://geocompr.github.io/tags/raster/</loc>
-    <lastmod>2021-09-06T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>https://geocompr.github.io/tags/rstats/</loc>
-    <lastmod>2021-09-06T00:00:00+00:00</lastmod>
-  </url><url>
     <loc>https://geocompr.github.io/tags/sabre/</loc>
     <lastmod>2021-09-06T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://geocompr.github.io/tags/sf/</loc>
-    <lastmod>2021-09-06T00:00:00+00:00</lastmod>
-  </url><url>
     <loc>https://geocompr.github.io/tags/sp/</loc>
-    <lastmod>2021-09-06T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>https://geocompr.github.io/tags/stars/</loc>
-    <lastmod>2021-09-06T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>https://geocompr.github.io/tags/</loc>
-    <lastmod>2021-09-06T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>https://geocompr.github.io/tags/terra/</loc>
-    <lastmod>2021-09-06T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>https://geocompr.github.io/</loc>
     <lastmod>2021-09-06T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://geocompr.github.io/tags/tmap/</loc>

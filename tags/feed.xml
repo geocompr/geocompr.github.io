@@ -6,11 +6,11 @@
     <description>Recent content in Tags on the Geocomputation with R website</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Mon, 06 Sep 2021 00:00:00 +0000</lastBuildDate><atom:link href="https://geocompr.github.io/tags/feed.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Thu, 27 Jan 2022 00:00:00 +0000</lastBuildDate><atom:link href="https://geocompr.github.io/tags/feed.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>geocompr</title>
       <link>https://geocompr.github.io/tags/geocompr/</link>
-      <pubDate>Mon, 06 Sep 2021 00:00:00 +0000</pubDate>
+      <pubDate>Thu, 27 Jan 2022 00:00:00 +0000</pubDate>
       
       <guid>https://geocompr.github.io/tags/geocompr/</guid>
       <description></description>
@@ -19,7 +19,7 @@
     <item>
       <title>geocompr2</title>
       <link>https://geocompr.github.io/tags/geocompr2/</link>
-      <pubDate>Mon, 06 Sep 2021 00:00:00 +0000</pubDate>
+      <pubDate>Thu, 27 Jan 2022 00:00:00 +0000</pubDate>
       
       <guid>https://geocompr.github.io/tags/geocompr2/</guid>
       <description></description>
@@ -28,18 +28,63 @@
     <item>
       <title>raster</title>
       <link>https://geocompr.github.io/tags/raster/</link>
-      <pubDate>Mon, 06 Sep 2021 00:00:00 +0000</pubDate>
+      <pubDate>Thu, 27 Jan 2022 00:00:00 +0000</pubDate>
       
       <guid>https://geocompr.github.io/tags/raster/</guid>
       <description></description>
     </item>
     
     <item>
+      <title>rgdal</title>
+      <link>https://geocompr.github.io/tags/rgdal/</link>
+      <pubDate>Thu, 27 Jan 2022 00:00:00 +0000</pubDate>
+      
+      <guid>https://geocompr.github.io/tags/rgdal/</guid>
+      <description></description>
+    </item>
+    
+    <item>
       <title>rstats</title>
       <link>https://geocompr.github.io/tags/rstats/</link>
-      <pubDate>Mon, 06 Sep 2021 00:00:00 +0000</pubDate>
+      <pubDate>Thu, 27 Jan 2022 00:00:00 +0000</pubDate>
       
       <guid>https://geocompr.github.io/tags/rstats/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>s2</title>
+      <link>https://geocompr.github.io/tags/s2/</link>
+      <pubDate>Thu, 27 Jan 2022 00:00:00 +0000</pubDate>
+      
+      <guid>https://geocompr.github.io/tags/s2/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>sf</title>
+      <link>https://geocompr.github.io/tags/sf/</link>
+      <pubDate>Thu, 27 Jan 2022 00:00:00 +0000</pubDate>
+      
+      <guid>https://geocompr.github.io/tags/sf/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>stars</title>
+      <link>https://geocompr.github.io/tags/stars/</link>
+      <pubDate>Thu, 27 Jan 2022 00:00:00 +0000</pubDate>
+      
+      <guid>https://geocompr.github.io/tags/stars/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>terra</title>
+      <link>https://geocompr.github.io/tags/terra/</link>
+      <pubDate>Thu, 27 Jan 2022 00:00:00 +0000</pubDate>
+      
+      <guid>https://geocompr.github.io/tags/terra/</guid>
       <description></description>
     </item>
     
@@ -53,38 +98,11 @@
     </item>
     
     <item>
-      <title>sf</title>
-      <link>https://geocompr.github.io/tags/sf/</link>
-      <pubDate>Mon, 06 Sep 2021 00:00:00 +0000</pubDate>
-      
-      <guid>https://geocompr.github.io/tags/sf/</guid>
-      <description></description>
-    </item>
-    
-    <item>
       <title>sp</title>
       <link>https://geocompr.github.io/tags/sp/</link>
       <pubDate>Mon, 06 Sep 2021 00:00:00 +0000</pubDate>
       
       <guid>https://geocompr.github.io/tags/sp/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>stars</title>
-      <link>https://geocompr.github.io/tags/stars/</link>
-      <pubDate>Mon, 06 Sep 2021 00:00:00 +0000</pubDate>
-      
-      <guid>https://geocompr.github.io/tags/stars/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>terra</title>
-      <link>https://geocompr.github.io/tags/terra/</link>
-      <pubDate>Mon, 06 Sep 2021 00:00:00 +0000</pubDate>
-      
-      <guid>https://geocompr.github.io/tags/terra/</guid>
       <description></description>
     </item>
     
