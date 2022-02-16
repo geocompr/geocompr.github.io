@@ -1,6 +1,6 @@
 ---
 title: "Automatic website with bookdown's solutions" #we need to improve the title!!
-author: Jakub Nowosad, Robin Lovelace, Jannes Muenchow
+author: Jakub Nowosad
 date: "2022-02-27"
 slug: geocompr-solutions
 categories: [vignette]
@@ -8,6 +8,62 @@ tags: [geocompr2, solutions, rstats]
 draft: true
 ---
 
-##
+[Geocomputation with R](https://geocompr.robinlovelace.net/) is a book on geographic data analysis, visualization, and modeling.
+Each of its chapter^[Except the last one.] ends with a set of exercises allowing the readers to test how well they understand each presented concepts and approaches. 
+However, exercises are often not enough without their solutions, which provides a way to compare readers' answers with an expected one.
+This creates a technical issue -- how to provide solutions to the exercises without making the book too long? Also, how to test, at the same time, if the solutions are still working?
 
-##
+For [the first edition of the book](https://bookdown.org/robinlovelace/geocompr/) we added solutions as external set of [vignettes](https://geocompr.github.io/vignettes/). 
+This approach had, however, several flaws.
+Most importantly, solutions in the vignettes were detached from the exercises in the book, meaning that if we decided to change an exercise, we would need to go to a different repository and update it there as well.
+Additionally, the solution vignettes had a different style from the book and were harder to find.
+We decided to try a different approach for the second edition of the book. 
+This time, we created an external bookdown-based website for solutions, which you can find at https://geocompr.github.io/solutions/.
+The main goal of this blog post is to explain the new setup in some detail.
+
+
+## New solutions website
+
+<!-- https://geocompr.github.io/solutions/ -->
+<!-- https://github.com/geocompr/solutions -->
+
+## Solution files
+
+<!-- https://geocompr.robinlovelace.net/raster-vector.html#exercises-4 -->
+<!-- https://geocompr.github.io/solutions/raster-vector.html -->
+
+````
+```{r setup, echo=FALSE, results='hide'}`r ''`
+ex = tempfile(fileext = ".Rmd")
+on.exit(unlink(ex))
+download.file("https://raw.githubusercontent.com/Robinlovelace/geocompr/main/_06-ex.Rmd", ex)
+```
+
+```{r, echo=FALSE, results='asis'}`r ''`
+res = knitr::knit_child(ex, quiet = TRUE, options = list(include = TRUE))
+cat(res, sep = '\n')
+```
+````
+
+## Exercise files
+
+<!-- https://github.com/Robinlovelace/geocompr/blob/main/06-raster-vector.Rmd -->
+<!-- https://github.com/Robinlovelace/geocompr/blob/main/_06-ex.Rmd -->
+
+````
+## Exercises
+
+```{r, echo=FALSE, results='asis'}`r ''`
+res = knitr::knit_child('_06-ex.Rmd', quiet = TRUE, options = list(include = FALSE, eval = FALSE))
+cat(res, sep = '\n')
+```
+
+````
+
+## GitHub Actions
+
+<!-- https://github.com/geocompr/solutions/blob/main/.github/workflows/main.yaml -->
+
+## Outro
+
+<!-- how to improve it? -->
