@@ -5,8 +5,106 @@
     <description>Recent content on the Geocomputation with R website</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Thu, 27 Jan 2022 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Thu, 24 Feb 2022 00:00:00 +0000</lastBuildDate>
     <atom:link href="https://geocompr.github.io/feed.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>Automatic website with the Geocomputation with R solutions</title>
+      <link>https://geocompr.github.io/post/2022/geocompr-solutions/</link>
+      <pubDate>Thu, 24 Feb 2022 00:00:00 +0000</pubDate>
+      
+      <guid>https://geocompr.github.io/post/2022/geocompr-solutions/</guid>
+      <description>
+&lt;script src=&#34;https://geocompr.github.io/rmarkdown-libs/header-attrs/header-attrs.js&#34;&gt;&lt;/script&gt;
+
+
+&lt;p&gt;&lt;a href=&#34;https://geocompr.robinlovelace.net/&#34;&gt;Geocomputation with R&lt;/a&gt; is a book on geographic data analysis, visualization, and modeling.
+Each chapter&lt;a href=&#34;#fn1&#34; class=&#34;footnote-ref&#34; id=&#34;fnref1&#34;&gt;&lt;sup&gt;1&lt;/sup&gt;&lt;/a&gt; ends with a set of exercises allowing the readers to test how well they understand each presented concepts and approaches.
+However, exercises are often not enough without their solutions, which provides a way to compare readers’ answers with an expected one.
+This leads to technical questions: how to provide solutions to the exercises without making the book too long, and to minimise duplication of words/effort (for the questions and answers)? Also, how to test, at the same time, if the solutions are still working?&lt;/p&gt;
+&lt;p&gt;For &lt;a href=&#34;https://bookdown.org/robinlovelace/geocompr/&#34;&gt;the first edition of the book&lt;/a&gt; we added solutions as external set of &lt;a href=&#34;https://geocompr.github.io/vignettes/&#34;&gt;vignettes&lt;/a&gt;.
+This approach had, however, several flaws.
+Most importantly, solutions in the vignettes were detached from the exercises in the book, meaning that if we decided to change an exercise, we would need to go to a different repository and update it there as well.
+Additionally, the solution vignettes had a different style from the book and were harder to find.
+We decided to try a different approach for the second edition of the book.
+This time, we created an external bookdown-based website for solutions, which you can find at &lt;a href=&#34;https://geocompr.github.io/solutions/&#34; class=&#34;uri&#34;&gt;https://geocompr.github.io/solutions/&lt;/a&gt;.
+The main goal of this blog post is to explain the new setup in some detail.&lt;/p&gt;
+&lt;div id=&#34;new-solutions-website&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;New solutions website&lt;/h2&gt;
+&lt;p&gt;Firstly, let’s take a look at the bigger picture.
+Exercises are shown at the end of the book chapters, for example, exercises for chapter 6 can be seen at &lt;a href=&#34;https://geocompr.robinlovelace.net/raster-vector.html#exercises-4&#34; class=&#34;uri&#34;&gt;https://geocompr.robinlovelace.net/raster-vector.html#exercises-4&lt;/a&gt;.
+You may notice that this exercises section starts with a description of prerequisites, and then several questions are listed.
+However, what to do when I want to find solutions to these problems or compare my results with those provided by the book authors?
+Then, we can visit the corresponding chapter in the solution website at &lt;a href=&#34;https://geocompr.github.io/solutions/raster-vector.html&#34; class=&#34;uri&#34;&gt;https://geocompr.github.io/solutions/raster-vector.html&lt;/a&gt;.
+Note that the solution website contains the same content as the exercises section, and extends it with the solution code, code results, and newly created figures.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;solutions&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Solutions&lt;/h2&gt;
+&lt;p&gt;Next, let’s dive deeper to see how it works.
+We can look at the source code of the solution website first – &lt;a href=&#34;https://github.com/geocompr/solutions&#34; class=&#34;uri&#34;&gt;https://github.com/geocompr/solutions&lt;/a&gt;, and solutions for chapter 6 are at &lt;a href=&#34;https://github.com/geocompr/solutions/blob/main/06-raster-vector.Rmd&#34; class=&#34;uri&#34;&gt;https://github.com/geocompr/solutions/blob/main/06-raster-vector.Rmd&lt;/a&gt;.
+If you open the last link, you should see a code looking like that:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;```{r setup, echo=FALSE, results=&amp;#39;hide&amp;#39;}
+ex = tempfile(fileext = &amp;quot;.Rmd&amp;quot;)
+on.exit(unlink(ex))
+download.file(&amp;quot;https://raw.githubusercontent.com/Robinlovelace/geocompr/main/_06-ex.Rmd&amp;quot;, ex)
+```
+
+```{r, echo=FALSE, results=&amp;#39;asis&amp;#39;}
+res = knitr::knit_child(ex, quiet = TRUE, options = list(include = TRUE))
+cat(res, sep = &amp;#39;\n&amp;#39;)
+```&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;What is going on here?
+In short, we have two code chunks.
+The first (hidden) code chunk downloads a &lt;code&gt;_06-ex.Rmd&lt;/code&gt; file from the &lt;code&gt;Robinlovelace/geocompr&lt;/code&gt; repository.
+Ok, but how does this &lt;code&gt;_06-ex.Rmd&lt;/code&gt; document looks like?
+You can see its content at &lt;a href=&#34;https://raw.githubusercontent.com/Robinlovelace/geocompr/main/_06-ex.Rmd&#34; class=&#34;uri&#34;&gt;https://raw.githubusercontent.com/Robinlovelace/geocompr/main/_06-ex.Rmd&lt;/a&gt;.
+It is a mix of text (mainly exercises questions) and R code chunks.
+Note here that most code chunks do not have any code chunks options set, except the first one.
+We wanted the first code chunk to be visible on the main book and the solution websites, so we used &lt;code&gt;include = TRUE&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;The second code chunk takes the downloaded document and knits it with a new global option, &lt;code&gt;include = TRUE&lt;/code&gt;.
+This option make sure that we will show all possible outputs from &lt;code&gt;_06-ex.Rmd&lt;/code&gt;, including numerical results and plots.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;exercises&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Exercises&lt;/h2&gt;
+&lt;p&gt;The above section explained how we could see exercises and solutions on the solution website.
+However, how is it possible that we can only see the exercise text in the book?
+Let’s look at the bottom of the source code of the 6th chapter at &lt;a href=&#34;https://github.com/Robinlovelace/geocompr/blob/main/06-raster-vector.Rmd&#34; class=&#34;uri&#34;&gt;https://github.com/Robinlovelace/geocompr/blob/main/06-raster-vector.Rmd&lt;/a&gt;:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;## Exercises
+
+```{r, echo=FALSE, results=&amp;#39;asis&amp;#39;}
+res = knitr::knit_child(&amp;#39;_06-ex.Rmd&amp;#39;, quiet = TRUE, options = list(include = FALSE, eval = FALSE))
+cat(res, sep = &amp;#39;\n&amp;#39;)
+```
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;There is only one short code chunk – it knits the same document, &lt;code&gt;_06-ex.Rmd&lt;/code&gt;, however using different global options, &lt;code&gt;include = FALSE, eval = FALSE&lt;/code&gt;.
+This assures that the book’s readers would not see any solutions’ code chunks or their outputs.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;workflow&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Workflow&lt;/h2&gt;
+&lt;p&gt;Now we know all of the pieces of the puzzle.
+The last step is to connect them together with GitHub Actions.&lt;/p&gt;
+&lt;p&gt;Our workflow is as follows:&lt;/p&gt;
+&lt;ol style=&#34;list-style-type: decimal&#34;&gt;
+&lt;li&gt;We add/update/modify exercises and their solutions stored in a file per chapter, e.g., &lt;code&gt;_06-ex.Rmd&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;We push the changes to the main book repository on GitHub (&lt;code&gt;Robinlovelace/geocompr&lt;/code&gt;)&lt;/li&gt;
+&lt;li&gt;The book is automatically built using a &lt;a href=&#34;https://github.com/Robinlovelace/geocompr/actions/workflows/main.yaml&#34;&gt;GitHub Actions workflow&lt;/a&gt;, including exercises (but not solutions!)&lt;/li&gt;
+&lt;li&gt;Once a week, another &lt;a href=&#34;https://github.com/geocompr/solutions/actions/workflows/main.yaml&#34;&gt;GitHub Actions workflow&lt;/a&gt; runs in the solutions repository.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;This approach ensures that the solutions are always up-to-date, reproducible, and in sync. with the manuscript.
+It creates a resources dedicated to the exercises and their solutions, helping people learn.
+It should also encourage others to get involved: can you think of another exercise or an alternative solution to existing exercises?
+You have all the info you need to contribute now.
+Let us know your comments or suggestions at &lt;a href=&#34;https://github.com/geocompr/solutions&#34; class=&#34;uri&#34;&gt;https://github.com/geocompr/solutions&lt;/a&gt;!
+Pull Requests are also welcome!&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&#34;footnotes&#34;&gt;
+&lt;hr /&gt;
+&lt;ol&gt;
+&lt;li id=&#34;fn1&#34;&gt;&lt;p&gt;Except the last one.&lt;a href=&#34;#fnref1&#34; class=&#34;footnote-back&#34;&gt;↩︎&lt;/a&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/div&gt;
+</description>
+    </item>
     
     <item>
       <title>Progress update: Geocomputation with R Second Edition Part 1</title>
