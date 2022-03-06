@@ -1,0 +1,1868 @@
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>the Geocomputation with R website</title>
+    <link>https://geocompr.github.io/feed.xml</link>
+    <description>Recent content on the Geocomputation with R website</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Thu, 24 Feb 2022 00:00:00 +0000</lastBuildDate>
+    <atom:link href="https://geocompr.github.io/feed.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>Automatic website for &#39;the Geocomputation with R&#39; solutions</title>
+      <link>https://geocompr.github.io/post/2022/geocompr-solutions/</link>
+      <pubDate>Thu, 24 Feb 2022 00:00:00 +0000</pubDate>
+      
+      <guid>https://geocompr.github.io/post/2022/geocompr-solutions/</guid>
+      <description>
+&lt;script src=&#34;https://geocompr.github.io/rmarkdown-libs/header-attrs/header-attrs.js&#34;&gt;&lt;/script&gt;
+
+
+&lt;p&gt;&lt;a href=&#34;https://geocompr.robinlovelace.net/&#34;&gt;Geocomputation with R&lt;/a&gt; is a book on geographic data analysis, visualization, and modeling.
+Each chapter&lt;a href=&#34;#fn1&#34; class=&#34;footnote-ref&#34; id=&#34;fnref1&#34;&gt;&lt;sup&gt;1&lt;/sup&gt;&lt;/a&gt; ends with a set of exercises allowing the readers to test how well they understand each presented concepts and approaches.
+However, exercises are often not enough without their solutions, which provides a way to compare readers’ answers with an expected one.
+This leads to technical questions: how to provide solutions to the exercises without making the book too long, and to minimise duplication of words/effort (for the questions and answers)? Also, how to test, at the same time, if the solutions are still working?&lt;/p&gt;
+&lt;p&gt;For &lt;a href=&#34;https://bookdown.org/robinlovelace/geocompr/&#34;&gt;the first edition of the book&lt;/a&gt; we added solutions as external set of &lt;a href=&#34;https://geocompr.github.io/vignettes/&#34;&gt;vignettes&lt;/a&gt;.
+This approach had, however, several flaws.
+Most importantly, solutions in the vignettes were detached from the exercises in the book, meaning that if we decided to change an exercise, we would need to go to a different repository and update it there as well.
+Additionally, the solution vignettes had a different style from the book and were harder to find.
+We decided to try a different approach for the second edition of the book.
+This time, we created an external bookdown-based website for solutions, which you can find at &lt;a href=&#34;https://geocompr.github.io/solutions/&#34; class=&#34;uri&#34;&gt;https://geocompr.github.io/solutions/&lt;/a&gt;.
+The main goal of this blog post is to explain the new setup in some detail.&lt;/p&gt;
+&lt;div id=&#34;new-solutions-website&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;New solutions website&lt;/h2&gt;
+&lt;p&gt;Firstly, let’s take a look at the bigger picture.
+Exercises are shown at the end of the book chapters, for example, exercises for chapter 6 can be seen at &lt;a href=&#34;https://geocompr.robinlovelace.net/raster-vector.html#exercises-4&#34; class=&#34;uri&#34;&gt;https://geocompr.robinlovelace.net/raster-vector.html#exercises-4&lt;/a&gt;.
+You may notice that this exercises section starts with a description of prerequisites, and then several questions are listed.
+However, what to do when I want to find solutions to these problems or compare my results with those provided by the book authors?
+Then, we can visit the corresponding chapter in the solution website at &lt;a href=&#34;https://geocompr.github.io/solutions/raster-vector.html&#34; class=&#34;uri&#34;&gt;https://geocompr.github.io/solutions/raster-vector.html&lt;/a&gt;.
+Note that the solution website contains the same content as the exercises section, and extends it with the solution code, code results, and newly created figures.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;solutions&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Solutions&lt;/h2&gt;
+&lt;p&gt;Next, let’s dive deeper to see how it works.
+We can look at the source code of the solution website first – &lt;a href=&#34;https://github.com/geocompr/solutions&#34; class=&#34;uri&#34;&gt;https://github.com/geocompr/solutions&lt;/a&gt;, and solutions for chapter 6 are at &lt;a href=&#34;https://github.com/geocompr/solutions/blob/main/06-raster-vector.Rmd&#34; class=&#34;uri&#34;&gt;https://github.com/geocompr/solutions/blob/main/06-raster-vector.Rmd&lt;/a&gt;.
+If you open the last link, you should see a code looking like that:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;```{r setup, echo=FALSE, results=&amp;#39;hide&amp;#39;}
+ex = tempfile(fileext = &amp;quot;.Rmd&amp;quot;)
+on.exit(unlink(ex))
+download.file(&amp;quot;https://raw.githubusercontent.com/Robinlovelace/geocompr/main/_06-ex.Rmd&amp;quot;, ex)
+```
+
+```{r, echo=FALSE, results=&amp;#39;asis&amp;#39;}
+res = knitr::knit_child(ex, quiet = TRUE, options = list(include = TRUE))
+cat(res, sep = &amp;#39;\n&amp;#39;)
+```&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;What is going on here?
+In short, we have two code chunks.
+The first (hidden) code chunk downloads a &lt;code&gt;_06-ex.Rmd&lt;/code&gt; file from the &lt;code&gt;Robinlovelace/geocompr&lt;/code&gt; repository.
+Ok, but how does this &lt;code&gt;_06-ex.Rmd&lt;/code&gt; document looks like?
+You can see its content at &lt;a href=&#34;https://raw.githubusercontent.com/Robinlovelace/geocompr/main/_06-ex.Rmd&#34; class=&#34;uri&#34;&gt;https://raw.githubusercontent.com/Robinlovelace/geocompr/main/_06-ex.Rmd&lt;/a&gt;.
+It is a mix of text (mainly exercises questions) and R code chunks.
+Note here that most code chunks do not have any code chunks options set, except the first one.
+We wanted the first code chunk to be visible on the main book and the solution websites, so we used &lt;code&gt;include = TRUE&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;The second code chunk takes the downloaded document and knits it with a new global option, &lt;code&gt;include = TRUE&lt;/code&gt;.
+This option make sure that we will show all possible outputs from &lt;code&gt;_06-ex.Rmd&lt;/code&gt;, including numerical results and plots.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;exercises&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Exercises&lt;/h2&gt;
+&lt;p&gt;The above section explained how we could see exercises and solutions on the solution website.
+However, how is it possible that we can only see the exercise text in the book?
+Let’s look at the bottom of the source code of the 6th chapter at &lt;a href=&#34;https://github.com/Robinlovelace/geocompr/blob/main/06-raster-vector.Rmd&#34; class=&#34;uri&#34;&gt;https://github.com/Robinlovelace/geocompr/blob/main/06-raster-vector.Rmd&lt;/a&gt;:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;## Exercises
+
+```{r, echo=FALSE, results=&amp;#39;asis&amp;#39;}
+res = knitr::knit_child(&amp;#39;_06-ex.Rmd&amp;#39;, quiet = TRUE, options = list(include = FALSE, eval = FALSE))
+cat(res, sep = &amp;#39;\n&amp;#39;)
+```
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;There is only one short code chunk – it knits the same document, &lt;code&gt;_06-ex.Rmd&lt;/code&gt;, however using different global options, &lt;code&gt;include = FALSE, eval = FALSE&lt;/code&gt;.
+This assures that the book’s readers would not see any solutions’ code chunks or their outputs.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;workflow&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Workflow&lt;/h2&gt;
+&lt;p&gt;Now we know all of the pieces of the puzzle.
+The last step is to connect them together with GitHub Actions.&lt;/p&gt;
+&lt;p&gt;Our workflow is as follows:&lt;/p&gt;
+&lt;ol style=&#34;list-style-type: decimal&#34;&gt;
+&lt;li&gt;We add/update/modify exercises and their solutions stored in a file per chapter, e.g., &lt;code&gt;_06-ex.Rmd&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;We push the changes to the main book repository on GitHub (&lt;code&gt;Robinlovelace/geocompr&lt;/code&gt;)&lt;/li&gt;
+&lt;li&gt;The book is automatically built using a &lt;a href=&#34;https://github.com/Robinlovelace/geocompr/actions/workflows/main.yaml&#34;&gt;GitHub Actions workflow&lt;/a&gt;, including exercises (but not solutions!)&lt;/li&gt;
+&lt;li&gt;Once a week, another &lt;a href=&#34;https://github.com/geocompr/solutions/actions/workflows/main.yaml&#34;&gt;GitHub Actions workflow&lt;/a&gt; runs in the solutions repository.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;This approach ensures that the solutions are always up-to-date, reproducible, and in sync. with the manuscript.
+It creates a resources dedicated to the exercises and their solutions, helping people learn.
+It should also encourage others to get involved: can you think of another exercise or an alternative solution to existing exercises?
+You have all the info you need to contribute now.
+Let us know your comments or suggestions at &lt;a href=&#34;https://github.com/geocompr/solutions&#34; class=&#34;uri&#34;&gt;https://github.com/geocompr/solutions&lt;/a&gt;!
+Pull Requests are also welcome!&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&#34;footnotes&#34;&gt;
+&lt;hr /&gt;
+&lt;ol&gt;
+&lt;li id=&#34;fn1&#34;&gt;&lt;p&gt;Except the last one.&lt;a href=&#34;#fnref1&#34; class=&#34;footnote-back&#34;&gt;↩︎&lt;/a&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/div&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Progress update: Geocomputation with R Second Edition Part 1</title>
+      <link>https://geocompr.github.io/post/2022/geocompr2-bp2/</link>
+      <pubDate>Thu, 27 Jan 2022 00:00:00 +0000</pubDate>
+      
+      <guid>https://geocompr.github.io/post/2022/geocompr2-bp2/</guid>
+      <description>
+&lt;script src=&#34;https://geocompr.github.io/rmarkdown-libs/header-attrs/header-attrs.js&#34;&gt;&lt;/script&gt;
+
+
+&lt;p&gt;Geocomputation with R is a book on geographic data analysis, visualization, and modeling.
+The First Edition was first published as a physical book in 2019 and we have reached 500k people through via the website at &lt;a href=&#34;https://geocompr.robinlovelace.net/&#34; class=&#34;uri&#34;&gt;https://geocompr.robinlovelace.net/&lt;/a&gt; and &lt;a href=&#34;https://www.routledge.com/9781138304512&#34;&gt;the physical book&lt;/a&gt; since then.&lt;/p&gt;
+&lt;p&gt;The book has also become a key part of many university courses, lectures, and has been endorsed by many people who have found it vital for their work and for learning new geographic skills, as outlined in our &lt;a href=&#34;https://geocompr.github.io/guestbook/&#34;&gt;guestbook at geocompr.github.io/guestbook/&lt;/a&gt;.
+Tools and methods for geographic data analysis are evolving quickly, especially in the R-Spatial ecosystem.
+Because of these changes, and demand from our readers and the wider community, we decided in September 2021 to start working on the second edition of the book.
+The second edition (work in progress) is available at &lt;a href=&#34;https://geocompr.robinlovelace.net/&#34; class=&#34;uri&#34;&gt;https://geocompr.robinlovelace.net/&lt;/a&gt;, while you can find the first edition at &lt;a href=&#34;https://bookdown.org/robinlovelace/geocompr/&#34; class=&#34;uri&#34;&gt;https://bookdown.org/robinlovelace/geocompr/&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;At the time of writing (January 2022), we have already made many changes to first part of the book called &lt;em&gt;Foundations&lt;/em&gt;.
+In this post we list and explain the changes.&lt;/p&gt;
+&lt;div id=&#34;major-changes&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Major changes&lt;/h2&gt;
+&lt;p&gt;Several major changes have happened to #rspatial since the release of the first version of the book.
+Most importantly:&lt;a href=&#34;#fn1&#34; class=&#34;footnote-ref&#34; id=&#34;fnref1&#34;&gt;&lt;sup&gt;1&lt;/sup&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;PROJ library was refactored mainly, which have had an impact on a plethora of GIS software, including R spatial packages&lt;/li&gt;
+&lt;li&gt;The &lt;strong&gt;raster&lt;/strong&gt; package, highlighted in the 1st edition, is now being replaced by its successor &lt;strong&gt;terra&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src=&#34;https://geocompr.github.io/post/2022/geocompr2-bp2_files/ch2fig.png&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;Both of these changes are now addressed in Geocomputation with R.
+Chapter &lt;a href=&#34;https://geocompr.robinlovelace.net/reproj-geo-data.html&#34;&gt;“Reprojecting geographic data”&lt;/a&gt; has undergone numerous modifications, including an explanation of the currently recommended WKT coordinate reference systems representation, information on how to get and set CRSs, or a much-improved section on creating custom projections.
+Similarly, we already replaced &lt;strong&gt;raster&lt;/strong&gt;’s descriptions and functions with &lt;strong&gt;terra&lt;/strong&gt; in the book’s first eight chapters.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;changes-to-specific-chapters&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Changes to specific chapters&lt;/h2&gt;
+&lt;p&gt;Additionally, almost all chapters received significant edits.
+Section &lt;a href=&#34;https://geocompr.robinlovelace.net/intro.html#the-history-of-r-spatial&#34;&gt;The history of R-spatial&lt;/a&gt; in 1st chapter was updated with summary of various new #rspatial developments, including &lt;strong&gt;terra&lt;/strong&gt;, &lt;strong&gt;stars&lt;/strong&gt;, &lt;strong&gt;lidR&lt;/strong&gt;, &lt;strong&gt;rayshader&lt;/strong&gt;, &lt;strong&gt;ggspatial&lt;/strong&gt;, &lt;strong&gt;mapsf&lt;/strong&gt;, etc.
+We also used this section to highlight that packages &lt;a href=&#34;https://stat.ethz.ch/pipermail/r-sig-geo/2021-September/028760.html&#34;&gt;&lt;strong&gt;rgdal&lt;/strong&gt;, &lt;strong&gt;rgeos&lt;/strong&gt;, and &lt;strong&gt;maptools&lt;/strong&gt; will be retired at the end of 2023&lt;/a&gt; and that anyone still using these packages should “&lt;strong&gt;transition to sf/stars/terra functions using GDAL and PROJ at your earliest convenience&lt;/strong&gt;”.”&lt;/p&gt;
+&lt;p&gt;Second chapter got an information about &lt;strong&gt;s2&lt;/strong&gt;, an interface to spherical geometry library already used by the &lt;strong&gt;sf&lt;/strong&gt; package, and a &lt;a href=&#34;https://geocompr.robinlovelace.net/spatial-class.html#r-packages-for-working-with-raster-data&#34;&gt;comparison between &lt;strong&gt;terra&lt;/strong&gt; and &lt;strong&gt;stars&lt;/strong&gt;&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;In Chapter 4, we added &lt;a href=&#34;https://geocompr.robinlovelace.net/spatial-operations.html#topological-relations&#34;&gt;improved communication of binary spatial predicates in Chapter 4&lt;/a&gt; and a new &lt;a href=&#34;https://geocompr.robinlovelace.net/spatial-operations.html#de-9im-strings&#34;&gt;section&lt;/a&gt; on the dimensionally extended 9 intersection model (DE-9IM).&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://geocompr.github.io/post/2022/geocompr2-bp2_files/ch4fig.png&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;The vector part of Chapter 5 received &lt;a href=&#34;https://geocompr.robinlovelace.net/geometric-operations.html#subsetting-and-clipping&#34;&gt;a new section on the links between subsetting and clipping&lt;/a&gt;, while the raster part got a much improved &lt;a href=&#34;https://geocompr.robinlovelace.net/geometric-operations.html#resampling&#34;&gt;part on resampling methods&lt;/a&gt;.
+We also decided to split out the text related raster-vector interactions into &lt;a href=&#34;https://geocompr.robinlovelace.net/raster-vector.html&#34;&gt;a new 6th chapter&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;Finally, &lt;a href=&#34;https://geocompr.robinlovelace.net/read-write.html#read-write&#34;&gt;Chapter 8&lt;/a&gt; got a bunch of improvements, including mentions of more data packages, alternative ways of reading-in OSM data, a part about geocoding, and information about Cloud Optimized GeoTIFF (COG).
+We also spent some time to show how to &lt;a href=&#34;https://geocompr.robinlovelace.net/read-write.html#iovec&#34;&gt;read just a part of vector data file using OGR SQL queries and WKT filters&lt;/a&gt;, and &lt;a href=&#34;https://geocompr.robinlovelace.net/read-write.html#raster-data-read&#34;&gt;extract only a portion of a COG raster file&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://geocompr.github.io/post/2022/geocompr2-bp2_files/ch8fig.png&#34; /&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;book-infrastructure&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Book infrastructure&lt;/h2&gt;
+&lt;p&gt;We also decided that the 2nd edition is a good time to improve the book infrastructure, i.e., data packages, storage of the exercises and solutions, automatic book builds, etc.&lt;/p&gt;
+&lt;p&gt;The most visible change is the visual theme of the book website.
+Now it uses the Bootstrap 4 framework through the &lt;code&gt;bookdown::bs4_book&lt;/code&gt; theme with slightly customized elements, such as font families or a text blocks style.&lt;/p&gt;
+&lt;p&gt;Next, we created an external bookdown-based website for solutions of the Geocomputation with R exercises.
+You can find its early version at &lt;a href=&#34;https://geocompr.github.io/solutions/&#34; class=&#34;uri&#34;&gt;https://geocompr.github.io/solutions/&lt;/a&gt;, and we plan to describe it in more detail in a future blog post.&lt;/p&gt;
+&lt;p&gt;The book still uses two external packages, &lt;strong&gt;spData&lt;/strong&gt; and &lt;strong&gt;spDataLarge&lt;/strong&gt;, to store example datasets.
+However, we made an important change here – we saved some R spatial objects to files (e.g., &lt;strong&gt;raster&lt;/strong&gt; objects to GeoTIFF) – this way, we can read data using &lt;strong&gt;raster&lt;/strong&gt;/&lt;strong&gt;terra&lt;/strong&gt;/&lt;strong&gt;stars&lt;/strong&gt;, instead of just loading one package’s class object into R memory.&lt;/p&gt;
+&lt;p&gt;We refactored build settings, so the book builds on Docker images in the &lt;a href=&#34;https://github.com/geocompr/docker&#34;&gt;geocompr/docker&lt;/a&gt; repo, and improved the experience of using the book in Binder (ideal for trying out the code before installing or updating the necessary R packages), as documented in issue &lt;a href=&#34;https://github.com/Robinlovelace/geocompr/issues/691&#34;&gt;#691&lt;/a&gt; (thanks to &lt;a href=&#34;https://github.com/yuvipanda&#34;&gt;yuvipanda&lt;/a&gt;).&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;minor-changes&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Minor changes&lt;/h2&gt;
+&lt;p&gt;We reworked several plots using the &lt;strong&gt;tmap&lt;/strong&gt; package to improve the visual consistency of the book.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://geocompr.github.io/post/2022/geocompr2-bp2_files/figtmap.png&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;The book also received (almost) countless minor changes, including rephrasing many concepts and reordering of our prose to make some ideas easier to understand.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;outro&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Outro&lt;/h2&gt;
+&lt;p&gt;Our plan now is to switch attention to the second part of the book called Extensions, while Part 1 is sent for peer review.
+We will work on the enhanced Making maps chapter, updates on Bridges to GIS software and Statistical learning.&lt;/p&gt;
+&lt;p&gt;The work and updates on the second edition of Geocomputation with R would not be possible without the interest and activity of our readers!
+We want to thank all of you, including authors of recent Pull Requests (&lt;em&gt;ec-nebi&lt;/em&gt;, &lt;em&gt;e-clin&lt;/em&gt;, Oliver Leroy &lt;em&gt;defuneste&lt;/em&gt;, Ivan Dubrovin &lt;em&gt;iod-ine&lt;/em&gt;, Floris Vanderhaeghe &lt;em&gt;florisvdh&lt;/em&gt;, Hasmukh K Mistry &lt;em&gt;hasukmistry&lt;/em&gt;, John S. Erickson &lt;em&gt;olyerickson&lt;/em&gt;) and people raising new GitHub issues.
+We are still actively working on the book, and thus – let us know if you have any &lt;a href=&#34;https://github.com/Robinlovelace/geocompr/issues&#34;&gt;issues or suggestions&lt;/a&gt; and feel free to create any &lt;a href=&#34;https://github.com/Robinlovelace/geocompr/pulls&#34;&gt;Pull Request&lt;/a&gt; from fixing typos, clarifying unclear sentences, to changes to the code and prose.
+You can also contact us on &lt;a href=&#34;https://discord.gg/Te3gWeDwmf&#34;&gt;the Geocomputation with R discord channel&lt;/a&gt;.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&#34;footnotes&#34;&gt;
+&lt;hr /&gt;
+&lt;ol&gt;
+&lt;li id=&#34;fn1&#34;&gt;&lt;p&gt;There are also other significant changes, such as the retirement of &lt;strong&gt;RQGIS&lt;/strong&gt; and &lt;strong&gt;mlr&lt;/strong&gt;, but we plan to focus on them while updating the second part of the book.&lt;a href=&#34;#fnref1&#34; class=&#34;footnote-back&#34;&gt;↩︎&lt;/a&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/div&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Geocomputation with R: Second Edition feedback</title>
+      <link>https://geocompr.github.io/post/2021/geocompr2-bp1/</link>
+      <pubDate>Mon, 06 Sep 2021 00:00:00 +0000</pubDate>
+      
+      <guid>https://geocompr.github.io/post/2021/geocompr2-bp1/</guid>
+      <description>
+&lt;script src=&#34;https://geocompr.github.io/rmarkdown-libs/header-attrs/header-attrs.js&#34;&gt;&lt;/script&gt;
+
+
+&lt;p&gt;TL;DR: Please help us by filling out the survey at &lt;a href=&#34;https://forms.gle/nq9RmbxJyZXQgc948&#34; class=&#34;uri&#34;&gt;https://forms.gle/nq9RmbxJyZXQgc948&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;It’s been almost 3 years since the first edition of Geocomputation with R was published back in 2019.
+It’s been an amazing journey for this open source book on geographic data analysis, visualization and modeling since then.
+We have reached almost 500k people via the website at &lt;a href=&#34;https://geocompr.robinlovelace.net/&#34; class=&#34;uri&#34;&gt;https://geocompr.robinlovelace.net/&lt;/a&gt; and the physical book.
+The book now contributes to many university courses, lectures, and personal development as outlined at &lt;a href=&#34;https://geocompr.github.io/guestbook/&#34; class=&#34;uri&#34;&gt;https://geocompr.github.io/guestbook/&lt;/a&gt; - where you can add you own comments.&lt;/p&gt;
+&lt;p&gt;Building on the success of the first edition, and motivated by the need for the material to adapt as spatial ecosystem evolves, we have decided that it is time for a Second Edition.
+We plan to start work on it over the next few months, aiming for publication around summer 2022.
+Second edition will be available at &lt;a href=&#34;https://geocompr.robinlovelace.net/&#34; class=&#34;uri&#34;&gt;https://geocompr.robinlovelace.net/&lt;/a&gt;, while you can find the first edition at &lt;a href=&#34;https://bookdown.org/robinlovelace/geocompr/&#34; class=&#34;uri&#34;&gt;https://bookdown.org/robinlovelace/geocompr/&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;We already have plenty of changes, updates, and improvements in mind, as documented in the book’s issue tracker.
+However, we want to get feedback from the community, to ensure we’re not miss something key and to find out what you most want from a 2nd edition.
+&lt;strong&gt;We’re asking for your help in guiding the future of Geocomputation with R!&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;The book is already much stronger thanks to community, with 50+ people contributing to the codebase already and many more supporting in the issue tracker and the guestbook.
+&lt;strong&gt;Please take a few minutes to let us know your thoughts on the current edition, and suggestions for the next one using &lt;a href=&#34;https://forms.gle/nq9RmbxJyZXQgc948&#34;&gt;the Google form&lt;/a&gt;.&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;Thanks from the Geocomputation with R team,&lt;/p&gt;
+&lt;p&gt;Robin Lovelace, Jakub Nowosad, and Jannes Muenchow&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Conversions between different spatial classes in R</title>
+      <link>https://geocompr.github.io/post/2021/spatial-classes-conversion/</link>
+      <pubDate>Thu, 17 Jun 2021 00:00:00 +0000</pubDate>
+      
+      <guid>https://geocompr.github.io/post/2021/spatial-classes-conversion/</guid>
+      <description>
+&lt;script src=&#34;https://geocompr.github.io/rmarkdown-libs/header-attrs/header-attrs.js&#34;&gt;&lt;/script&gt;
+&lt;script src=&#34;https://geocompr.github.io/rmarkdown-libs/kePrint/kePrint.js&#34;&gt;&lt;/script&gt;
+&lt;link href=&#34;https://geocompr.github.io/rmarkdown-libs/lightable/lightable.css&#34; rel=&#34;stylesheet&#34; /&gt;
+
+
+&lt;p&gt;The R programming language has, over the past two decades, evolved substantial spatial data analysis capabilities, and is now one of the most powerful environments for undertaking geographic research using a reproducible command line interface.
+Currently, dedicated R packages allow to read spatial data and apply a plethora of different kinds of spatial methods in a reproducible fashion.&lt;/p&gt;
+&lt;p&gt;There are two main&lt;a href=&#34;#fn1&#34; class=&#34;footnote-ref&#34; id=&#34;fnref1&#34;&gt;&lt;sup&gt;1&lt;/sup&gt;&lt;/a&gt; spatial data models - spatial vector data and spatial raster data.
+Natively R does not support spatial data and does not have a definition of spatial classes.
+Therefore, there had been &lt;a href=&#34;https://geocompr.robinlovelace.net/intro.html#the-history-of-r-spatial&#34;&gt;a need to create R tools able to represent spatial vector and raster data&lt;/a&gt;.
+Spatial classes are slightly different from regular R objects, such as data frames or matrices, as they need to not only store values, but also information about spatial locations and their &lt;a href=&#34;https://geocompr.robinlovelace.net/spatial-class.html#crs-intro&#34;&gt;coordinate reference systems&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;Nowadays, the most prominent packages to represent spatial vector data are &lt;strong&gt;sf&lt;/strong&gt; &lt;span class=&#34;citation&#34;&gt;(Pebesma &lt;a href=&#34;#ref-R-sf&#34; role=&#34;doc-biblioref&#34;&gt;2021&lt;/a&gt;&lt;a href=&#34;#ref-R-sf&#34; role=&#34;doc-biblioref&#34;&gt;a&lt;/a&gt;)&lt;/span&gt; and its predecessor &lt;strong&gt;sp&lt;/strong&gt; &lt;span class=&#34;citation&#34;&gt;(Pebesma and Bivand &lt;a href=&#34;#ref-R-sp&#34; role=&#34;doc-biblioref&#34;&gt;2021&lt;/a&gt;)&lt;/span&gt;, however, the &lt;strong&gt;terra&lt;/strong&gt; &lt;span class=&#34;citation&#34;&gt;(Hijmans &lt;a href=&#34;#ref-R-terra&#34; role=&#34;doc-biblioref&#34;&gt;2021&lt;/a&gt;&lt;a href=&#34;#ref-R-terra&#34; role=&#34;doc-biblioref&#34;&gt;b&lt;/a&gt;)&lt;/span&gt; package also has its own spatial class for vector data.
+Spatial raster data can be stored as objects from &lt;strong&gt;terra&lt;/strong&gt; &lt;span class=&#34;citation&#34;&gt;(Hijmans &lt;a href=&#34;#ref-R-terra&#34; role=&#34;doc-biblioref&#34;&gt;2021&lt;/a&gt;&lt;a href=&#34;#ref-R-terra&#34; role=&#34;doc-biblioref&#34;&gt;b&lt;/a&gt;)&lt;/span&gt; and its predecessor &lt;strong&gt;raster&lt;/strong&gt; &lt;span class=&#34;citation&#34;&gt;(Hijmans &lt;a href=&#34;#ref-R-raster&#34; role=&#34;doc-biblioref&#34;&gt;2021&lt;/a&gt;&lt;a href=&#34;#ref-R-raster&#34; role=&#34;doc-biblioref&#34;&gt;a&lt;/a&gt;)&lt;/span&gt;, or alternatively the &lt;strong&gt;stars&lt;/strong&gt; package &lt;span class=&#34;citation&#34;&gt;(Pebesma &lt;a href=&#34;#ref-R-stars&#34; role=&#34;doc-biblioref&#34;&gt;2021&lt;/a&gt;&lt;a href=&#34;#ref-R-stars&#34; role=&#34;doc-biblioref&#34;&gt;b&lt;/a&gt;)&lt;/span&gt;.&lt;/p&gt;
+&lt;p&gt;As you could see in &lt;a href=&#34;https://geocompr.github.io/post/2020/whyr_webinar004/&#34;&gt;our Why R? webinar talk&lt;/a&gt;, the spatial capabilities of R constantly expand, but also evolve.
+New packages are being developed, while old ones are modified or superseded.
+In this process, new methods are created, higher performance code is added, and possible workflows are expanded.
+Alternative approaches allow for a (hopefully) healthy competition, resulting in better packages.
+Of course, having more than one package (with its own spatial class/es) for a vector or raster data model could be problematic, especially for new or inexperienced users.&lt;/p&gt;
+&lt;p&gt;First, it takes time to understand how different spatial classes are organized.
+To illustrate this, let’s read the same spatial data, &lt;code&gt;srtm.tif&lt;/code&gt; from the &lt;strong&gt;spDataLarge&lt;/strong&gt; package &lt;span class=&#34;citation&#34;&gt;(Nowosad and Lovelace &lt;a href=&#34;#ref-R-spDataLarge&#34; role=&#34;doc-biblioref&#34;&gt;2021&lt;/a&gt;)&lt;/span&gt;, using &lt;strong&gt;raster&lt;/strong&gt; and &lt;strong&gt;stars&lt;/strong&gt;.
+The &lt;strong&gt;raster&lt;/strong&gt; object:&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;raster_file_path = system.file(&amp;quot;raster/srtm.tif&amp;quot;, package = &amp;quot;spDataLarge&amp;quot;)
+library(raster)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## Warning: no function found corresponding to methods exports from &amp;#39;raster&amp;#39; for:
+## &amp;#39;area&amp;#39;&lt;/code&gt;&lt;/pre&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;srtm_raster = raster(raster_file_path)
+srtm_raster&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## class      : RasterLayer 
+## dimensions : 457, 465, 212505  (nrow, ncol, ncell)
+## resolution : 0.0008333333, 0.0008333333  (x, y)
+## extent     : -113.2396, -112.8521, 37.13208, 37.51292  (xmin, xmax, ymin, ymax)
+## crs        : +proj=longlat +datum=WGS84 +no_defs 
+## source     : srtm.tif 
+## names      : srtm 
+## values     : 1024, 2892  (min, max)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;The &lt;strong&gt;stars&lt;/strong&gt; object:&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;library(stars)
+srtm_stars = read_stars(raster_file_path)
+srtm_stars&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## stars object with 2 dimensions and 1 attribute
+## attribute(s):
+##           Min. 1st Qu. Median     Mean 3rd Qu. Max.
+## srtm.tif  1024    1535   1837 1842.548    2114 2892
+## dimension(s):
+##   from  to  offset        delta refsys point values x/y
+## x    1 465 -113.24  0.000833333 WGS 84 FALSE   NULL [x]
+## y    1 457 37.5129 -0.000833333 WGS 84 FALSE   NULL [y]&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Secondly, other packages with methods we want to use, could only accept one specific spatial class, but not the other.
+For example, the current version of the &lt;strong&gt;sabre&lt;/strong&gt; package &lt;span class=&#34;citation&#34;&gt;(Nowosad and Stepinski &lt;a href=&#34;#ref-R-sabre&#34; role=&#34;doc-biblioref&#34;&gt;2019&lt;/a&gt;)&lt;/span&gt; (0.3.2) accepts objects from the &lt;strong&gt;raster&lt;/strong&gt; package, but not ones from &lt;strong&gt;terra&lt;/strong&gt; or &lt;strong&gt;stars&lt;/strong&gt;&lt;a href=&#34;#fn2&#34; class=&#34;footnote-ref&#34; id=&#34;fnref2&#34;&gt;&lt;sup&gt;2&lt;/sup&gt;&lt;/a&gt;.
+The &lt;code&gt;partitions1&lt;/code&gt; and &lt;code&gt;partitions2&lt;/code&gt; objects are of the &lt;code&gt;RasterLayer&lt;/code&gt; class from &lt;strong&gt;raster&lt;/strong&gt;, so the &lt;code&gt;vmeasure_calc()&lt;/code&gt; function works correctly.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;library(sabre)
+library(raster)
+data(&amp;quot;partitions1&amp;quot;)
+data(&amp;quot;partitions2&amp;quot;)
+vmeasure_calc(partitions1, partitions2)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## The SABRE results:
+## 
+##  V-measure: 0.36 
+##  Homogeneity: 0.32 
+##  Completeness: 0.42 
+## 
+##  The spatial objects can be retrieved with:
+##  $map1 - the first map
+##  $map2 - the second map&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;However, when the input object (representing the same spatial data!) is of the &lt;code&gt;SpatRaster&lt;/code&gt; class from &lt;strong&gt;terra&lt;/strong&gt;, the calculation results in error.&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;vmeasure_calc(partitions1_terra, partitions1_terra)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## Error in UseMethod(&amp;quot;vmeasure_calc&amp;quot;) : 
+##  no applicable method for &amp;#39;vmeasure_calc&amp;#39; applied to an object of class &amp;quot;SpatRaster&amp;quot;&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Some packages, such as &lt;strong&gt;tmap&lt;/strong&gt; &lt;span class=&#34;citation&#34;&gt;(Tennekes &lt;a href=&#34;#ref-R-tmap&#34; role=&#34;doc-biblioref&#34;&gt;2021&lt;/a&gt;)&lt;/span&gt;, accept many R spatial classes, however, this takes a lot of effort from package creators to make it possible and to maintain it.
+Gladly, a number of functions exist that allow to convert between different R spatial classes.
+Using them, we can work with our favorite spatial data representation, switch to some other representation just for a certain calculation, and then convert the result back into our class.
+The next two sections showcase how to move between different spatial vector and raster data classes in R.&lt;/p&gt;
+&lt;div id=&#34;spatial-vector-data&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Spatial vector data&lt;/h2&gt;
+&lt;p&gt;The &lt;code&gt;world.gpkg&lt;/code&gt; file from the &lt;strong&gt;spData&lt;/strong&gt; &lt;span class=&#34;citation&#34;&gt;(Bivand, Nowosad, and Lovelace &lt;a href=&#34;#ref-R-spData&#34; role=&#34;doc-biblioref&#34;&gt;2020&lt;/a&gt;)&lt;/span&gt; contains spatial vector data with world countries.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;world_path = system.file(&amp;quot;shapes/world.gpkg&amp;quot;, package = &amp;quot;spData&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Now, we can read this file, for example, as an &lt;code&gt;sf&lt;/code&gt; object, and convert it into other spatial vector data classes.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;library(sf)
+library(sp)
+library(terra)
+
+# read as sf
+world = read_sf(world_path)
+
+# sf to sp
+world_sp1 = as(world, &amp;quot;Spatial&amp;quot;)
+
+# sf to terra vect
+world_terra1 = vect(world)
+
+# sp to terra vect
+world_terra2 = vect(world_sp1)
+
+# sp to sf
+world_sf2 = st_as_sf(world_sp1)
+
+# terra vect to sf
+world_sf3 = st_as_sf(world_terra1)
+
+# terra vect to sp
+world_sp2 = as(world_terra1, &amp;quot;Spatial&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;In summary, &lt;code&gt;st_as_sf()&lt;/code&gt; converts other classes into &lt;code&gt;sf&lt;/code&gt;, &lt;code&gt;vect()&lt;/code&gt; transform other classes into &lt;strong&gt;terra&lt;/strong&gt;’s &lt;code&gt;SpatVector&lt;/code&gt;, and with &lt;code&gt;as(x, &#34;Spatial&#34;)&lt;/code&gt; it is possible to get &lt;strong&gt;sp&lt;/strong&gt;’s vectors.&lt;/p&gt;
+&lt;table class=&#34;table&#34; style=&#34;margin-left: auto; margin-right: auto;&#34;&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th style=&#34;text-align:left;&#34;&gt;
+FROM/TO
+&lt;/th&gt;
+&lt;th style=&#34;text-align:left;&#34;&gt;
+sf
+&lt;/th&gt;
+&lt;th style=&#34;text-align:left;&#34;&gt;
+sp
+&lt;/th&gt;
+&lt;th style=&#34;text-align:left;&#34;&gt;
+terra
+&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td style=&#34;text-align:left;border-right:1px solid;font-weight: bold;&#34;&gt;
+sf
+&lt;/td&gt;
+&lt;td style=&#34;text-align:left;border-right:1px solid;font-style: italic;&#34;&gt;
+&lt;/td&gt;
+&lt;td style=&#34;text-align:left;border-right:1px solid;font-style: italic;&#34;&gt;
+as(x, “Spatial”)
+&lt;/td&gt;
+&lt;td style=&#34;text-align:left;font-style: italic;&#34;&gt;
+vect()
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=&#34;text-align:left;border-right:1px solid;font-weight: bold;&#34;&gt;
+sp
+&lt;/td&gt;
+&lt;td style=&#34;text-align:left;border-right:1px solid;font-style: italic;&#34;&gt;
+st_as_sf()
+&lt;/td&gt;
+&lt;td style=&#34;text-align:left;border-right:1px solid;font-style: italic;&#34;&gt;
+&lt;/td&gt;
+&lt;td style=&#34;text-align:left;font-style: italic;&#34;&gt;
+vect()
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=&#34;text-align:left;border-right:1px solid;font-weight: bold;&#34;&gt;
+terra
+&lt;/td&gt;
+&lt;td style=&#34;text-align:left;border-right:1px solid;font-style: italic;&#34;&gt;
+st_as_sf()
+&lt;/td&gt;
+&lt;td style=&#34;text-align:left;border-right:1px solid;font-style: italic;&#34;&gt;
+as(x, “Spatial”)
+&lt;/td&gt;
+&lt;td style=&#34;text-align:left;font-style: italic;&#34;&gt;
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;/div&gt;
+&lt;div id=&#34;spatial-raster-data&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Spatial raster data&lt;/h2&gt;
+&lt;p&gt;The &lt;code&gt;srtm.tif&lt;/code&gt; file from the &lt;strong&gt;spDataLarge&lt;/strong&gt; &lt;span class=&#34;citation&#34;&gt;(Nowosad and Lovelace &lt;a href=&#34;#ref-R-spDataLarge&#34; role=&#34;doc-biblioref&#34;&gt;2021&lt;/a&gt;)&lt;/span&gt; contains a raster elevation model for the Zion National Park in the USA.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;srtm_path = system.file(&amp;quot;raster/srtm.tif&amp;quot;, package = &amp;quot;spDataLarge&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Now, we can read this file, for example, as a &lt;strong&gt;raster&lt;/strong&gt; object, and convert it into other spatial vector data classes.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;library(raster)
+library(stars)
+library(terra)
+
+srtm_raster1 = raster(srtm_path)
+
+# raster to terra
+srtm_terra1 = rast(srtm_raster1)
+
+# terra to raster
+srtm_raster2 = raster(srtm_terra1)
+
+# raster to stars
+srtm_stars1 = st_as_stars(srtm_raster1)
+
+# stars to raster
+srtm_raster2 = as(srtm_stars1, &amp;quot;Raster&amp;quot;)
+
+# terra to stars
+srtm_stars2 = st_as_stars(srtm_terra1)
+
+# stars to terra
+srtm_terra1a = as(srtm_stars1, &amp;quot;SpatRaster&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;As you can see - in most cases, we can just use one function to move from one class to another.&lt;/p&gt;
+&lt;table class=&#34;table&#34; style=&#34;margin-left: auto; margin-right: auto;&#34;&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th style=&#34;text-align:left;&#34;&gt;
+FROM/TO
+&lt;/th&gt;
+&lt;th style=&#34;text-align:left;&#34;&gt;
+raster
+&lt;/th&gt;
+&lt;th style=&#34;text-align:left;&#34;&gt;
+terra
+&lt;/th&gt;
+&lt;th style=&#34;text-align:left;&#34;&gt;
+stars
+&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td style=&#34;text-align:left;border-right:1px solid;font-weight: bold;&#34;&gt;
+raster
+&lt;/td&gt;
+&lt;td style=&#34;text-align:left;border-right:1px solid;font-style: italic;&#34;&gt;
+&lt;/td&gt;
+&lt;td style=&#34;text-align:left;border-right:1px solid;font-style: italic;&#34;&gt;
+rast()
+&lt;/td&gt;
+&lt;td style=&#34;text-align:left;font-style: italic;&#34;&gt;
+st_as_stars()
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=&#34;text-align:left;border-right:1px solid;font-weight: bold;&#34;&gt;
+terra
+&lt;/td&gt;
+&lt;td style=&#34;text-align:left;border-right:1px solid;font-style: italic;&#34;&gt;
+raster()
+&lt;/td&gt;
+&lt;td style=&#34;text-align:left;border-right:1px solid;font-style: italic;&#34;&gt;
+&lt;/td&gt;
+&lt;td style=&#34;text-align:left;font-style: italic;&#34;&gt;
+st_as_stars()
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=&#34;text-align:left;border-right:1px solid;font-weight: bold;&#34;&gt;
+stars
+&lt;/td&gt;
+&lt;td style=&#34;text-align:left;border-right:1px solid;font-style: italic;&#34;&gt;
+raster()
+&lt;/td&gt;
+&lt;td style=&#34;text-align:left;border-right:1px solid;font-style: italic;&#34;&gt;
+as(x, “SpatRaster”)
+&lt;/td&gt;
+&lt;td style=&#34;text-align:left;font-style: italic;&#34;&gt;
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;/div&gt;
+&lt;div id=&#34;summary&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Summary&lt;/h2&gt;
+&lt;p&gt;This blog post summarizes how to move between different R spatial vector and raster classes.
+All of the functions mentioned above have one role: to change classes of input objects.
+They do not, however, change geometries or underlining values in the data.&lt;/p&gt;
+&lt;p&gt;Additionally, switching from the spatial vector data model to the spatial raster data model (and vice versa) is also possible.
+These operations are known as rasterization and vectorization, and they could impact spatial and nonspatial information in the input data.
+To learn more about them, read &lt;a href=&#34;https://geocompr.robinlovelace.net/geometric-operations.html#raster-vector&#34;&gt;the Raster-Vector Interactions section&lt;/a&gt; in &lt;a href=&#34;https://geocompr.robinlovelace.net/&#34;&gt;Geocomputation with R&lt;/a&gt;.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;references&#34; class=&#34;section level2 unnumbered&#34;&gt;
+&lt;h2&gt;References&lt;/h2&gt;
+&lt;div id=&#34;refs&#34; class=&#34;references hanging-indent&#34;&gt;
+&lt;div id=&#34;ref-R-spData&#34;&gt;
+&lt;p&gt;Bivand, Roger, Jakub Nowosad, and Robin Lovelace. 2020. &lt;em&gt;SpData: Datasets for Spatial Analysis&lt;/em&gt;. &lt;a href=&#34;https://nowosad.github.io/spData/&#34;&gt;https://nowosad.github.io/spData/&lt;/a&gt;.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;ref-R-raster&#34;&gt;
+&lt;p&gt;Hijmans, Robert J. 2021a. &lt;em&gt;Raster: Geographic Data Analysis and Modeling&lt;/em&gt;. &lt;a href=&#34;https://rspatial.org/raster&#34;&gt;https://rspatial.org/raster&lt;/a&gt;.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;ref-R-terra&#34;&gt;
+&lt;p&gt;———. 2021b. &lt;em&gt;Terra: Spatial Data Analysis&lt;/em&gt;. &lt;a href=&#34;https://rspatial.org/terra&#34;&gt;https://rspatial.org/terra&lt;/a&gt;.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;ref-R-spDataLarge&#34;&gt;
+&lt;p&gt;Nowosad, Jakub, and Robin Lovelace. 2021. &lt;em&gt;SpDataLarge: Large Datasets for Spatial Analysis&lt;/em&gt;. &lt;a href=&#34;https://github.com/Nowosad/spData&#34;&gt;https://github.com/Nowosad/spData&lt;/a&gt;.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;ref-R-sabre&#34;&gt;
+&lt;p&gt;Nowosad, Jakub, and Tomasz Stepinski. 2019. &lt;em&gt;Sabre: Spatial Association Between Regionalizations&lt;/em&gt;. &lt;a href=&#34;https://nowosad.github.io/sabre/&#34;&gt;https://nowosad.github.io/sabre/&lt;/a&gt;.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;ref-R-sf&#34;&gt;
+&lt;p&gt;Pebesma, Edzer. 2021a. &lt;em&gt;Sf: Simple Features for R&lt;/em&gt;.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;ref-R-stars&#34;&gt;
+&lt;p&gt;———. 2021b. &lt;em&gt;Stars: Spatiotemporal Arrays, Raster and Vector Data Cubes&lt;/em&gt;.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;ref-R-sp&#34;&gt;
+&lt;p&gt;Pebesma, Edzer, and Roger Bivand. 2021. &lt;em&gt;Sp: Classes and Methods for Spatial Data&lt;/em&gt;. &lt;a href=&#34;https://CRAN.R-project.org/package=sp&#34;&gt;https://CRAN.R-project.org/package=sp&lt;/a&gt;.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;ref-R-tmap&#34;&gt;
+&lt;p&gt;Tennekes, Martijn. 2021. &lt;em&gt;Tmap: Thematic Maps&lt;/em&gt;. &lt;a href=&#34;https://github.com/mtennekes/tmap&#34;&gt;https://github.com/mtennekes/tmap&lt;/a&gt;.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&#34;footnotes&#34;&gt;
+&lt;hr /&gt;
+&lt;ol&gt;
+&lt;li id=&#34;fn1&#34;&gt;&lt;p&gt;There are also other spatial data models, including meshes or point clouds.&lt;a href=&#34;#fnref1&#34; class=&#34;footnote-back&#34;&gt;↩︎&lt;/a&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;li id=&#34;fn2&#34;&gt;&lt;p&gt;I plan to improve that in a future release.&lt;a href=&#34;#fnref2&#34; class=&#34;footnote-back&#34;&gt;↩︎&lt;/a&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/div&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Recent changes in R spatial and how to be ready for them</title>
+      <link>https://geocompr.github.io/post/2020/whyr_webinar004/</link>
+      <pubDate>Sat, 25 Apr 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://geocompr.github.io/post/2020/whyr_webinar004/</guid>
+      <description>
+&lt;script src=&#34;https://geocompr.github.io/rmarkdown-libs/header-attrs/header-attrs.js&#34;&gt;&lt;/script&gt;
+&lt;link href=&#34;https://geocompr.github.io/rmarkdown-libs/anchor-sections/anchor-sections.css&#34; rel=&#34;stylesheet&#34; /&gt;
+&lt;script src=&#34;https://geocompr.github.io/rmarkdown-libs/anchor-sections/anchor-sections.js&#34;&gt;&lt;/script&gt;
+
+
+&lt;p&gt;Currently, hundreds of R packages are related to spatial data analysis.
+They range from ecology and earth observation, hydrology and soil science, to transportation and demography.
+These packages support various stages of analysis, including data preparation, visualization, modeling, or communicating the results.
+One common feature of most R spatial packages is that they are built upon some of the main representations of spatial data in R, available in key geographic R packages such as:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;sf&lt;/strong&gt;, which replaces &lt;strong&gt;sp&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;terra&lt;/strong&gt;, which aims to replace &lt;strong&gt;raster&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;stars&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Those packages are also not entirely independent.
+They are using external libraries, namely GEOS for spatial data operations, GDAL for reading and writing spatial data, and PROJ for conversions of spatial coordinates.&lt;/p&gt;
+&lt;p&gt;Therefore, R spatial packages are interwoven with each other and depend partially on external software developments.
+This has several positives, including the ability to use cutting-edge features and algorithms.
+On the other hand, it also makes R spatial packages vulnerable to changes in the upstream packages and libraries.&lt;/p&gt;
+&lt;p&gt;In the first part of the talk, we showcase several recent advances in R packages.
+It includes the largest recent change related to the developments in the PROJ library.
+We explain why the changes happened and how they impact R users.
+The second part focus on how to prepare for the changes, including computer set-up and running R spatial packages using Docker (briefly covered in a previous &lt;a href=&#34;https://geocompr.github.io/post/2020/installing-r-spatial-ubuntu/&#34;&gt;post&lt;/a&gt; and outlined in the new &lt;a href=&#34;https://github.com/geocompr/docker#geocomputation-with-r-in-docker&#34;&gt;geocompr/docker&lt;/a&gt; repo).
+We outline important considerations when setting-up operating systems for geographic R packages.
+To reduce set-up times you can use geographic R packages Docker, a flexible and scalable technology containerization technology.
+Docker can run on modern computers and on your browser via services such as Binder, greatly reducing set-up times.
+Discussing these set-up options, and questions of compatibility between geographic R packages and paradigms such as the tidyverse and data.table, ensure that after the talk everyone can empower themselves with open source software for geographic data analysis in a powerful and flexible statistical programming environment.&lt;/p&gt;
+&lt;p&gt;You can find the slides for the talk at &lt;a href=&#34;https://nowosad.github.io/whyr_webinar004/&#34; class=&#34;uri&#34;&gt;https://nowosad.github.io/whyr_webinar004/&lt;/a&gt;.&lt;/p&gt;
+
+&lt;div style=&#34;position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden;&#34;&gt;
+  &lt;iframe src=&#34;https://www.youtube.com/embed/Va0STgco7-4&#34; style=&#34;position: absolute; top: 0; left: 0; width: 100%; height: 100%; border:0;&#34; allowfullscreen title=&#34;YouTube Video&#34;&gt;&lt;/iframe&gt;
+&lt;/div&gt;
+
+</description>
+    </item>
+    
+    <item>
+      <title>Demo of reproducible geographic data analysis: mapping Covid-19 data with R</title>
+      <link>https://geocompr.github.io/post/2020/mapping-covid-19/</link>
+      <pubDate>Thu, 23 Apr 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://geocompr.github.io/post/2020/mapping-covid-19/</guid>
+      <description>
+&lt;script src=&#34;https://geocompr.github.io/rmarkdown-libs/header-attrs/header-attrs.js&#34;&gt;&lt;/script&gt;
+&lt;link href=&#34;https://geocompr.github.io/rmarkdown-libs/anchor-sections/anchor-sections.css&#34; rel=&#34;stylesheet&#34; /&gt;
+&lt;script src=&#34;https://geocompr.github.io/rmarkdown-libs/anchor-sections/anchor-sections.js&#34;&gt;&lt;/script&gt;
+
+
+&lt;div id=&#34;introduction&#34; class=&#34;section level1&#34;&gt;
+&lt;h1&gt;Introduction&lt;/h1&gt;
+&lt;p&gt;The coronavirus pandemic is a global phenomenon that will affect the lives of the majority of the world’s population for years to come.
+Impacts range from physical distancing measures &lt;a href=&#34;https://en.wikipedia.org/wiki/Social_distancing#2019%E2%80%932020_coronavirus_pandemic&#34;&gt;already affecting more than half of Earth’s population&lt;/a&gt; and knock-on impacts such as &lt;a href=&#34;https://www.esa.int/Applications/Observing_the_Earth/Copernicus/Sentinel-5P/Coronavirus_lockdown_leading_to_drop_in_pollution_across_Europe&#34;&gt;changes in air quality&lt;/a&gt; to potentially life threatening illness, with peer reviewed estimates of &lt;a href=&#34;https://www.thelancet.com/pdfs/journals/laninf/PIIS1473-3099(20)30243-7.pdf&#34;&gt;infection fatality rates&lt;/a&gt; showing the disease disproportionately affects the elderly and people with underlying health conditions.&lt;/p&gt;
+&lt;p&gt;Like other global phenomena such as climate change, the impacts of the pandemic vary greatly by geographic location, with effective and early implementation of physical distancing measures and effective contact tracing associated with lower death rates, according to preliminary &lt;a href=&#34;https://www.medrxiv.org/content/10.1101/2020.03.10.20033738v3&#34;&gt;research&lt;/a&gt;, as illustrated in the animation below (source: &lt;a href=&#34;https://www.washingtonpost.com/graphics/2020/world/corona-simulator/&#34;&gt;Washington Post&lt;/a&gt;).&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://www.washingtonpost.com/graphics/2020/world/corona-simulator/&#34;&gt;&lt;img src=&#34;https://upload.wikimedia.org/wikipedia/commons/thumb/8/82/Katapult_importance_social_distancing.gif/350px-Katapult_importance_social_distancing.gif&#34; /&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;This article demonstrates how to download and map open data on the evolving coronavirus pandemic, using reproducible R code.
+The aim is not to provide scientific analysis of the data, but to demonstrate how ‘open science’ enables public access to important international datasets.
+It also provides an opportunity to demonstrate how techniques taught in &lt;a href=&#34;https://geocompr.robinlovelace.net/&#34;&gt;&lt;em&gt;Geocomputation with R&lt;/em&gt;&lt;/a&gt; can be applied to real-world datasets.&lt;/p&gt;
+&lt;p&gt;Before undertaking geographic analysis of ‘rate’ data, such as the number Covid-19 infections per unit area, it is worth acknowledging caveats at the outset.
+Simple graphics of complex phenomena can be misleading.
+This is well-illustrated in the figure below by &lt;a href=&#34;https://github.com/willgeary&#34;&gt;Will Geary&lt;/a&gt;, which shows how the ecological fallacy can affect interpretations of geographical analysis of areal units such countries that we will be using in this research.&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://github.com/willgeary/covid-nyc-dasymetric-map&#34;&gt;&lt;img src=&#34;https://raw.githubusercontent.com/willgeary/covid-nyc-dasymetric-map/master/assets/comparison_table_zip_hex_smoothed.png&#34; /&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;The post is intended more as a taster of geographic visualisation in R than as a gateway to scientific analysis of Covid-19 data.
+See resources such as the &lt;a href=&#34;https://2020.erum.io/covidr-contest/&#34;&gt;eRum2020 CovidR&lt;/a&gt; contest and &lt;a href=&#34;https://towardsdatascience.com/top-5-r-resources-on-covid-19-coronavirus-1d4c8df6d85f&#34;&gt;lists&lt;/a&gt; of online &lt;a href=&#34;https://github.com/HDRUK/covid-19&#34;&gt;resources&lt;/a&gt; for pointers on how to usefully contribute to data-driven efforts to tackle the crisis.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;set-up&#34; class=&#34;section level1&#34;&gt;
+&lt;h1&gt;Set-up&lt;/h1&gt;
+&lt;p&gt;To reproduce the results presented in this article you will need to have an R installation with up-to-date versions of the following packages installed and loaded.
+(See the &lt;a href=&#34;https://github.com/geocompr/docker&#34;&gt;geocompr/docker&lt;/a&gt; repo and &lt;a href=&#34;https://geocompr.github.io/post/2020/installing-r-spatial-ubuntu/&#34;&gt;Installing R on Ubuntu&lt;/a&gt; article for more on setting up your computer to work with R).&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;library(sf)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## Linking to GEOS 3.8.1, GDAL 3.0.4, PROJ 6.3.2&lt;/code&gt;&lt;/pre&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;library(tmap)
+library(dplyr)&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;div id=&#34;getting-international-covid-19-data&#34; class=&#34;section level1&#34;&gt;
+&lt;h1&gt;Getting international Covid-19 data&lt;/h1&gt;
+&lt;p&gt;To get data on official Covid-19 statistics, we will use the &lt;a href=&#34;https://github.com/covid19datahub/COVID19&#34;&gt;&lt;code&gt;COVID19&lt;/code&gt;&lt;/a&gt; R package.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://camo.githubusercontent.com/b627e2aa6edcee3ead77511a35d4e1a5e91aa07f/68747470733a2f2f73746f726167652e636f7669643139646174616875622e696f2f6c6f676f2e737667&#34; width=&#34;20%&#34; style=&#34;display: block; margin: auto;&#34;&gt;&lt;/p&gt;
+&lt;p&gt;This package provides daily updated data on a variety of variables related to the coronavirus pandemic at national, regional and city levels.
+Install it as follows:&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;install.packages(&amp;quot;COVID19&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;After the package is installed, you can get up-to-date country-level data as follows:&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;d = COVID19::covid19()&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;To minimise dependencies for reproducing the results in this article, we uploaded a copy of the data, which can be downloaded as follows (re-run the code above to get up-to-date data):&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;d = readr::read_csv(&amp;quot;https://git.io/covid-19-2020-04-23&amp;quot;)
+class(d)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## [1] &amp;quot;spec_tbl_df&amp;quot; &amp;quot;tbl_df&amp;quot;      &amp;quot;tbl&amp;quot;         &amp;quot;data.frame&amp;quot;&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;The previous code chunk read a .csv file from online and confirmed, we have loaded a data frame (we will see how to join this with geographic data in the next section).
+We can get a sense of the contents of the data as follows:&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;ncol(d)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## [1] 24&lt;/code&gt;&lt;/pre&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;nrow(d)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## [1] 17572&lt;/code&gt;&lt;/pre&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;names(d)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;##  [1] &amp;quot;id&amp;quot;             &amp;quot;date&amp;quot;           &amp;quot;deaths&amp;quot;         &amp;quot;confirmed&amp;quot;     
+##  [5] &amp;quot;tests&amp;quot;          &amp;quot;recovered&amp;quot;      &amp;quot;hosp&amp;quot;           &amp;quot;icu&amp;quot;           
+##  [9] &amp;quot;vent&amp;quot;           &amp;quot;driving&amp;quot;        &amp;quot;walking&amp;quot;        &amp;quot;transit&amp;quot;       
+## [13] &amp;quot;country&amp;quot;        &amp;quot;state&amp;quot;          &amp;quot;city&amp;quot;           &amp;quot;lat&amp;quot;           
+## [17] &amp;quot;lng&amp;quot;            &amp;quot;pop&amp;quot;            &amp;quot;pop_14&amp;quot;         &amp;quot;pop_15_64&amp;quot;     
+## [21] &amp;quot;pop_65&amp;quot;         &amp;quot;pop_age&amp;quot;        &amp;quot;pop_density&amp;quot;    &amp;quot;pop_death_rate&amp;quot;&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;div id=&#34;getting-geographic-data&#34; class=&#34;section level1&#34;&gt;
+&lt;h1&gt;Getting geographic data&lt;/h1&gt;
+&lt;p&gt;We will use a dataset representing countries worldwide from the &lt;code&gt;rnaturalearth&lt;/code&gt; package.
+Assuming you have the package installed you can get the geographic data as follows (see the subsequent code chunk if not):&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;world_rnatural = rnaturalearth::ne_download(returnclass = &amp;quot;sf&amp;quot;)
+# names(world_iso) # variables available
+world_iso = world_rnatural %&amp;gt;% 
+  select(NAME_LONG, ISO_A3_EH, POP_EST, GDP_MD_EST, CONTINENT)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;The result of the previous code block, an object representing the world and containing only variables of interest, was uploaded to GitHub and can be loaded from a GeoJSON file as follows:&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;world_iso = sf::read_sf(&amp;quot;https://git.io/JfICT&amp;quot;) &lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;To see what’s in the &lt;code&gt;world_iso&lt;/code&gt; object we can plot it, with the default setting in &lt;code&gt;sf&lt;/code&gt; showing the geographic distribution of each variable:&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;plot(world_iso)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;https://geocompr.github.io/post/2020/r-spatial-demo-covid-19_files/figure-html/unnamed-chunk-9-1.png&#34; width=&#34;768&#34; /&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;transforming-geographic-data&#34; class=&#34;section level1&#34;&gt;
+&lt;h1&gt;Transforming geographic data&lt;/h1&gt;
+&lt;p&gt;An issue with the result from a data visualisation perspective is that this unprojected visualisation distorts the world: countries such as Greenland at high latitudes appear bigger than the actually are.
+To overcome this issue we will project the object as follows (see Chapter &lt;a href=&#34;https://geocompr.robinlovelace.net/reproj-geo-data.html&#34;&gt;6&lt;/a&gt; of Geocomputation with R and a recent article on the &lt;a href=&#34;https://www.r-spatial.org/r/2020/03/17/wkt.html&#34;&gt;r-spatial website&lt;/a&gt; for more on coordinate systems):&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;world_projected = world_iso %&amp;gt;% 
+  st_transform(&amp;quot;+proj=moll&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;We can plot just the geometry of the updated object as follows, noting that the result is projected in a way that preserves the true area of countries (noting also that all projections introduce distortions):&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;plot(st_geometry(world_projected))&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;https://geocompr.github.io/post/2020/r-spatial-demo-covid-19_files/figure-html/unnamed-chunk-11-1.png&#34; width=&#34;768&#34; /&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;attribute-joins&#34; class=&#34;section level1&#34;&gt;
+&lt;h1&gt;Attribute joins&lt;/h1&gt;
+&lt;p&gt;As outlined in Chapter &lt;a href=&#34;https://geocompr.robinlovelace.net/attr.html#vector-attribute-joining&#34;&gt;3&lt;/a&gt; of &lt;em&gt;Geocomputation with R&lt;/em&gt;, attribute joins can be used to add additional variables to geographic data via a ‘key variable’ shared between the geographic and non-geographic objects.
+In this case the shared variables are &lt;code&gt;ISO_A3_EH&lt;/code&gt; in the geographic object and &lt;code&gt;id&lt;/code&gt; in the Covid-19 dataset &lt;code&gt;d&lt;/code&gt;.
+We will be concise and call the dataset resulting from this join operation &lt;code&gt;w&lt;/code&gt;.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;w = dplyr::left_join(world_projected, d, by = c(&amp;quot;ISO_A3_EH&amp;quot;= &amp;quot;id&amp;quot;))
+class(w)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## [1] &amp;quot;sf&amp;quot;         &amp;quot;tbl_df&amp;quot;     &amp;quot;tbl&amp;quot;        &amp;quot;data.frame&amp;quot;&lt;/code&gt;&lt;/pre&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;nrow(w)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## [1] 14919&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;div id=&#34;calculating-area&#34; class=&#34;section level1&#34;&gt;
+&lt;h1&gt;Calculating area&lt;/h1&gt;
+&lt;p&gt;The package &lt;code&gt;sf&lt;/code&gt; provides a wide range of functions for calculating geographic variables such as object centroid, bounding boxes, lengths and, as demonstrated below, area.
+We use this area data to calculate the population density of each country as follows:&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;w$Area_km = as.numeric(st_area(w)) / 1e6
+w$`Pop/km2` = as.numeric(w$POP_EST) / w$Area_km &lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;div id=&#34;plotting-international-covid-19-data-for-a-single-day&#34; class=&#34;section level1&#34;&gt;
+&lt;h1&gt;Plotting international Covid-19 data for a single day&lt;/h1&gt;
+&lt;p&gt;The class of &lt;code&gt;w&lt;/code&gt; shows that it has geometries for each row.
+Notice that it has many more rows of data than the original world object: geometries are repeated for every year.
+This is not an efficient way to store data, as it means lots of duplicate geometries.
+On a small dataset that doesn’t matter, but it’s something to be aware of.
+To check that the join has worked, we will take a subset of rows representing the global situation yesterday relative to the date of data access:&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;w_yesterday = w %&amp;gt;% 
+  filter(date == max(date, na.rm = T) - 1)
+plot(w_yesterday)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;https://geocompr.github.io/post/2020/r-spatial-demo-covid-19_files/figure-html/unnamed-chunk-14-1.png&#34; width=&#34;768&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;The plot method for &lt;code&gt;sf&lt;/code&gt; objects is fast and flexible, as documented in &lt;a href=&#34;https://r-spatial.github.io/sf/articles/sf5.html&#34;&gt;&lt;code&gt;sf&lt;/code&gt;’s &lt;em&gt;Plotting Simple Features&lt;/em&gt; vignette&lt;/a&gt;, which can be accessed with &lt;code&gt;vignette(&#34;sf5&#34;)&lt;/code&gt; from the R console.
+We can set the breaks to better show the difference between countries with no reported deaths and countries with few reported deaths as follows:&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;plot(w_yesterday[&amp;quot;deaths&amp;quot;])&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;https://geocompr.github.io/post/2020/r-spatial-demo-covid-19_files/figure-html/unnamed-chunk-15-1.png&#34; width=&#34;768&#34; /&gt;&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;b = c(0, 10, 100, 1000, 10000, 100000)
+plot(w_yesterday[&amp;quot;deaths&amp;quot;], breaks = b)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;https://geocompr.github.io/post/2020/r-spatial-demo-covid-19_files/figure-html/unnamed-chunk-15-2.png&#34; width=&#34;768&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;To plot the other Covid-19 variables, reporting number of confirmed cases, number of tests and number of people who have recovered, we can subset the relevant variables and pipe the result to the &lt;code&gt;plot()&lt;/code&gt; function (noting the &lt;a href=&#34;https://t.co/NyIrKHQSUy&#34;&gt;caveat&lt;/a&gt; that code containing pipes may be hard to debug) as follows:&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;w_yesterday %&amp;gt;%
+  dplyr::select(deaths, confirmed, tests, recovered) %&amp;gt;% 
+  plot()&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;https://geocompr.github.io/post/2020/r-spatial-demo-covid-19_files/figure-html/unnamed-chunk-16-1.png&#34; width=&#34;768&#34; /&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;making-maps-with-tmap&#34; class=&#34;section level1&#34;&gt;
+&lt;h1&gt;Making maps with tmap&lt;/h1&gt;
+&lt;p&gt;The &lt;a href=&#34;https://geocompr.robinlovelace.net/adv-map.html&#34;&gt;mapping chapter&lt;/a&gt; of &lt;em&gt;Geocomputation with R&lt;/em&gt; shows how the &lt;code&gt;tmap&lt;/code&gt; package enables publication-quality maps to be created with concise and relatively commands, such as:&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;tm_shape(w_yesterday) +
+  tm_polygons(c(&amp;quot;deaths&amp;quot;, &amp;quot;recovered&amp;quot;))&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;https://geocompr.github.io/post/2020/r-spatial-demo-covid-19_files/figure-html/unnamed-chunk-17-1.png&#34; width=&#34;768&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;We can modify the palette and scale as follows:&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;tm_shape(w_yesterday) +
+  tm_polygons(
+    c(&amp;quot;deaths&amp;quot;, &amp;quot;recovered&amp;quot;),
+    palette = &amp;quot;viridis&amp;quot;,
+    style = &amp;quot;order&amp;quot;
+    ) &lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;https://geocompr.github.io/post/2020/r-spatial-demo-covid-19_files/figure-html/unnamed-chunk-18-1.png&#34; width=&#34;768&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;The map can be further improved by adding graticules representing the curvature of the Earth, created as follows:&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;g = st_graticule(w_yesterday)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;It’s also worth moving the legend:&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;tm_shape(g) +
+  tm_lines(col = &amp;quot;grey&amp;quot;) +
+  tm_shape(w_yesterday) +
+  tm_polygons(
+    c(&amp;quot;deaths&amp;quot;, &amp;quot;recovered&amp;quot;),
+    palette = &amp;quot;viridis&amp;quot;,
+    style = &amp;quot;order&amp;quot;
+    ) +
+  tm_layout(legend.position = c(0.01, 0.25))&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;https://geocompr.github.io/post/2020/r-spatial-demo-covid-19_files/figure-html/unnamed-chunk-20-1.png&#34; width=&#34;768&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;A problem with choropleth maps is that they can under-represent small areas.
+To overcome this issue we can use dot size instead of color to represent number:&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;tm_shape(g) +
+  tm_lines(col = &amp;quot;grey&amp;quot;) +
+  tm_shape(w_yesterday) +
+  tm_polygons() +
+  tm_layout(legend.position = c(0.01, 0)) +
+  tm_shape(w_yesterday) +
+  tm_dots(
+    col = c(&amp;quot;red&amp;quot;, &amp;quot;green&amp;quot;),
+    size = c(&amp;quot;deaths&amp;quot;, &amp;quot;recovered&amp;quot;),
+    palette = &amp;quot;viridis&amp;quot;
+    )&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;https://geocompr.github.io/post/2020/r-spatial-demo-covid-19_files/figure-html/unnamed-chunk-21-1.png&#34; width=&#34;768&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;One question I have here: make the size legend have &lt;code&gt;style = &#34;log10_pretty&#34;&lt;/code&gt; also?&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;making-animated-maps&#34; class=&#34;section level1&#34;&gt;
+&lt;h1&gt;Making animated maps&lt;/h1&gt;
+&lt;p&gt;The animation at the beginning of this article shows how dynamic graphics can communicate change effectively.
+Animated maps are therefore useful for showing evolving geographic phenomena, such as the spread of Covid-19 worldwide.
+As covered in section &lt;a href=&#34;https://geocompr.robinlovelace.net/adv-map.html#animated-maps&#34;&gt;8.3&lt;/a&gt; of &lt;em&gt;Geocomputation with R&lt;/em&gt;, animated maps can be created with &lt;code&gt;tmap&lt;/code&gt; by extending the &lt;code&gt;tm_facet()&lt;/code&gt; functionality.
+So let’s start by creating a facetted map showing the total number of deaths on the first day of each month in our data:&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;w$Date = as.character(w$date)
+tm_shape(g) +
+  tm_lines(col = &amp;quot;grey&amp;quot;) +
+  tm_shape(w_yesterday) +
+  tm_polygons(
+    &amp;quot;Pop/km2&amp;quot;,
+    palette = &amp;quot;viridis&amp;quot;,
+    style = &amp;quot;log10_pretty&amp;quot;,
+    n = 3
+    ) +
+  tm_shape(w %&amp;gt;% filter(grepl(pattern = &amp;quot;01$&amp;quot;, date))) +
+  tm_dots(size = &amp;quot;deaths&amp;quot;, col = &amp;quot;red&amp;quot;) +
+  tm_facets(&amp;quot;Date&amp;quot;, nrow = 1, free.scales.fill = FALSE) +
+  tm_layout(
+    legend.outside.position = &amp;quot;bottom&amp;quot;,
+    legend.stack = &amp;quot;horizontal&amp;quot;
+    )&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;https://geocompr.github.io/post/2020/r-spatial-demo-covid-19_files/figure-html/unnamed-chunk-22-1.png&#34; width=&#34;768&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;To create an animated map, following instructions in Chapter &lt;a href=&#34;https://geocompr.robinlovelace.net/adv-map.html#animated-maps&#34;&gt;8&lt;/a&gt; of &lt;em&gt;Geocomputation with R&lt;/em&gt;, we need to make some small changes to the code above:&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;m = tm_shape(g) +
+  tm_lines(col = &amp;quot;grey&amp;quot;) +
+  tm_shape(w_yesterday) +
+  tm_polygons(
+    &amp;quot;Pop/km2&amp;quot;,
+    palette = &amp;quot;viridis&amp;quot;,
+    style = &amp;quot;log10_pretty&amp;quot;,
+    n = 3
+    ) +
+  tm_shape(w %&amp;gt;% filter(grepl(pattern = &amp;quot;01$&amp;quot;, date))) +
+  tm_dots(size = &amp;quot;deaths&amp;quot;, col = &amp;quot;red&amp;quot;) +
+  tm_facets(along = &amp;quot;Date&amp;quot;, free.coords = FALSE) +
+  tm_layout(legend.outside = TRUE)
+tmap_animation(m, &amp;quot;covid-19-animated-map-test.gif&amp;quot;, width = 800)
+browseURL(&amp;quot;covid-19-animated-map-test.gif&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;https://user-images.githubusercontent.com/1825120/80087377-e7bda780-8552-11ea-959f-55b154c715fa.gif&#34; width=&#34;40%&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;We made an animated map!
+The first version is rarely the best though, and the map above clearly could benefit from some adjustments before we plot the results for the whole dataset:&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;w$Date = paste0(&amp;quot;Total deaths from 22nd January 2020 to &amp;quot;, w$date)
+
+m = tm_shape(g) +
+  tm_lines(col = &amp;quot;grey&amp;quot;) +
+  tm_shape(w) +
+  tm_polygons(
+    &amp;quot;Pop/km2&amp;quot;,
+    palette = &amp;quot;viridis&amp;quot;,
+    style = &amp;quot;log10_pretty&amp;quot;,
+    lwd = 0.5
+    ) +
+  tm_shape(w) +
+  tm_dots(size = &amp;quot;deaths&amp;quot;, col = &amp;quot;red&amp;quot;) +
+  tm_facets(along = &amp;quot;Date&amp;quot;, free.coords = FALSE) +
+  tm_layout(
+    main.title.size = 0.5,
+    legend.outside = TRUE
+    )
+tmap_animation(m, &amp;quot;covid-19-animated-map.gif&amp;quot;, width = 1400, height = 600)
+browseURL(&amp;quot;covid-19-animated-map.gif&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
+&lt;!--update the file below--&gt;
+&lt;p&gt;&lt;img src=&#34;https://user-images.githubusercontent.com/1825120/80092918-7f26f880-855b-11ea-8017-c4ec6e382209.gif&#34; /&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;conclusion&#34; class=&#34;section level1&#34;&gt;
+&lt;h1&gt;Conclusion&lt;/h1&gt;
+&lt;p&gt;This article has demonstrated how to work with and map geographic data using the free and open source statistical programming language R.
+It demonstrates that by representing analysis in code, research can be made reproducible and more accessible to others, encouraging transparent and open science.
+This has multiple advantages, from education and citizen engagement with the evidence to increased trust in the evidence on which important, life-or-death, decisions are made.&lt;/p&gt;
+&lt;p&gt;Although the research did not address any policy issues, it could be extended to do so, and we encourage readers to check-out the following resources for ideas for future research:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;A &lt;a href=&#34;https://github.com/paezha/covid19-environmental-correlates#a-spatio-temporal-analysis-of-the-environmental-correlates-of-covid-19-incidence-in-spain&#34;&gt;reproducible geographic analysis&lt;/a&gt; of Covid-19 data in Spain by &lt;a href=&#34;https://www.science.mcmaster.ca/geo/component/comprofiler/userprofile/paezha.html&#34;&gt;Antonio Paez&lt;/a&gt; and others (challenge: reproduce their findings)&lt;/li&gt;
+&lt;li&gt;The eRum2020 &lt;a href=&#34;https://2020.erum.io/covidr-contest/&#34;&gt;CovidR competition&lt;/a&gt; (challenge: enter the contest!)&lt;/li&gt;
+&lt;li&gt;Try downloading the the city-level data with this command and exploring the geographic distribution of the outbreak at the city level:&lt;/li&gt;
+&lt;/ul&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;d_city = COVID19::covid19(level = 3)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;For further details on geographic data analysis in R in general, we recommend checkout out in-depth materials such as &lt;a href=&#34;https://www.amazon.co.uk/Geocomputation-Chapman-Hall-Robin-Lovelace/dp/1138304514&#34;&gt;&lt;em&gt;Geocomputation with R&lt;/em&gt;&lt;/a&gt; and the in-progress open source book &lt;a href=&#34;https://keen-swartz-3146c4.netlify.app/&#34;&gt;&lt;em&gt;Spatial Data Science&lt;/em&gt;&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;There is also an &lt;a href=&#34;https://www.youtube.com/watch?v=Va0STgco7-4&#34;&gt;online talk&lt;/a&gt; on the subject on YouTube.&lt;/p&gt;
+&lt;details&gt;
+&lt;summary&gt;
+Session info
+&lt;/summary&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;sessioninfo::session_info()&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## ─ Session info ───────────────────────────────────────────────────────────────
+##  setting  value                       
+##  version  R version 4.0.3 (2020-10-10)
+##  os       Fedora 32 (Thirty Two)      
+##  system   x86_64, linux-gnu           
+##  ui       X11                         
+##  language (EN)                        
+##  collate  en_US.UTF-8                 
+##  ctype    en_US.UTF-8                 
+##  tz       Europe/Warsaw               
+##  date     2020-11-03                  
+## 
+## ─ Packages ───────────────────────────────────────────────────────────────────
+##  package      * version  date       lib source                              
+##  abind          1.4-5    2016-07-21 [1] CRAN (R 4.0.2)                      
+##  assertthat     0.2.1    2019-03-21 [1] CRAN (R 4.0.2)                      
+##  base64enc      0.1-3    2015-07-28 [1] CRAN (R 4.0.2)                      
+##  blogdown       0.21     2020-10-11 [1] CRAN (R 4.0.3)                      
+##  bookdown       0.21     2020-10-13 [1] CRAN (R 4.0.3)                      
+##  class          7.3-17   2020-04-26 [2] CRAN (R 4.0.3)                      
+##  classInt       0.4-3    2020-04-07 [1] CRAN (R 4.0.2)                      
+##  cli            2.1.0    2020-10-12 [1] CRAN (R 4.0.2)                      
+##  codetools      0.2-16   2018-12-24 [2] CRAN (R 4.0.3)                      
+##  crayon         1.3.4    2017-09-16 [1] CRAN (R 4.0.2)                      
+##  crosstalk      1.1.0.1  2020-03-13 [1] CRAN (R 4.0.2)                      
+##  curl           4.3      2019-12-02 [1] CRAN (R 4.0.2)                      
+##  DBI            1.1.0    2019-12-15 [1] CRAN (R 4.0.2)                      
+##  dichromat      2.0-0    2013-01-24 [1] CRAN (R 4.0.2)                      
+##  digest         0.6.27   2020-10-24 [1] CRAN (R 4.0.3)                      
+##  dplyr        * 1.0.2    2020-08-18 [1] CRAN (R 4.0.2)                      
+##  e1071          1.7-4    2020-10-14 [1] CRAN (R 4.0.2)                      
+##  ellipsis       0.3.1    2020-05-15 [1] CRAN (R 4.0.2)                      
+##  evaluate       0.14     2019-05-28 [1] CRAN (R 4.0.2)                      
+##  fansi          0.4.1    2020-01-08 [1] CRAN (R 4.0.2)                      
+##  generics       0.1.0    2020-10-31 [1] CRAN (R 4.0.3)                      
+##  glue           1.4.2    2020-08-27 [1] CRAN (R 4.0.2)                      
+##  hms            0.5.3    2020-01-08 [1] CRAN (R 4.0.2)                      
+##  htmltools      0.5.0    2020-06-16 [1] CRAN (R 4.0.2)                      
+##  htmlwidgets    1.5.2    2020-10-03 [1] CRAN (R 4.0.2)                      
+##  KernSmooth     2.23-17  2020-04-26 [2] CRAN (R 4.0.3)                      
+##  knitr          1.30     2020-09-22 [1] CRAN (R 4.0.3)                      
+##  lattice        0.20-41  2020-04-02 [2] CRAN (R 4.0.3)                      
+##  leafem         0.1.3    2020-07-26 [1] CRAN (R 4.0.2)                      
+##  leaflet        2.0.3    2019-11-16 [1] CRAN (R 4.0.2)                      
+##  leafsync       0.1.0    2019-03-05 [1] CRAN (R 4.0.2)                      
+##  lifecycle      0.2.0    2020-03-06 [1] CRAN (R 4.0.2)                      
+##  lwgeom         0.2-5    2020-06-12 [1] CRAN (R 4.0.2)                      
+##  magrittr       1.5      2014-11-22 [1] CRAN (R 4.0.2)                      
+##  pillar         1.4.6    2020-07-10 [1] CRAN (R 4.0.2)                      
+##  pkgconfig      2.0.3    2019-09-22 [1] CRAN (R 4.0.2)                      
+##  png            0.1-7    2013-12-03 [1] CRAN (R 4.0.2)                      
+##  purrr          0.3.4    2020-04-17 [1] CRAN (R 4.0.2)                      
+##  R6             2.5.0    2020-10-28 [1] CRAN (R 4.0.3)                      
+##  raster         3.3-13   2020-07-17 [1] CRAN (R 4.0.2)                      
+##  RColorBrewer   1.1-2    2014-12-07 [1] CRAN (R 4.0.2)                      
+##  Rcpp           1.0.5    2020-07-06 [1] CRAN (R 4.0.2)                      
+##  readr          1.4.0    2020-10-05 [1] CRAN (R 4.0.3)                      
+##  rlang          0.4.8    2020-10-08 [1] CRAN (R 4.0.2)                      
+##  rmarkdown      2.5      2020-10-21 [1] CRAN (R 4.0.2)                      
+##  rstudioapi     0.11     2020-02-07 [1] CRAN (R 4.0.2)                      
+##  sessioninfo    1.1.1    2018-11-05 [1] CRAN (R 4.0.2)                      
+##  sf           * 0.9-6    2020-09-13 [1] CRAN (R 4.0.2)                      
+##  sp             1.4-4    2020-10-07 [1] CRAN (R 4.0.2)                      
+##  stars          0.4-4    2020-10-22 [1] Github (r-spatial/stars@06d646e)    
+##  stringi        1.5.3    2020-09-09 [1] CRAN (R 4.0.2)                      
+##  stringr        1.4.0    2019-02-10 [1] CRAN (R 4.0.2)                      
+##  tibble         3.0.4    2020-10-12 [1] CRAN (R 4.0.2)                      
+##  tidyselect     1.1.0    2020-05-11 [1] CRAN (R 4.0.2)                      
+##  tmap         * 3.2      2020-10-18 [1] Github (mtennekes/tmap@3a17056)     
+##  tmaptools      3.1      2020-09-13 [1] Github (mtennekes/tmaptools@a28a280)
+##  units          0.6-7    2020-06-13 [1] CRAN (R 4.0.2)                      
+##  vctrs          0.3.4    2020-08-29 [1] CRAN (R 4.0.2)                      
+##  viridisLite    0.3.0    2018-02-01 [1] CRAN (R 4.0.2)                      
+##  withr          2.3.0    2020-09-22 [1] CRAN (R 4.0.2)                      
+##  xfun           0.19     2020-10-30 [1] CRAN (R 4.0.3)                      
+##  XML            3.99-0.5 2020-07-23 [1] CRAN (R 4.0.2)                      
+##  yaml           2.2.1    2020-02-01 [1] CRAN (R 4.0.2)                      
+## 
+## [1] /home/jn/R/x86_64-redhat-linux-gnu-library/4.0
+## [2] /usr/lib64/R/library
+## [3] /usr/share/R/library&lt;/code&gt;&lt;/pre&gt;
+&lt;/details&gt;
+&lt;/div&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Installing spatial R packages on Ubuntu</title>
+      <link>https://geocompr.github.io/post/2020/installing-r-spatial-ubuntu/</link>
+      <pubDate>Mon, 30 Mar 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://geocompr.github.io/post/2020/installing-r-spatial-ubuntu/</guid>
+      <description>
+&lt;script src=&#34;https://geocompr.github.io/rmarkdown-libs/header-attrs/header-attrs.js&#34;&gt;&lt;/script&gt;
+&lt;link href=&#34;https://geocompr.github.io/rmarkdown-libs/anchor-sections/anchor-sections.css&#34; rel=&#34;stylesheet&#34; /&gt;
+&lt;script src=&#34;https://geocompr.github.io/rmarkdown-libs/anchor-sections/anchor-sections.js&#34;&gt;&lt;/script&gt;
+
+
+&lt;p&gt;This post explains how to quickly get key R packages for geographic research installed on &lt;a href=&#34;https://ubuntu.com/&#34;&gt;Ubuntu&lt;/a&gt;, a popular Linux distribution.&lt;/p&gt;
+&lt;!-- ![](/home/robin/geocompr/geocompr.github.io/static/img/geocompr-linux.png) --&gt;
+&lt;p&gt;A recent thread on the &lt;a href=&#34;https://github.com/r-spatial/discuss/issues/35&#34;&gt;r-spatial GitHub organization&lt;/a&gt; alludes to many considerations when choosing a Linux set-up for work with geographic data, ranging from the choice of Linux distribution (distro) to the use of binary vs or compiled versions (binaries are faster to install). This post touches on some of these things.
+Its main purpose, though, is to provide advice on getting R’s key spatial packages up-and-running on a future-proof Linux operating system (Ubuntu).&lt;/p&gt;
+&lt;p&gt;Now is a good time to be thinking about your R set-up because changes are in the pipeline and getting set-up (or preparing to get set-up) now could save hours in the future.
+These imminent changes include:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;The next major release of R (&lt;a href=&#34;https://stat.ethz.ch/R-manual/R-devel/doc/html/NEWS.html&#34;&gt;4.0.0&lt;/a&gt;), scheduled for the 24&lt;sup&gt;th&lt;/sup&gt; April (&lt;a href=&#34;https://developer.r-project.org/&#34;&gt;2020-04-24&lt;/a&gt;)&lt;/li&gt;
+&lt;li&gt;The next major release of Ubuntu (&lt;a href=&#34;https://www.omgubuntu.co.uk/2019/10/ubuntu-20-04-release-features&#34;&gt;20.04&lt;/a&gt;), a Long Term Support (&lt;a href=&#34;https://wiki.ubuntu.com/LTS&#34;&gt;LTS&lt;/a&gt;) version that will be used by millions of servers and research computers worldwide for years to come. Coincidentally, Ubuntu 20.04 will be released a day earlier than R 4.0.0, on 23&lt;sup&gt;rd&lt;/sup&gt; April (&lt;a href=&#34;https://itsfoss.com/ubuntu-20-04-release-features/&#34;&gt;2020-04-23&lt;/a&gt;).&lt;/li&gt;
+&lt;li&gt;Ongoing changes to the OSGeo stack on which key geographic R packages depend, as documented in &lt;a href=&#34;https://github.com/r-spatial/&#34;&gt;r-spatial&lt;/a&gt; repos and a recent blog post on how recent versions of PROJ enable more precise &lt;a href=&#34;https://www.r-spatial.org/r/2020/03/17/wkt.html&#34;&gt;coordinate reference system definitions&lt;/a&gt;.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;To keep-up with these changes, this post will be updated in late April when some of the dust has settled around these changes.
+However, the advice presented here should be future-proof.
+Upgrading Ubuntu is covered in the next section.&lt;/p&gt;
+&lt;p&gt;There many ways of getting Ubuntu set-up for spatial R packages.
+A benefit of Linux operating systems is that they offer choice and prevent ‘lock-in’.
+However, the guidance in the next section should reduce set-up time and improve maintainability (with updates managed by Ubuntu) compared with other ways of doing things, especially for beginners.
+If you’re planning to switch to Linux as the basis of your geographic work, this advice may be particularly useful.
+(The post was written in response to colleagues asking me how to set-up R on their new Ubuntu computers.
+If you would like a a computer running Ubuntu, check out &lt;a href=&#34;https://itsfoss.com/get-linux-laptops/&#34;&gt;companies that support open source operating systems&lt;/a&gt; and &lt;a href=&#34;https://ubuntu.com/tutorials/tutorial-install-ubuntu-desktop#1-overview&#34;&gt;guides on installing Ubuntu on an existing machine&lt;/a&gt;).&lt;/p&gt;
+&lt;p&gt;By ‘key packages’ I mean the following, which enable the majority of day-to-day geographic data processing and visualization tasks:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/r-spatial/sf#installing&#34;&gt;&lt;strong&gt;sf&lt;/strong&gt;&lt;/a&gt; for reading, writing and working with a range geographic vector file formats and geometry types&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/rspatial/raster/&#34;&gt;&lt;strong&gt;raster&lt;/strong&gt;&lt;/a&gt;, a mature package for working with geographic raster data (see the &lt;a href=&#34;https://github.com/rspatial/terra/&#34;&gt;&lt;strong&gt;terra&lt;/strong&gt;&lt;/a&gt; for an in-development replacement for &lt;strong&gt;raster&lt;/strong&gt;)&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/mtennekes/tmap&#34;&gt;&lt;strong&gt;tmap&lt;/strong&gt;&lt;/a&gt;, a flexible package for making static and interactive maps&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;The focus is on Ubuntu because that’s what I’ve got most experience with and it is well supported by the community.
+Links for installing geographic R packages on other distros are provided in section 3.&lt;/p&gt;
+&lt;div id=&#34;installing-spatial-r-packages-on-ubuntu&#34; class=&#34;section level1&#34;&gt;
+&lt;h1&gt;1. Installing spatial R packages on Ubuntu&lt;/h1&gt;
+&lt;!-- Of course, it depends on what Linux distribution you&#39;re running, and we&#39;ll cover installation on some of the most popular [distros](https://distrowatch.com/). --&gt;
+&lt;!-- ## Ubuntu --&gt;
+&lt;p&gt;R’s spatial packages can be installed from source on the latest version of this popular operating system, once the appropriate repository has been set-up, meaning faster install times (only a few minutes including the installation of upstream dependencies).
+The following bash commands should install key geographic R packages on Ubuntu 19.10:&lt;/p&gt;
+&lt;pre class=&#34;bash&#34;&gt;&lt;code&gt;# add a repository that ships the latest version of R:
+sudo add-apt-repository ppa:marutter/rrutter3.5
+# update the repositories so the software can be found:
+sudo apt update
+# install system dependencies:
+sudo apt install libudunits2-dev libgdal-dev libgeos-dev libproj-dev libfontconfig1-dev
+# binary versions of key R packages:
+sudo apt install r-base-dev r-cran-sf r-cran-raster r-cran-rjava&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;To test your installation of R has worked, try running R in an IDE such as RStudio or in the terminal by entering &lt;code&gt;R&lt;/code&gt;.
+You should be able to run the following commands without problem:&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;library(sf)
+#&amp;gt; Linking to GEOS 3.7.2, GDAL 2.4.2, PROJ 5.2.0
+install.packages(&amp;quot;tmap&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;If you are using an older version of Ubuntu and don’t want to upgrade to 19.10, which will upgrade to (20.04) by the end of April 2020, see instructions at &lt;a href=&#34;https://github.com/r-spatial/sf#installing&#34;&gt;github.com/r-spatial/sf&lt;/a&gt; and detailed instructions on the blog &lt;a href=&#34;https://rtask.thinkr.fr/blog/installation-of-r-3-5-on-ubuntu-18-04-lts-and-tips-for-spatial-packages/&#34;&gt;rtask.thinkr.fr&lt;/a&gt;, which contains this additional shell command:&lt;/p&gt;
+&lt;pre class=&#34;bash&#34;&gt;&lt;code&gt;# for Ubuntu 18.04
+sudo add-apt-repository ppa:marutter/c2d4u3.5&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;That adds a repository that ships hundreds of binary versions of R packages, meaning faster install times for packages (see the &lt;a href=&#34;https://r-pkgs.org/package-structure-state.html#binary-package&#34;&gt;Binary package section of the open source book R Packages&lt;/a&gt; for more on binary packages).
+An updated repository, called c2d4u4.0 or similar, will be available for Ubuntu 20.04 in late April.&lt;/p&gt;
+&lt;!-- The c2d4u3.5 repository only supports LTS Ubuntu versions, meaning it is unavailable for Ubuntu 19.10, but will be available for Ubuntu 20.04, allowing hundreds of packages to be installed quickly from the system terminal. --&gt;
+&lt;!-- The following command, for example, will install **tmap** on LTS versions of Ubuntu that have the `c2d4u3.5` repository enabled much faster than the alternative `install.packages()` approach. --&gt;
+&lt;p&gt;If you have issues with the instructions in this post here, you can find a wealth of answers on site such as &lt;a href=&#34;https://stackoverflow.com/&#34;&gt;StackOverflow&lt;/a&gt;, the &lt;a href=&#34;https://github.com/r-spatial/sf/issues&#34;&gt;sf issue tracker&lt;/a&gt;, &lt;a href=&#34;https://stat.ethz.ch/pipermail/r-sig-geo/&#34;&gt;r-sig-geo&lt;/a&gt; and &lt;a href=&#34;https://stat.ethz.ch/pipermail/r-sig-debian/2020-March/thread.html&#34;&gt;Debian&lt;/a&gt; special interest group (SIG) email lists (the latter of which provided input into this blog post, thanks to Dirk Eddelbuettel and Michael Rutter).&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;updating-r-packages-and-upstream-dependencies&#34; class=&#34;section level1&#34;&gt;
+&lt;h1&gt;2. Updating R packages and upstream dependencies&lt;/h1&gt;
+&lt;p&gt;Linux operating systems allow you to customize your set-up in myriad ways.
+This can be enlightening but it can also be wasteful, so it’s worth considering the stability/cutting-edge continuum before diving into a particular set-up and potentially wasting time (if the previous section hasn’t already made-up your mind).&lt;/p&gt;
+&lt;!-- For me, a good set-up, that means the latest version of Ubuntu plus CRAN versions of most R packages. --&gt;
+&lt;!-- For most people I recommend installing the release version as follows: --&gt;
+&lt;p&gt;A reliable way to keep close (but not too close) to the cutting edge on the R side on any operating system is simply to keep your packages up-to-date.
+Running the following command (or using the Tools menu in RStudio) every week or so will ensure you have up-to-date package versions:&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;update.packages()&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Keeping system dependencies, software that R relies on but that is not maintained by R developers, is also important but can be tricky, especially for large and complex libraries like GDAL.
+On Ubuntu dependencies are managed by apt, and the following commands will update the ‘OSGeo stack’, composed of PROJ, GEOS and GDAL, if changes are detected in the default repositories (from 18.10 onwards):&lt;/p&gt;
+&lt;pre class=&#34;bash&#34;&gt;&lt;code&gt;sudo apt update # see if things have changed
+sudo apt upgrade # install changes&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;The following commands will upgrade to a newer version of Ubuntu (it may be worth waiting until the &lt;a href=&#34;https://ubuntu.com/blog/first-point-release-of-18-04-lts-available-today&#34;&gt;point release&lt;/a&gt; of Ubuntu 20.04 — 20.04.1 — is released in summer before upgrading if you’re currently running Ubuntu 18.04 if high stability and low set-up times are priorities; also see instructions &lt;a href=&#34;https://ubuntu.com/tutorials/tutorial-upgrading-ubuntu-desktop#3-check-for-updates&#34;&gt;here&lt;/a&gt;):&lt;/p&gt;
+&lt;pre class=&#34;bash&#34;&gt;&lt;code&gt;apt dist-upgrade&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;To get more up-to-date upstream geographic libraries than provided in the default Ubuntu repositories, you can add the &lt;code&gt;ubuntugis&lt;/code&gt; repository as follows.
+This is a pre-requisite on Ubuntu 18.04 and earlier but also works with later versions (warning, adding this repository could cause complications if you already have software such as QGIS that uses a particular version of GDAL installed):&lt;/p&gt;
+&lt;pre class=&#34;bash&#34;&gt;&lt;code&gt;sudo add-apt-repository ppa:ubuntugis/ubuntugis-unstable
+sudo apt update
+sudo apt upgrade&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;That will give you more up-to-date versions of GDAL, GEOS and PROJ which may offer some performance improvements.
+Note: if you do update dependencies such as GDAL you will need to re-install the relevant packages, e.g. with &lt;code&gt;install.packages(&#34;sf&#34;)&lt;/code&gt;.
+You can revert that change with the following &lt;a href=&#34;https://askubuntu.com/questions/904010/how-to-remove-a-ppa-from-cli&#34;&gt;little-known command&lt;/a&gt;:&lt;/p&gt;
+&lt;pre class=&#34;bash&#34;&gt;&lt;code&gt;sudo add-apt-repository --remove ppa:ubuntugis/ubuntugis-unstable&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;If you also want the development versions of key R packages, e.g. to test new features and support development efforts, you can install them from GitHub, e.g. as follows:&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;remotes::install_github(&amp;quot;r-spatial/sf&amp;quot;)
+remotes::install_github(&amp;quot;rspatial/raster&amp;quot;)
+remotes::install_github(&amp;quot;mtennekes/tmaptools&amp;quot;) # required for dev version of tmap
+remotes::install_github(&amp;quot;mtennekes/tmap&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;div id=&#34;installing-geographic-r-packages-on-other-linux-operating-systems&#34; class=&#34;section level1&#34;&gt;
+&lt;h1&gt;3. Installing geographic R packages on other Linux operating systems&lt;/h1&gt;
+&lt;p&gt;If you are in the fortunate position of switching to Linux and being able to choose the distribution that best fits your needs, it’s worth thinking about which distribution will be both user-friendly (more on that soon), performant and future-proof.
+Ubuntu is a solid choice, with a large user community and repositories such as ‘ubuntugis’ providing more up-to-date versions of upstream geographic libraries such as GDAL.&lt;/p&gt;
+&lt;p&gt;QGIS is also well-supported on Ubuntu.&lt;/p&gt;
+&lt;p&gt;However, you can install R and key geographic packages on other operating systems, although it may take longer.
+Useful links on installing R and geographic libraries are provided below for reference:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;Installing R on &lt;strong&gt;Debian&lt;/strong&gt; is covered on the &lt;a href=&#34;https://cran.r-project.org/bin/linux/debian/&#34;&gt;CRAN website&lt;/a&gt;. Upstream dependencies such as GDAL can be installed on recent versions of Debian, such as &lt;a href=&#34;https://www.debian.org/releases/&#34;&gt;buster&lt;/a&gt;, with commands such as &lt;code&gt;apt install libgdal-dev&lt;/code&gt; as per instructions on the &lt;a href=&#34;https://github.com/rocker-org/geospatial/blob/eaf5e92f90737ce9771753cab48f3a2f1d779216/Dockerfile&#34;&gt;rocker/geospatial&lt;/a&gt;.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Installing R on &lt;strong&gt;Fedora/Red Hat&lt;/strong&gt; is straightforward, as outlined on &lt;a href=&#34;https://cran.r-project.org/bin/linux/redhat/README&#34;&gt;CRAN&lt;/a&gt;. GDAL and other spatial libraries can be installed from Fedora’s &lt;code&gt;dnf&lt;/code&gt; package manager, e.g. as documented &lt;a href=&#34;https://github.com/r-spatial/sf#fedora&#34;&gt;here&lt;/a&gt; for &lt;strong&gt;sf&lt;/strong&gt;.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;&lt;strong&gt;Arch Linux&lt;/strong&gt; has a growing R community. Information on installing and setting-up R can be found on the &lt;a href=&#34;https://wiki.archlinux.org/index.php/R&#34;&gt;ArchLinux wiki&lt;/a&gt;. Installing upstream dependencies such as &lt;a href=&#34;https://www.archlinux.org/packages/community/x86_64/gdal/&#34;&gt;GDAL on Arch&lt;/a&gt; is also relatively straightforward. There is also a detailed guide for installing R plus geographic packages by &lt;a href=&#34;https://pat-s.me/post/arch-install-guide-for-r/&#34;&gt;Patrick Schratz&lt;/a&gt;.&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;div id=&#34;geographic-r-packages-on-docker&#34; class=&#34;section level1&#34;&gt;
+&lt;h1&gt;4. Geographic R packages on Docker&lt;/h1&gt;
+&lt;!-- As with cars, ease of use is important for the popularity of computer technology. --&gt;
+&lt;!-- ^[ --&gt;
+&lt;!-- The history of cars can provide insight into the importance of ease of use of technologies today. --&gt;
+&lt;!-- Cars, have arguably transformed our settlements and lifestyles more than any other technology, were initially hard to use. --&gt;
+&lt;!-- Before they became a consumer product in the 1950s (by the end of which 1/6^th^ of jobs in the USA were in the [car industry](https://en.wikipedia.org/wiki/1950s_American_automobile_culture)) relied on a [hand cranks](https://www.youtube.com/watch?v=iFd8uo7ogpM) to start them until the proliferation of electric starter motors following U.S. Patent [1,150,523](https://patents.google.com/patent/US1150523), which was subsequently used by Cadillac in [1912](https://www.hemmings.com/blog/2012/02/27/the-accident-that-started-it-all/) and onwards. --&gt;
+&lt;!-- Like cars, people tend to go for computer technologies that are easy to use, that are &#39;plug and play&#39;, so it&#39;s important for the future of open-source software that the solutions I recommend are easy to set-up and use. --&gt;
+&lt;!-- ] --&gt;
+&lt;p&gt;The Ubuntu installation instructions outlined above provide such an easy and future-proof set-up.
+But if you want an even easier way to get the power of key geographic packages running on Linux, and have plenty of RAM and HD space, running R on the ‘&lt;a href=&#34;https://docs.docker.com/install/&#34;&gt;Docker Engine&lt;/a&gt;’ may be an attractive option.&lt;/p&gt;
+&lt;p&gt;Advantages of using Docker include &lt;strong&gt;reproducibility&lt;/strong&gt; (code will always run the same on any given image, and images can be saved), &lt;strong&gt;portability&lt;/strong&gt; (Docker can run on Linux, Windows and Mac) and &lt;strong&gt;scalability&lt;/strong&gt; (Docker provides a platform for scaling-up computations across multiple nodes).&lt;/p&gt;
+&lt;p&gt;For an introduction to using R/RStudio in Docker, see the &lt;a href=&#34;https://www.rocker-project.org/&#34;&gt;Rocker project&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;Using that approach, I recommend the following Docker images for using R as a basis for geographic research:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://hub.docker.com/r/rocker/geospatial&#34;&gt;&lt;code&gt;rocker/geospatial&lt;/code&gt;&lt;/a&gt; which contains key geographic packages, including those listed above&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://hub.docker.com/r/robinlovelace/geocompr/&#34;&gt;&lt;code&gt;robinlovelace/geocompr&lt;/code&gt;&lt;/a&gt; which contains all the packages needed to reproduce the contents of the &lt;a href=&#34;https://geocompr.robinlovelace.net/&#34;&gt;book&lt;/a&gt;, and which you can run with the following command in a shell in which Docker is installed:&lt;/li&gt;
+&lt;/ul&gt;
+&lt;pre class=&#34;bash&#34;&gt;&lt;code&gt;docker run -e PASSWORD=yourpassword --rm -p 8787:8787 robinlovelace/geocompr&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;To test-out the Ubuntu 19.10 set-up recommended above I created a &lt;a href=&#34;https://github.com/Robinlovelace/geocompr/blob/master/docker/ubuntu-eoan/Dockerfile&#34;&gt;Dockerfile&lt;/a&gt; and associated image on Dockerhub that you can test-out as follows:&lt;/p&gt;
+&lt;pre class=&#34;bash&#34;&gt;&lt;code&gt;docker run -it robinlovelace/geocompr:ubuntu-eoan
+R
+library(sf)
+#&amp;gt; Linking to GEOS 3.7.2, GDAL 2.4.2, PROJ 5.2.0
+library(raster)
+library(tmap) &lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;The previous commands should take you to a terminal inside the docker container where you try out the Linux command line and R.
+If you want to use more cutting-edge versions of the geographic libraries, you can use the &lt;code&gt;ubuntu-bionic&lt;/code&gt; image (note the more recent version numbers, with PROJ 7.0.0 for example):&lt;/p&gt;
+&lt;pre class=&#34;bash&#34;&gt;&lt;code&gt;sudo docker run -it robinlovelace/geocompr:ubuntu-bionic
+R
+library(sf)
+#&amp;gt; Linking to GEOS 3.8.0, GDAL 3.0.4, PROJ 7.0.0&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;These images do not currently contain all the dependencies needed to reproduce the code in &lt;em&gt;Geocomputation with R&lt;/em&gt;.
+&lt;!-- , if you&#39;re looking for a production-ready Docker image that has both RStudio Server and a wide range of geographic packages pre-installed, building from the `rocker/geospatial` image, this could be a good place to start: --&gt;&lt;/p&gt;
+&lt;p&gt;However, as documented in &lt;a href=&#34;https://github.com/Robinlovelace/geocompr/issues/476&#34;&gt;issue 476&lt;/a&gt; in the &lt;code&gt;geocompr&lt;/code&gt; GitHub repo, there is a plan to provide Docker images with this full ‘R-spatial’ stack installed, building on strong foundations such as &lt;code&gt;rocker/geospatial&lt;/code&gt; and the &lt;code&gt;ubuntugis&lt;/code&gt; repositories, to support different versions of GDAL and other dependencies.
+We welcome any comments or tech support to help make this happen.
+Suggested changes to this post are also welcome, see the source code &lt;a href=&#34;https://github.com/geocompr/geocompr.github.io/blob/source/content/post/2020/installing-r-spatial-packages-linux.Rmd&#34;&gt;here&lt;/a&gt;.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;fin&#34; class=&#34;section level1&#34;&gt;
+&lt;h1&gt;5. Fin&lt;/h1&gt;
+&lt;p&gt;R is an open-source language heavily inspired by Unix/Linux so it should come as no surprise that it runs well on a variety of Linux distributions, Ubuntu (covered in this post) in particular.
+The guidance in this post should get geographic R packages set-up quickly in a future-proof way.
+A sensible next step is to sharpen you system administration (sysadmin) and shell coding skills, e.g. with reference to &lt;a href=&#34;https://help.ubuntu.com/community/SystemAdministration&#34;&gt;Ubuntu wiki pages&lt;/a&gt; and &lt;a href=&#34;https://www.datascienceatthecommandline.com/chapter-2-getting-started.html#essential-gnulinux-concepts&#34;&gt;Chapter 2&lt;/a&gt; of the open source book &lt;a href=&#34;https://www.datascienceatthecommandline.com&#34;&gt;Data Science at the Command Line&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;This will take time but, building on &lt;a href=&#34;https://www.osgeo.org/&#34;&gt;OSGeo&lt;/a&gt; libraries, a well set-up Linux machine is an ideal platform to install, run and develop key geographic R packages in a performant, stable and future-proof way.
+&lt;!-- I hope that this tutorial provides some useful pointers and encourages more people to switch from proprietary software to open source solutions as the basis of their geographic and computational work. --&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://www.osgeo.org/wp-content/themes/roots/assets/img/logo-osgeo.svg&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;Be the &lt;a href=&#34;https://wiki.osgeo.org/wiki/FOSS4G&#34;&gt;FOSS4G&lt;/a&gt; change you want to see in the world!&lt;/p&gt;
+&lt;/div&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Inset maps with ggplot2</title>
+      <link>https://geocompr.github.io/post/2019/ggplot2-inset-maps/</link>
+      <pubDate>Sun, 08 Dec 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://geocompr.github.io/post/2019/ggplot2-inset-maps/</guid>
+      <description>
+&lt;script src=&#34;https://geocompr.github.io/rmarkdown-libs/header-attrs/header-attrs.js&#34;&gt;&lt;/script&gt;
+&lt;link href=&#34;https://geocompr.github.io/rmarkdown-libs/anchor-sections/anchor-sections.css&#34; rel=&#34;stylesheet&#34; /&gt;
+&lt;script src=&#34;https://geocompr.github.io/rmarkdown-libs/anchor-sections/anchor-sections.js&#34;&gt;&lt;/script&gt;
+
+
+&lt;p&gt;Inset maps enable multiple places to be shown in the same geographic data visualisation, as described in the &lt;a href=&#34;https://geocompr.robinlovelace.net/adv-map.html#inset-maps&#34;&gt;Inset maps section (8.2.7)&lt;/a&gt; of our open source book Geocomputation with R.
+The topic of inset maps has gained attention and recently &lt;a href=&#34;https://twitter.com/espinielli/&#34;&gt;Enrico Spinielli&lt;/a&gt; asked inset maps could be created for data in unusual coordinate systems:&lt;/p&gt;
+&lt;blockquote class=&#34;twitter-tweet&#34;&gt;&lt;p lang=&#34;en&#34; dir=&#34;ltr&#34;&gt;Speaking of insets, do you know of any ggplot2 examples with an inset for showing where the (bbox of the) map is in an orthographic/satellite proj? It is usually done to provide geographic context... NYT/WP have fantastic maps like that&lt;/p&gt;&amp;mdash; espinielli (@espinielli) &lt;a href=&#34;https://twitter.com/espinielli/status/1191452410394361863?ref_src=twsrc%5Etfw&#34;&gt;November 4, 2019&lt;/a&gt;&lt;/blockquote&gt;
+&lt;script async src=&#34;https://platform.twitter.com/widgets.js&#34; charset=&#34;utf-8&#34;&gt;&lt;/script&gt;
+
+&lt;p&gt;R’s flexibility allows inset maps to be created in various ways, using different approaches and packages.
+However, the main idea stays the same: we need to create at least two maps: a larger one, called the main map, that shows the central story and a smaller one, called the inset map, that puts the main map in context.&lt;/p&gt;
+&lt;p&gt;This blog post shows how to create inset maps with &lt;strong&gt;ggplot2&lt;/strong&gt; for visualization.
+The approach also uses the &lt;strong&gt;sf&lt;/strong&gt; package for spatial data reading and handling, &lt;strong&gt;cowplot&lt;/strong&gt; to arrange inset maps, and &lt;strong&gt;rcartocolor&lt;/strong&gt; for additional color palettes.
+To reproduce the results on your own computer, after installing them, these packages can be attached as follows:&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;library(sf)
+library(ggplot2)
+library(cowplot)
+library(rcartocolor)&lt;/code&gt;&lt;/pre&gt;
+&lt;div id=&#34;basic-inset-map&#34; class=&#34;section level1&#34;&gt;
+&lt;h1&gt;Basic inset map&lt;/h1&gt;
+&lt;p&gt;Let’s start by creating a basic inset map.&lt;/p&gt;
+&lt;div id=&#34;data-preparation&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Data preparation&lt;/h2&gt;
+&lt;p&gt;The first step is to read and prepare the data we want to visualize.
+We use the &lt;code&gt;us_states&lt;/code&gt; data from the &lt;strong&gt;spData&lt;/strong&gt; package as the source of the inset map, and &lt;code&gt;north_carolina&lt;/code&gt; from the &lt;strong&gt;sf&lt;/strong&gt; package as the source of the main map.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;library(spData)
+data(&amp;quot;us_states&amp;quot;, package = &amp;quot;spData&amp;quot;)
+north_carolina = read_sf(system.file(&amp;quot;shape/nc.shp&amp;quot;, package = &amp;quot;sf&amp;quot;))&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Both objects should have the same coordinate reference system (&lt;code&gt;crs&lt;/code&gt;).
+Here, we use &lt;code&gt;crs = 2163&lt;/code&gt;, which represents the US National Atlas Equal Area projection.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;us_states_2163 = st_transform(us_states, crs = 2163)
+north_carolina_2163 = st_transform(north_carolina, crs = 2163)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;We also need to have the borders of the area we want to highlight (use in the main map).
+This can be done by extracting the bounding box of our &lt;code&gt;north_carolina_2163&lt;/code&gt; object.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;north_carolina_2163_bb = st_as_sfc(st_bbox(north_carolina_2163))&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;div id=&#34;maps-creation&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Maps creation&lt;/h2&gt;
+&lt;p&gt;The second step is to create both inset and main maps independently.
+The inset map should show the context (larger area) and highlight the area of interest.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;ggm1 = ggplot() + 
+  geom_sf(data = us_states_2163, fill = &amp;quot;white&amp;quot;) + 
+  geom_sf(data = north_carolina_2163_bb, fill = NA, color = &amp;quot;red&amp;quot;, size = 1.2) +
+  theme_void()
+
+ggm1&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;https://geocompr.github.io/post/2019/ggplot2-inset-maps_files/figure-html/unnamed-chunk-6-1.png&#34; width=&#34;768&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;The main map’s role is to tell the story.
+Here we show the number of births between 1974 and 1978 in the North Carolina counties (the &lt;code&gt;BIR74&lt;/code&gt; variable) using the Mint color palette from the &lt;strong&gt;rcartocolor&lt;/strong&gt; palette.
+We also customize the legend position and size - this way, the legend is a part of the map, instead of being somewhere outside the map frame.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;ggm2 = ggplot() + 
+  geom_sf(data = north_carolina_2163, aes(fill = BIR74)) +
+  scale_fill_carto_c(palette = &amp;quot;Mint&amp;quot;) +
+  theme_void() +
+  theme(legend.position = c(0.4, 0.05),
+        legend.direction = &amp;quot;horizontal&amp;quot;,
+        legend.key.width = unit(10, &amp;quot;mm&amp;quot;))
+
+ggm2&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;https://geocompr.github.io/post/2019/ggplot2-inset-maps_files/figure-html/unnamed-chunk-7-1.png&#34; width=&#34;768&#34; /&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;maps-joining&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Maps joining&lt;/h2&gt;
+&lt;p&gt;The final step is to join two maps.
+This can be done using functions from the &lt;strong&gt;cowplot&lt;/strong&gt; package.
+We create an empty ggplot layer using &lt;code&gt;ggdraw()&lt;/code&gt;, fill it with out main map (&lt;code&gt;draw_plot(ggm2)&lt;/code&gt;), and add an inset map by specifing its position and size:&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;gg_inset_map1 = ggdraw() +
+  draw_plot(ggm2) +
+  draw_plot(ggm1, x = 0.05, y = 0.65, width = 0.3, height = 0.3)
+
+gg_inset_map1&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;https://geocompr.github.io/post/2019/ggplot2-inset-maps_files/figure-html/unnamed-chunk-8-1.png&#34; width=&#34;768&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;The final map can be saved using the &lt;code&gt;ggsave()&lt;/code&gt; function.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;ggsave(filename = &amp;quot;01_gg_inset_map.png&amp;quot;, 
+       plot = gg_inset_map1,
+       width = 8, 
+       height = 4,
+       dpi = 150)&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id=&#34;advanced-inset-map&#34; class=&#34;section level1&#34;&gt;
+&lt;h1&gt;Advanced inset map&lt;/h1&gt;
+&lt;p&gt;Let’s expand the idea of the inset map in &lt;strong&gt;ggplot2&lt;/strong&gt; based on the previous example.&lt;/p&gt;
+&lt;div id=&#34;data-preparation-1&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Data preparation&lt;/h2&gt;
+&lt;p&gt;This map will use the US states borders (&lt;code&gt;states()&lt;/code&gt;) as the source of the inset map and the Kentucky Senate legislative districts (&lt;code&gt;state_legislative_districts()&lt;/code&gt;) as the main map.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;library(tigris)
+options(tigris_use_cache = TRUE)
+us_states = states(cb = FALSE, class = &amp;quot;sf&amp;quot;)
+ky_districts = state_legislative_districts(&amp;quot;KY&amp;quot;, house = &amp;quot;upper&amp;quot;,
+                                           cb = FALSE, class = &amp;quot;sf&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;The &lt;code&gt;states()&lt;/code&gt; function, in addition to the 50 states, also returns the District of Columbia, Puerto Rico, American Samoa, the Commonwealth of the Northern Mariana Islands, Guam, and the US Virgin Islands.
+For our purpose, we are interested in the continental 48 states and the District of Columbia only; therefore, we remove the rest of the divisions using &lt;code&gt;subset()&lt;/code&gt;.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;us_states = subset(us_states, 
+                   !NAME %in% c(
+                     &amp;quot;United States Virgin Islands&amp;quot;,
+                     &amp;quot;Commonwealth of the Northern Mariana Islands&amp;quot;,
+                     &amp;quot;Guam&amp;quot;,
+                     &amp;quot;American Samoa&amp;quot;,
+                     &amp;quot;Puerto Rico&amp;quot;,
+                     &amp;quot;Alaska&amp;quot;,
+                     &amp;quot;Hawaii&amp;quot;
+                   ))&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;The same as in the example above, we transform both objects to have the same projection.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;ky_districts_2163 = st_transform(ky_districts, crs = 2163)
+us_states_2163 = st_transform(us_states, crs = 2163)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;We also extract the bounding box of the main object here.
+However, instead of using it directly, we add a buffer of 10,000 meters around it.
+This output will be handy in both inset and main maps.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;ky_districts_2163_bb = st_as_sfc(st_bbox(ky_districts_2163))
+ky_districts_2163_bb = st_buffer(ky_districts_2163_bb, dist = 10000)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;The &lt;code&gt;ky_districts_2163&lt;/code&gt; object does not have any interesting variables to visualize, so we create some random values here.
+However, we could also join the districts’ data with another dataset in this step.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;ky_districts_2163$values = runif(nrow(ky_districts_2163))&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;div id=&#34;map-creation&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Map creation&lt;/h2&gt;
+&lt;p&gt;The inset map should be as clear and simple as possible.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;ggm3 = ggplot() + 
+  geom_sf(data = us_states_2163, fill = &amp;quot;white&amp;quot;, size = 0.2) + 
+  geom_sf(data = ky_districts_2163_bb, fill = NA, color = &amp;quot;blue&amp;quot;, size = 1.2) +
+  theme_void()
+
+ggm3&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;https://geocompr.github.io/post/2019/ggplot2-inset-maps_files/figure-html/unnamed-chunk-15-1.png&#34; width=&#34;768&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;On the other hand, the main map looks better when we provide some additional context to our data.
+One of the ways to achieve it is to add the borders of the neighboring states.&lt;/p&gt;
+&lt;p&gt;Importantly, we also need to limit the extent of our main map to the range of the frame in the inset map.
+This can be done with the &lt;code&gt;coord_sf()&lt;/code&gt; function.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;ggm4 = ggplot() + 
+  geom_sf(data = us_states_2163, fill = &amp;quot;#F5F5DC&amp;quot;) +
+  geom_sf(data = ky_districts_2163, aes(fill = values)) +
+  scale_fill_carto_c(palette = &amp;quot;Sunset&amp;quot;) +
+  theme_void() +
+  theme(legend.position = c(0.5, 0.07),
+        legend.direction = &amp;quot;horizontal&amp;quot;,
+        legend.key.width = unit(10, &amp;quot;mm&amp;quot;),
+        plot.background = element_rect(fill = &amp;quot;#BFD5E3&amp;quot;)) +
+  coord_sf(xlim = st_bbox(ky_districts_2163_bb)[c(1, 3)],
+           ylim = st_bbox(ky_districts_2163_bb)[c(2, 4)])
+
+ggm4&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;https://geocompr.github.io/post/2019/ggplot2-inset-maps_files/figure-html/unnamed-chunk-16-1.png&#34; width=&#34;768&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;Finally, we draw two maps together, trying to find the best location and size for the inset map.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;gg_inset_map2 = ggdraw() +
+  draw_plot(ggm4) +
+  draw_plot(ggm3, x = 0.02, y = 0.65, width = 0.35, height = 0.35)
+
+gg_inset_map2&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;https://geocompr.github.io/post/2019/ggplot2-inset-maps_files/figure-html/unnamed-chunk-17-1.png&#34; width=&#34;768&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;The final map can be saved using the &lt;code&gt;ggsave()&lt;/code&gt; function.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;ggsave(filename = &amp;quot;02_gg_inset_map.png&amp;quot;, 
+       plot = gg_inset_map2,
+       width = 7.05, 
+       height = 4,
+       dpi = 150)&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id=&#34;summary&#34; class=&#34;section level1&#34;&gt;
+&lt;h1&gt;Summary&lt;/h1&gt;
+&lt;p&gt;The above examples can be adjusted to any spatial data and location.
+It is also possible to put more context on the map, including adding main cities’ names, neighboring states’ names, and annotations (using &lt;code&gt;geom_text()&lt;/code&gt;, &lt;code&gt;geom_label()&lt;/code&gt;).
+The main map can also be enhanced with the north arrow and scale bar using the &lt;a href=&#34;https://github.com/oswaldosantos/ggsn&#34;&gt;&lt;strong&gt;ggsn&lt;/strong&gt;&lt;/a&gt; package.&lt;/p&gt;
+&lt;p&gt;As always with R, there are many possible options to create inset maps.
+You can find two examples of inset maps created using the &lt;strong&gt;tmap&lt;/strong&gt; package in &lt;a href=&#34;https://geocompr.robinlovelace.net/adv-map.html#inset-maps&#34;&gt;the Geocomputation with R book&lt;/a&gt;.
+The second example is a classic map of the United States, which consists of the contiguous United States, Hawaii, and Alaska.
+However, Hawaii and Alaska are displayed at different geographic scales than the main map there.
+This problem can also be solved in R, which you can see in &lt;a href=&#34;https://nowosad.github.io/post/making-alternative-inset-maps-of-the-usa/&#34;&gt;the Making maps of the USA with R: alternative layout&lt;/a&gt; blogpost and the &lt;a href=&#34;https://github.com/Nowosad/us-map-alternative-layout&#34;&gt;Alternative layout for maps of the United States&lt;/a&gt; repository.&lt;/p&gt;
+&lt;p&gt;The presented approaches also apply to other areas.
+For example, you can find three ways on how to create an inset map of Spain in the &lt;a href=&#34;https://github.com/Nowosad/spain-map-layout&#34;&gt;Alternative layout for maps of Spain&lt;/a&gt; repository.
+Other examples of inset maps with &lt;strong&gt;ggplot2&lt;/strong&gt; can be found in the &lt;a href=&#34;https://ryanpeek.github.io/mapping-in-R-workshop/vig_making_inset_maps.html&#34;&gt;Inset Maps&lt;/a&gt; vignette by &lt;a href=&#34;https://twitter.com/riverpeek&#34;&gt;Ryan Peek&lt;/a&gt; and the blog post &lt;a href=&#34;https://www.r-spatial.org/r/2018/10/25/ggplot2-sf-3.html&#34;&gt;Drawing beautiful maps programmatically with R, sf and ggplot2&lt;/a&gt; by &lt;a href=&#34;https://twitter.com/melimore86&#34;&gt;Mel Moreno&lt;/a&gt; and &lt;a href=&#34;https://twitter.com/MabLabUF&#34;&gt;Mathieu Basille&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;The decision which option to use depends on the expected map type preferred R packages, etc.
+Try different approaches on your own data and decide what works best for you!&lt;/p&gt;
+&lt;/div&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Map coloring: the color scale styles available in the tmap package</title>
+      <link>https://geocompr.github.io/post/2019/tmap-color-scales/</link>
+      <pubDate>Thu, 17 Oct 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://geocompr.github.io/post/2019/tmap-color-scales/</guid>
+      <description>
+&lt;script src=&#34;https://geocompr.github.io/rmarkdown-libs/header-attrs/header-attrs.js&#34;&gt;&lt;/script&gt;
+&lt;link href=&#34;https://geocompr.github.io/rmarkdown-libs/anchor-sections/anchor-sections.css&#34; rel=&#34;stylesheet&#34; /&gt;
+&lt;script src=&#34;https://geocompr.github.io/rmarkdown-libs/anchor-sections/anchor-sections.js&#34;&gt;&lt;/script&gt;
+
+
+&lt;p&gt;This vignette builds on the &lt;a href=&#34;https://geocompr.robinlovelace.net/adv-map.html&#34;&gt;making maps chapter&lt;/a&gt; of &lt;a href=&#34;https://geocompr.github.io/&#34;&gt;the Geocomputation with R book&lt;/a&gt;.
+Its goal is to demonstrate all possible map styles available in the &lt;strong&gt;tmap&lt;/strong&gt; package.&lt;/p&gt;
+&lt;div id=&#34;prerequisites&#34; class=&#34;section level2 unnumbered&#34;&gt;
+&lt;h2&gt;Prerequisites&lt;/h2&gt;
+&lt;p&gt;The examples below assume the following packages are attached:&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;library(spData) # example datasets
+library(tmap)   # map creation
+library(sf)     # spatial data reprojection&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;The &lt;code&gt;world&lt;/code&gt; object containing a world map data from &lt;a href=&#34;https://www.naturalearthdata.com/&#34;&gt;Natural Earth&lt;/a&gt; and information about countries’ names, regions, and subregions they belong to, areas, life expectancies, and populations.
+This object is in geographical coordinates using the WGS84 datum, however, for mapping purposes, the Mollweide projection is a better alternative (learn more in &lt;a href=&#34;https://geocompr.robinlovelace.net/reproj-geo-data.html#modifying-map-projections&#34;&gt;the modifying map projections section&lt;/a&gt;).
+The &lt;code&gt;st_tranform&lt;/code&gt; function from the &lt;strong&gt;sf&lt;/strong&gt; package allows for quick reprojection to the selected coordinate reference system (e.g., &lt;code&gt;&#34;+proj=moll&#34;&lt;/code&gt; represents the Mollweide projection).&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;world_moll = st_transform(world, crs = &amp;quot;+proj=moll&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;div id=&#34;one-color&#34; class=&#34;section level1&#34;&gt;
+&lt;h1&gt;One color&lt;/h1&gt;
+&lt;p&gt;Let’s start with the basics.
+To create a simple world map, we need to specify the data object (&lt;code&gt;world_moll&lt;/code&gt;) inside the &lt;code&gt;tm_shape()&lt;/code&gt; function, and the way we want to visualize it.
+The &lt;strong&gt;tmap&lt;/strong&gt; package offers several visualisation possibilities for polygons, including &lt;code&gt;tm_borders()&lt;/code&gt;, &lt;code&gt;tm_fill()&lt;/code&gt;, and &lt;code&gt;tm_polygons()&lt;/code&gt;.
+The last one draws the filled polygons with borders, where the fill color can be specified with the &lt;code&gt;col&lt;/code&gt; argument:&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;tm_shape(world_moll) +
+  tm_polygons(col = &amp;quot;lightblue&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;https://geocompr.github.io/post/2019/tmap-styles_files/figure-html/unnamed-chunk-3-1.png&#34; width=&#34;768&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;The output is a map of world countries, where each country is filled with a light blue color.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;coloring-of-adjacent-polygons&#34; class=&#34;section level1&#34;&gt;
+&lt;h1&gt;Coloring of adjacent polygons&lt;/h1&gt;
+&lt;p&gt;The &lt;code&gt;col&lt;/code&gt; argument is very flexible, and its action depends on the value provided.
+In the previous example, we provided a single color value resulting in a map with one color.
+To create a map, where adjacent polygons do not get the same color, we need to provide a keyword &lt;code&gt;&#34;MAP_COLORS&#34;&lt;/code&gt;.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;tm_shape(world_moll) +
+  tm_polygons(col = &amp;quot;MAP_COLORS&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;https://geocompr.github.io/post/2019/tmap-styles_files/figure-html/unnamed-chunk-4-1.png&#34; width=&#34;768&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;The default color can be changed using the &lt;code&gt;palette&lt;/code&gt; argument - run the &lt;code&gt;tmaptools::palette_explorer()&lt;/code&gt; function to see possible palettes’ names.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;tm_shape(world_moll) +
+  tm_polygons(col = &amp;quot;MAP_COLORS&amp;quot;,
+              palette = &amp;quot;Pastel1&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;https://geocompr.github.io/post/2019/tmap-styles_files/figure-html/unnamed-chunk-5-1.png&#34; width=&#34;768&#34; /&gt;&lt;/p&gt;
+&lt;!-- Additionally, the number of classes can be set using the `n` argument. --&gt;
+&lt;p&gt;Additionally, in this case, it is possible to use the &lt;code&gt;minimize&lt;/code&gt; argument, which triggers the internal algorithm to search for a minimal number of colors for visualization.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;tm_shape(world_moll) +
+  tm_polygons(col = &amp;quot;MAP_COLORS&amp;quot;,
+              minimize = TRUE)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;https://geocompr.github.io/post/2019/tmap-styles_files/figure-html/unnamed-chunk-6-1.png&#34; width=&#34;768&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;The new map uses five colors&lt;!-- except for Angola (blue color)--&gt;.
+On a side note, in theory, no more than four colors are required to color the polygons of the map so that no two adjacent polygons have the same color (learn more about the four color map theorem on &lt;a href=&#34;https://en.wikipedia.org/wiki/Four_color_theorem&#34;&gt;Wikipedia&lt;/a&gt;).&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;categorical-maps&#34; class=&#34;section level1&#34;&gt;
+&lt;h1&gt;Categorical maps&lt;/h1&gt;
+&lt;p&gt;The third use of the &lt;code&gt;col&lt;/code&gt; argument is by providing the variable (column) name.
+In this case, the map will represent the given variable.
+By default, &lt;strong&gt;tmap&lt;/strong&gt; behaves differently depending on the input variable type.
+For example, it will create a categorical map when the provided variable contains characters or factors.
+The &lt;code&gt;tm_polygons(col = &#34;subregion&#34;, style = &#34;cat&#34;)&lt;/code&gt; code will be run automatically in this case.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;tm_shape(world_moll) +
+  tm_polygons(col = &amp;quot;subregion&amp;quot;)+
+  tm_layout(legend.outside = TRUE) &lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;https://geocompr.github.io/post/2019/tmap-styles_files/figure-html/unnamed-chunk-7-1.png&#34; width=&#34;768&#34; /&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;discrete-maps&#34; class=&#34;section level1&#34;&gt;
+&lt;h1&gt;Discrete maps&lt;/h1&gt;
+&lt;p&gt;Discrete maps represents continuous numerical variables using discrete class intervals.
+There are several ways to convert continuous variables to discrete ones implemented in &lt;strong&gt;tmap&lt;/strong&gt;.&lt;/p&gt;
+&lt;div id=&#34;pretty&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Pretty&lt;/h2&gt;
+&lt;p&gt;When the variable provided as the &lt;code&gt;col&lt;/code&gt; argument is numeric, &lt;strong&gt;tmap&lt;/strong&gt; will use the &lt;code&gt;&#34;pretty&#34;&lt;/code&gt; style as a default.
+In other words, it runs &lt;code&gt;tm_polygons(col = &#34;lifeExp&#34;, style = &#34;pretty&#34;)&lt;/code&gt; invisibly to the user.
+This style rounds breaks into whole numbers where possible and spaces them evenly.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;tm_shape(world_moll) +
+  tm_polygons(col = &amp;quot;lifeExp&amp;quot;,
+              legend.hist = TRUE) +
+  tm_layout(legend.outside = TRUE) &lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;https://geocompr.github.io/post/2019/tmap-styles_files/figure-html/unnamed-chunk-8-1.png&#34; width=&#34;768&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;A histogram is added using &lt;code&gt;legend.hist = TRUE&lt;/code&gt; in this and several next examples to show how the selected map style relates to the distribution of values.&lt;/p&gt;
+&lt;p&gt;It is possible to indicate a preferred number of classes using the &lt;code&gt;n&lt;/code&gt; argument.
+Importantly, not every &lt;code&gt;n&lt;/code&gt; is possible depending on the range of the values in the data.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;tm_shape(world_moll) +
+  tm_polygons(col = &amp;quot;lifeExp&amp;quot;,
+              legend.hist = TRUE,
+              n = 4) +
+  tm_layout(legend.outside = TRUE) &lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;https://geocompr.github.io/post/2019/tmap-styles_files/figure-html/unnamed-chunk-9-1.png&#34; width=&#34;768&#34; /&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;fixed&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Fixed&lt;/h2&gt;
+&lt;p&gt;The &lt;code&gt;&#34;fixed&#34;&lt;/code&gt; style allows for a manual selection of the breaks in conjunction with the &lt;code&gt;breaks&lt;/code&gt; argument.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;tm_shape(world_moll) +
+  tm_polygons(col = &amp;quot;lifeExp&amp;quot;, 
+              style = &amp;quot;fixed&amp;quot;,
+              breaks = c(45, 60, 75, 90),
+              legend.hist = TRUE) +
+  tm_layout(legend.outside = TRUE) &lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;https://geocompr.github.io/post/2019/tmap-styles_files/figure-html/unnamed-chunk-10-1.png&#34; width=&#34;768&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;Additionally, the default labels can be overwritten using the &lt;code&gt;labels&lt;/code&gt; argument.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;tm_shape(world_moll) +
+  tm_polygons(col = &amp;quot;lifeExp&amp;quot;, 
+              style = &amp;quot;fixed&amp;quot;,
+              breaks = c(45, 60, 75, 90),
+              labels = c(&amp;quot;low&amp;quot;, &amp;quot;medium&amp;quot;, &amp;quot;high&amp;quot;),
+              legend.hist = TRUE) +
+  tm_layout(legend.outside = TRUE) &lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;https://geocompr.github.io/post/2019/tmap-styles_files/figure-html/unnamed-chunk-11-1.png&#34; width=&#34;768&#34; /&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;breaks-based-on-the-standard-deviation-value&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Breaks based on the standard deviation value&lt;/h2&gt;
+&lt;p&gt;The &lt;code&gt;&#34;sd&#34;&lt;/code&gt; style calculates a standard deviation of a given variable, and next use this value as the break width.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;tm_shape(world_moll) +
+  tm_polygons(col = &amp;quot;lifeExp&amp;quot;, 
+              style = &amp;quot;sd&amp;quot;,
+              legend.hist = TRUE) +
+  tm_layout(legend.outside = TRUE)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;https://geocompr.github.io/post/2019/tmap-styles_files/figure-html/unnamed-chunk-12-1.png&#34; width=&#34;768&#34; /&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;fisher-algorithm&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Fisher algorithm&lt;/h2&gt;
+&lt;p&gt;The &lt;code&gt;&#34;fisher&#34;&lt;/code&gt; style creates groups with maximalized homogeneity.&lt;a href=&#34;#fn1&#34; class=&#34;footnote-ref&#34; id=&#34;fnref1&#34;&gt;&lt;sup&gt;1&lt;/sup&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;tm_shape(world_moll) +
+  tm_polygons(col = &amp;quot;lifeExp&amp;quot;,
+              style = &amp;quot;fisher&amp;quot;,
+              legend.hist = TRUE) +
+  tm_layout(legend.outside = TRUE) &lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;https://geocompr.github.io/post/2019/tmap-styles_files/figure-html/unnamed-chunk-13-1.png&#34; width=&#34;768&#34; /&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;jenks-natural-breaks&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Jenks natural breaks&lt;/h2&gt;
+&lt;p&gt;The &lt;code&gt;&#34;jenks&#34;&lt;/code&gt; style identifies groups of similar values in the data and maximizes the differences between categories.&lt;a href=&#34;#fn2&#34; class=&#34;footnote-ref&#34; id=&#34;fnref2&#34;&gt;&lt;sup&gt;2&lt;/sup&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;tm_shape(world_moll) +
+  tm_polygons(col = &amp;quot;lifeExp&amp;quot;,
+              style = &amp;quot;jenks&amp;quot;,
+              legend.hist = TRUE) +
+  tm_layout(legend.outside = TRUE) &lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;https://geocompr.github.io/post/2019/tmap-styles_files/figure-html/unnamed-chunk-14-1.png&#34; width=&#34;768&#34; /&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;hierarchical-clustering&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Hierarchical clustering&lt;/h2&gt;
+&lt;p&gt;In the &lt;code&gt;&#34;hclust&#34;&lt;/code&gt; style, breaks are created using hierarchical clustering.&lt;a href=&#34;#fn3&#34; class=&#34;footnote-ref&#34; id=&#34;fnref3&#34;&gt;&lt;sup&gt;3&lt;/sup&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;tm_shape(world_moll) +
+  tm_polygons(col = &amp;quot;lifeExp&amp;quot;,
+              style = &amp;quot;hclust&amp;quot;,
+              legend.hist = TRUE) +
+  tm_layout(legend.outside = TRUE) &lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;https://geocompr.github.io/post/2019/tmap-styles_files/figure-html/unnamed-chunk-15-1.png&#34; width=&#34;768&#34; /&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;bagged-clustering&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Bagged clustering&lt;/h2&gt;
+&lt;p&gt;The &lt;code&gt;&#34;bclust&#34;&lt;/code&gt; style uses the &lt;code&gt;bclust&lt;/code&gt; function to generate the breaks using bagged clustering.&lt;a href=&#34;#fn4&#34; class=&#34;footnote-ref&#34; id=&#34;fnref4&#34;&gt;&lt;sup&gt;4&lt;/sup&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;tm_shape(world_moll) +
+  tm_polygons(col = &amp;quot;lifeExp&amp;quot;,
+              style = &amp;quot;bclust&amp;quot;,
+              legend.hist = TRUE) +
+  tm_layout(legend.outside = TRUE) &lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;https://geocompr.github.io/post/2019/tmap-styles_files/figure-html/unnamed-chunk-16-1.png&#34; width=&#34;768&#34; /&gt;&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;## Committee Member: 1(1) 2(1) 3(1) 4(1) 5(1) 6(1) 7(1) 8(1) 9(1) 10(1)
+## Computing Hierarchical Clustering&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;div id=&#34;k-means-clustering&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;k-means clustering&lt;/h2&gt;
+&lt;p&gt;The &lt;code&gt;&#34;kmeans&#34;&lt;/code&gt; style uses the &lt;code&gt;kmeans&lt;/code&gt; function to generate the breaks.&lt;a href=&#34;#fn5&#34; class=&#34;footnote-ref&#34; id=&#34;fnref5&#34;&gt;&lt;sup&gt;5&lt;/sup&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;tm_shape(world_moll) +
+  tm_polygons(col = &amp;quot;lifeExp&amp;quot;, 
+              style = &amp;quot;kmeans&amp;quot;,
+              legend.hist = TRUE) +
+  tm_layout(legend.outside = TRUE) &lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;https://geocompr.github.io/post/2019/tmap-styles_files/figure-html/unnamed-chunk-17-1.png&#34; width=&#34;768&#34; /&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;quantile-breaks&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Quantile breaks&lt;/h2&gt;
+&lt;p&gt;The &lt;code&gt;&#34;quantile&#34;&lt;/code&gt; style creates breaks with an equal number of features (polygons).&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;tm_shape(world_moll) +
+  tm_polygons(col = &amp;quot;lifeExp&amp;quot;, 
+              style = &amp;quot;quantile&amp;quot;,
+              legend.hist = TRUE) +
+  tm_layout(legend.outside = TRUE) &lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;https://geocompr.github.io/post/2019/tmap-styles_files/figure-html/unnamed-chunk-18-1.png&#34; width=&#34;768&#34; /&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;equal-breaks&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Equal breaks&lt;/h2&gt;
+&lt;p&gt;The &lt;code&gt;&#34;equal&#34;&lt;/code&gt; style divides input values into bins of equal range and is appropriate for variables with a uniform distribution.
+It is not recommended for variables with a skewed distribution as the resulting map may end-up having little color diversity.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;tm_shape(world_moll) +
+  tm_polygons(col = &amp;quot;lifeExp&amp;quot;, 
+              style = &amp;quot;equal&amp;quot;,
+              legend.hist = TRUE) +
+  tm_layout(legend.outside = TRUE) &lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;https://geocompr.github.io/post/2019/tmap-styles_files/figure-html/unnamed-chunk-19-1.png&#34; width=&#34;768&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;Learn more about the implementation of discrete scales in &lt;a href=&#34;https://r-spatial.github.io/classInt/index.html&#34;&gt;the &lt;strong&gt;classInt&lt;/strong&gt; package’s documentation&lt;/a&gt;.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id=&#34;continuous-maps&#34; class=&#34;section level1&#34;&gt;
+&lt;h1&gt;Continuous maps&lt;/h1&gt;
+&lt;p&gt;The &lt;strong&gt;tmap&lt;/strong&gt; package also allows for creating continuous maps.&lt;/p&gt;
+&lt;div id=&#34;continuous&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Continuous&lt;/h2&gt;
+&lt;p&gt;The &lt;code&gt;&#34;cont&#34;&lt;/code&gt; style presents a large number of colors over the continuous color field.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;tm_shape(world_moll) +
+  tm_polygons(col = &amp;quot;lifeExp&amp;quot;,
+              style = &amp;quot;cont&amp;quot;) +
+  tm_layout(legend.outside = TRUE) &lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;https://geocompr.github.io/post/2019/tmap-styles_files/figure-html/unnamed-chunk-20-1.png&#34; width=&#34;768&#34; /&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;order&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Order&lt;/h2&gt;
+&lt;p&gt;The &lt;code&gt;&#34;order&#34;&lt;/code&gt; style also presents a large number of colors over the continuous color field.
+However, this style is suited to visualize skewed distributions; notice that the values on the legend do not change linearly.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;tm_shape(world_moll) +
+  tm_polygons(col = &amp;quot;lifeExp&amp;quot;,
+              style = &amp;quot;order&amp;quot;) +
+  tm_layout(legend.outside = TRUE) &lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;https://geocompr.github.io/post/2019/tmap-styles_files/figure-html/unnamed-chunk-21-1.png&#34; width=&#34;768&#34; /&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id=&#34;logarithmic-scales&#34; class=&#34;section level1&#34;&gt;
+&lt;h1&gt;Logarithmic scales&lt;/h1&gt;
+&lt;p&gt;The default numeric style, &lt;code&gt;pretty&lt;/code&gt;, is easy to understand, but it is not proper for maps of variables with skewed distributions.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;tm_shape(world_moll) +
+  tm_polygons(col = &amp;quot;pop&amp;quot;) +
+  tm_layout(legend.outside = TRUE) &lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;https://geocompr.github.io/post/2019/tmap-styles_files/figure-html/unnamed-chunk-22-1.png&#34; width=&#34;768&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;Another possible style, &lt;code&gt;order&lt;/code&gt; works better in this case; however, it is not easy to interpret.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;tm_shape(world_moll) +
+  tm_polygons(col = &amp;quot;pop&amp;quot;, 
+              style = &amp;quot;order&amp;quot;) +
+  tm_layout(legend.outside = TRUE) &lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;https://geocompr.github.io/post/2019/tmap-styles_files/figure-html/unnamed-chunk-23-1.png&#34; width=&#34;768&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;A better alternative, in this case, is to use a common logarithm (the logarithm to base 10) scale.
+The &lt;strong&gt;tmap&lt;/strong&gt; package gives two possibilities in this case - &lt;code&gt;&#34;log10_pretty&#34;&lt;/code&gt; and &lt;code&gt;&#34;log10&#34;&lt;/code&gt;.
+The &lt;code&gt;&#34;log10_pretty&#34;&lt;/code&gt; style is a common logarithmic version of the regular &lt;code&gt;pretty&lt;/code&gt; style.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;tm_shape(world_moll) +
+  tm_polygons(col = &amp;quot;pop&amp;quot;, 
+              style = &amp;quot;log10_pretty&amp;quot;) +
+  tm_layout(legend.outside = TRUE) &lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;https://geocompr.github.io/post/2019/tmap-styles_files/figure-html/unnamed-chunk-24-1.png&#34; width=&#34;768&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;On the other hand, the &lt;code&gt;&#34;log10&#34;&lt;/code&gt; style is a version of a continuous scale.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;tm_shape(world_moll) +
+  tm_polygons(col = &amp;quot;pop&amp;quot;, 
+              style = &amp;quot;log10&amp;quot;) +
+  tm_layout(legend.outside = TRUE) &lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;https://geocompr.github.io/post/2019/tmap-styles_files/figure-html/unnamed-chunk-25-1.png&#34; width=&#34;768&#34; /&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;conclusions&#34; class=&#34;section level1&#34;&gt;
+&lt;h1&gt;Conclusions&lt;/h1&gt;
+&lt;p&gt;Selecting a color scale style is not an easy task.
+It depends on the type of input variable and its distribution, but also the intended audience.
+Therefore, it is worth to spend some time and think about your readers (e.g., would they be able to understand the logarithmic scale or should you use the manual breaks instead?) and your data (e.g., how many breaks should there be to show different subgroups?).
+Now you know different color scale styles implemented in &lt;strong&gt;tmap&lt;/strong&gt;, so let’s try using them for your own projects!&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&#34;footnotes&#34;&gt;
+&lt;hr /&gt;
+&lt;ol&gt;
+&lt;li id=&#34;fn1&#34;&gt;&lt;p&gt;&lt;a href=&#34;https://www.tandfonline.com/doi/abs/10.1080/01621459.1958.10501479&#34; class=&#34;uri&#34;&gt;https://www.tandfonline.com/doi/abs/10.1080/01621459.1958.10501479&lt;/a&gt;&lt;a href=&#34;#fnref1&#34; class=&#34;footnote-back&#34;&gt;↩︎&lt;/a&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;li id=&#34;fn2&#34;&gt;&lt;p&gt;&lt;a href=&#34;https://en.wikipedia.org/wiki/Jenks_natural_breaks_optimization&#34; class=&#34;uri&#34;&gt;https://en.wikipedia.org/wiki/Jenks_natural_breaks_optimization&lt;/a&gt;&lt;a href=&#34;#fnref2&#34; class=&#34;footnote-back&#34;&gt;↩︎&lt;/a&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;li id=&#34;fn3&#34;&gt;&lt;p&gt;See the &lt;code&gt;?hclust&lt;/code&gt; documentation for more details.&lt;a href=&#34;#fnref3&#34; class=&#34;footnote-back&#34;&gt;↩︎&lt;/a&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;li id=&#34;fn4&#34;&gt;&lt;p&gt;See the &lt;code&gt;?bclust&lt;/code&gt; documentation for more details.&lt;a href=&#34;#fnref4&#34; class=&#34;footnote-back&#34;&gt;↩︎&lt;/a&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;li id=&#34;fn5&#34;&gt;&lt;p&gt;See the &lt;code&gt;?kmeans&lt;/code&gt; documentation for more details.&lt;a href=&#34;#fnref5&#34; class=&#34;footnote-back&#34;&gt;↩︎&lt;/a&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/div&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Grids and graticules in the tmap package</title>
+      <link>https://geocompr.github.io/post/2019/tmap-grid/</link>
+      <pubDate>Wed, 04 Sep 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://geocompr.github.io/post/2019/tmap-grid/</guid>
+      <description>
+&lt;script src=&#34;https://geocompr.github.io/rmarkdown-libs/header-attrs/header-attrs.js&#34;&gt;&lt;/script&gt;
+&lt;link href=&#34;https://geocompr.github.io/rmarkdown-libs/anchor-sections/anchor-sections.css&#34; rel=&#34;stylesheet&#34; /&gt;
+&lt;script src=&#34;https://geocompr.github.io/rmarkdown-libs/anchor-sections/anchor-sections.js&#34;&gt;&lt;/script&gt;
+
+
+&lt;p&gt;This vignette builds on the &lt;a href=&#34;https://geocompr.robinlovelace.net/adv-map.html&#34;&gt;making maps chapter&lt;/a&gt; of &lt;a href=&#34;https://geocompr.github.io/&#34;&gt;the Geocomputation with R book&lt;/a&gt;.
+Its goal is to demonstrate how to set and modify grids and graticules in the &lt;strong&gt;tmap&lt;/strong&gt; package.&lt;/p&gt;
+&lt;div id=&#34;prerequisites&#34; class=&#34;section level2 unnumbered&#34;&gt;
+&lt;h2&gt;Prerequisites&lt;/h2&gt;
+&lt;p&gt;The examples below assume the following packages are attached:&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;library(spData) # example datasets
+library(tmap)   # map creation (&amp;gt;=2.3)
+library(sf)     # spatial data classes&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;div id=&#34;grids-and-graticules&#34; class=&#34;section level1&#34;&gt;
+&lt;h1&gt;Grids and graticules&lt;/h1&gt;
+&lt;p&gt;The &lt;strong&gt;tmap&lt;/strong&gt; package offers two ways to draws coordinate lines - &lt;code&gt;tm_grid()&lt;/code&gt; and &lt;code&gt;tm_graticules()&lt;/code&gt;.
+The role of &lt;code&gt;tm_grid()&lt;/code&gt; is to represent the input data’s coordinates.
+For example, the &lt;code&gt;nz&lt;/code&gt; object uses the New Zealand Transverse Mercator projection, with meters as its units.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;tm_shape(nz) + 
+  tm_polygons() +
+  tm_grid()&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;https://geocompr.github.io/post/2019/tmap-grid_files/figure-html/unnamed-chunk-3-1.png&#34; width=&#34;576&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;tm_graticules()&lt;/code&gt; shows longitude lines (meridians) and latitude lines (parallels), with degrees as units (note the degree sign in the example below).&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;tm_shape(nz) + 
+  tm_polygons() +
+  tm_graticules()&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;https://geocompr.github.io/post/2019/tmap-grid_files/figure-html/unnamed-chunk-4-1.png&#34; width=&#34;576&#34; /&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;layers-order&#34; class=&#34;section level1&#34;&gt;
+&lt;h1&gt;Layers order&lt;/h1&gt;
+&lt;p&gt;Both, &lt;code&gt;tm_grid()&lt;/code&gt; and &lt;code&gt;tm_graticules()&lt;/code&gt; could be placed above or below the main spatial data.
+Its position on the map depends on its place in the code.
+When &lt;code&gt;tm_grid()&lt;/code&gt; or &lt;code&gt;tm_graticules()&lt;/code&gt; are placed after the code drawing geometry (e.g. &lt;code&gt;tm_polygons()&lt;/code&gt;), the grids or graticules are ploted on the top of the map.
+On the other hand, when &lt;code&gt;tm_grid()&lt;/code&gt; or &lt;code&gt;tm_graticules()&lt;/code&gt; are placed before the code drawing geometry (e.g. &lt;code&gt;tm_polygons()&lt;/code&gt;), the grids or graticules are plotted behind the spatial data.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;tm_shape(nz) +
+  tm_graticules() + 
+  tm_polygons()&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;https://geocompr.github.io/post/2019/tmap-grid_files/figure-html/unnamed-chunk-6-1.png&#34; width=&#34;576&#34; /&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;customization&#34; class=&#34;section level1&#34;&gt;
+&lt;h1&gt;Customization&lt;/h1&gt;
+&lt;p&gt;Grids and graticules can be easily customized in &lt;strong&gt;tmap&lt;/strong&gt; using several arguments.
+The first one, &lt;code&gt;labels.inside.frame&lt;/code&gt; moves the labels inside the map grid (it is set to &lt;code&gt;FALSE&lt;/code&gt; as the default).&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;tm_shape(nz) +
+  tm_grid(labels.inside.frame = TRUE) + 
+  tm_polygons()&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;https://geocompr.github.io/post/2019/tmap-grid_files/figure-html/unnamed-chunk-7-1.png&#34; width=&#34;576&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;The number of horizontal (&lt;code&gt;x&lt;/code&gt;) and vertical (&lt;code&gt;y&lt;/code&gt;) lines can be set using the &lt;code&gt;n.x&lt;/code&gt; and &lt;code&gt;n.y&lt;/code&gt; arguments.
+Importantly, &lt;strong&gt;tmap&lt;/strong&gt; rounds coordinate values to equally spaced “round” values, so the number of actual labels may be slightly different than set with &lt;code&gt;n.x&lt;/code&gt; and &lt;code&gt;n.y&lt;/code&gt;.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;tm_shape(nz) +
+  tm_grid(n.x = 4, n.y = 3) + 
+  tm_polygons()&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;https://geocompr.github.io/post/2019/tmap-grid_files/figure-html/unnamed-chunk-8-1.png&#34; width=&#34;576&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;By default, &lt;code&gt;tm_grid()&lt;/code&gt; and &lt;code&gt;tm_graticules()&lt;/code&gt; shows ticks and lines.
+They can be disabled using &lt;code&gt;ticks = FALSE&lt;/code&gt; and &lt;code&gt;lines = FALSE&lt;/code&gt;.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;tm_shape(nz) +
+  tm_grid(ticks = FALSE) +
+  tm_polygons()&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;https://geocompr.github.io/post/2019/tmap-grid_files/figure-html/unnamed-chunk-9-1.png&#34; width=&#34;576&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;Especially, &lt;code&gt;lines = FALSE&lt;/code&gt; could be useful when presenting raster data.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;tm_shape(nz) +
+  tm_grid(lines = FALSE) +
+  tm_polygons()&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;https://geocompr.github.io/post/2019/tmap-grid_files/figure-html/unnamed-chunk-10-1.png&#34; width=&#34;576&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;It is also possible to customize &lt;code&gt;tm_grid()&lt;/code&gt; and &lt;code&gt;tm_graticules()&lt;/code&gt; apperance, for example by chaning the lines colors (&lt;code&gt;col&lt;/code&gt;), width (&lt;code&gt;lwd&lt;/code&gt;) or labels size (&lt;code&gt;labels.size&lt;/code&gt;).&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;tm_shape(nz) +
+  tm_grid(col = &amp;quot;red&amp;quot;, lwd = 3, labels.size = 0.4) +
+  tm_polygons()&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;https://geocompr.github.io/post/2019/tmap-grid_files/figure-html/unnamed-chunk-11-1.png&#34; width=&#34;576&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;The above examples uses &lt;code&gt;tm_grid()&lt;/code&gt;, but the same arguments apply to the &lt;code&gt;tm_graticules()&lt;/code&gt;.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;layout-settings&#34; class=&#34;section level1&#34;&gt;
+&lt;h1&gt;Layout settings&lt;/h1&gt;
+&lt;p&gt;By default, &lt;strong&gt;tmap&lt;/strong&gt; adds small inner margins between the presented data and the map frame.
+It works well in many cases, for example, see the map of New Zealand above.
+However, it does not look perfect for world maps.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;tm_shape(world) + 
+  tm_graticules() + 
+  tm_polygons()&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;https://geocompr.github.io/post/2019/tmap-grid_files/figure-html/unnamed-chunk-12-1.png&#34; width=&#34;576&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;The way to fix this is to use the &lt;code&gt;tm_layout()&lt;/code&gt; function and set its &lt;code&gt;inner.margins&lt;/code&gt; argument to &lt;code&gt;0&lt;/code&gt;.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;tm_shape(world) + 
+  tm_graticules() + 
+  tm_polygons() +
+  tm_layout(inner.margins = 0)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;https://geocompr.github.io/post/2019/tmap-grid_files/figure-html/unnamed-chunk-13-1.png&#34; width=&#34;576&#34; /&gt;&lt;/p&gt;
+&lt;/div&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Geographic projections and transformations</title>
+      <link>https://geocompr.github.io/post/2019/crs-projections-transformations/</link>
+      <pubDate>Wed, 21 Aug 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://geocompr.github.io/post/2019/crs-projections-transformations/</guid>
+      <description>
+&lt;script src=&#34;https://geocompr.github.io/rmarkdown-libs/header-attrs/header-attrs.js&#34;&gt;&lt;/script&gt;
+&lt;link href=&#34;https://geocompr.github.io/rmarkdown-libs/anchor-sections/anchor-sections.css&#34; rel=&#34;stylesheet&#34; /&gt;
+&lt;script src=&#34;https://geocompr.github.io/rmarkdown-libs/anchor-sections/anchor-sections.js&#34;&gt;&lt;/script&gt;
+
+
+&lt;div id=&#34;introduction&#34; class=&#34;section level1&#34;&gt;
+&lt;h1&gt;Introduction&lt;/h1&gt;
+&lt;p&gt;This workbook outlines key concepts and functions related to map projections — also referred to as coordinate reference systems (CRSs) — and transformation of geographic data from one projection to another.
+It is based on the open source book &lt;a href=&#34;https://geocompr.robinlovelace.net&#34;&gt;&lt;em&gt;Geocomputation with R&lt;/em&gt;&lt;/a&gt;, and Chapter &lt;a href=&#34;https://geocompr.robinlovelace.net/reproj-geo-data.html&#34;&gt;6&lt;/a&gt; in particular.&lt;/p&gt;
+&lt;p&gt;It was developed for the ‘&lt;a href=&#34;https://bonnie-buyuklieva.github.io/SS_ASM19/&#34;&gt;CASA Summer School&lt;/a&gt;’, or the Doctoral Summer School for Advanced Spatial Modelling: Skills Workshop and Hackathon, 21&lt;sup&gt;st&lt;/sup&gt; to 23&lt;sup&gt;rd&lt;/sup&gt; August 2019, for its full name!
+It should be of use to anyone interested in projections, beyond the summer school, so we posted it on our newly updated &lt;a href=&#34;https://geocompr.github.io/&#34;&gt;website&lt;/a&gt; for maximum benefit.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;prerequisites&#34; class=&#34;section level1 unnumbered&#34;&gt;
+&lt;h1&gt;Prerequisites&lt;/h1&gt;
+&lt;p&gt;Before you get started, make sure you have the packages installed:&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;library(sf)
+library(dplyr)
+library(spData)&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;div id=&#34;introduction-1&#34; class=&#34;section level1&#34;&gt;
+&lt;h1&gt;Introduction&lt;/h1&gt;
+&lt;p&gt;Before we get started, why use R for geographic data?&lt;/p&gt;
+&lt;p&gt;Simple answer: because it works, excels at spatial statistics and visualisation and has a huge user community.&lt;/p&gt;
+&lt;p&gt;It can be used for a wide range of things such as:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Book on Geocomputation: &lt;a href=&#34;https://geocompr.robinlovelace.net/&#34; class=&#34;uri&#34;&gt;https://geocompr.robinlovelace.net/&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Propensity to Cycle Tool: &lt;a href=&#34;https://pct.bike/&#34; class=&#34;uri&#34;&gt;https://pct.bike/&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Geographic data relies on a frame of reference.
+There are two main types of CRS:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Geographic&lt;/strong&gt;, where the frame of reference is the globe and how many degrees north or east from the position (0, 0) you are&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Projected&lt;/strong&gt;, where the frame of reference is a flat representation of part of the Earth’s surface&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class=&#34;figure&#34;&gt;&lt;span id=&#34;fig:vectorplots&#34;&gt;&lt;/span&gt;
+&lt;img src=&#34;https://geocompr.robinlovelace.net/figures/vector_lonlat.png&#34; alt=&#34;Illustration of vector (point) data in which location of London (the red X) is represented with reference to an origin (the blue circle). The left plot represents a geographic CRS with an origin at 0° longitude and latitude. The right plot represents a projected CRS with an origin located in the sea west of the South West Peninsula.&#34; width=&#34;49%&#34; /&gt;&lt;img src=&#34;https://geocompr.robinlovelace.net/figures/vector_projected.png&#34; alt=&#34;Illustration of vector (point) data in which location of London (the red X) is represented with reference to an origin (the blue circle). The left plot represents a geographic CRS with an origin at 0° longitude and latitude. The right plot represents a projected CRS with an origin located in the sea west of the South West Peninsula.&#34; width=&#34;49%&#34; /&gt;
+&lt;p class=&#34;caption&#34;&gt;
+Figure 1: Illustration of vector (point) data in which location of London (the red X) is represented with reference to an origin (the blue circle). The left plot represents a geographic CRS with an origin at 0° longitude and latitude. The right plot represents a projected CRS with an origin located in the sea west of the South West Peninsula.
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id=&#34;tldr&#34; class=&#34;section level1&#34;&gt;
+&lt;h1&gt;TLDR&lt;/h1&gt;
+&lt;p&gt;The ‘too long didn’t read’ (TLDR) take away messages from this text are:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Be aware of projections&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Decide an appropriate CRS for your project and ensure everything is in that CRS&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Use a projected CRS when doing geometric operations&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;EPSG codes such as 27700 and 4326 refer to specific coordinate systems&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;It is worth checking if there is an officially supported projection for the region — that is often a good option&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;In R, you can check, set and transform CRS with &lt;code&gt;st_crs()&lt;/code&gt; and &lt;code&gt;st_transform()&lt;/code&gt; as follows:&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;zones_london = lnd
+st_crs(zones_london)                                         # find out the CRS
+#&amp;gt; Coordinate Reference System:
+#&amp;gt;   User input: EPSG:4326 
+#&amp;gt;   wkt:
+#&amp;gt; GEOGCS[&amp;quot;WGS 84&amp;quot;,
+#&amp;gt;     DATUM[&amp;quot;WGS_1984&amp;quot;,
+#&amp;gt;         SPHEROID[&amp;quot;WGS 84&amp;quot;,6378137,298.257223563,
+#&amp;gt;             AUTHORITY[&amp;quot;EPSG&amp;quot;,&amp;quot;7030&amp;quot;]],
+#&amp;gt;         AUTHORITY[&amp;quot;EPSG&amp;quot;,&amp;quot;6326&amp;quot;]],
+#&amp;gt;     PRIMEM[&amp;quot;Greenwich&amp;quot;,0,
+#&amp;gt;         AUTHORITY[&amp;quot;EPSG&amp;quot;,&amp;quot;8901&amp;quot;]],
+#&amp;gt;     UNIT[&amp;quot;degree&amp;quot;,0.0174532925199433,
+#&amp;gt;         AUTHORITY[&amp;quot;EPSG&amp;quot;,&amp;quot;9122&amp;quot;]],
+#&amp;gt;     AUTHORITY[&amp;quot;EPSG&amp;quot;,&amp;quot;4326&amp;quot;]]
+zones_london_projected = st_transform(zones_london, 27700)   # transform CRS
+st_crs(zones_london) = NA                                    # set CRS
+st_crs(zones_london) = 4326                                  # set CRS&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;If you ignore CRSs, bad things can happen.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;why-are-projections-needed&#34; class=&#34;section level1&#34;&gt;
+&lt;h1&gt;Why are projections needed?&lt;/h1&gt;
+&lt;p&gt;Without a coordinate system, we have no context:&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://geocompr.github.io/post/2019/crs-projections-transformations_files/figure-html/unnamed-chunk-2-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;Which country is it?&lt;/p&gt;
+&lt;p&gt;Location on Earth is measured in degrees so, even when axes are equal, maps are highly distorted representations of reality far from the equator:&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://geocompr.github.io/post/2019/crs-projections-transformations_files/figure-html/unnamed-chunk-3-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;Along which axis is the image over-represented?&lt;/p&gt;
+&lt;p&gt;Even when we compensate for this, the cylindrical projection is misleading:&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://geocompr.github.io/post/2019/crs-projections-transformations_files/figure-html/unnamed-chunk-4-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;By default, most software (including R) plots data with geographic lon/lat coordinates a cylindrical projection, leading to maps like this:&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;plot(canada$geom)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;https://geocompr.github.io/post/2019/crs-projections-transformations_files/figure-html/unnamed-chunk-5-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;plot(world)
+#&amp;gt; Warning: plotting the first 9 out of 10 attributes; use max.plot = 10 to plot
+#&amp;gt; all&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;https://geocompr.github.io/post/2019/crs-projections-transformations_files/figure-html/unnamed-chunk-5-2.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;Across the whole world, the results look like this:&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;plot(st_geometry(world), col = &amp;quot;grey&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;https://geocompr.github.io/post/2019/crs-projections-transformations_files/figure-html/unnamed-chunk-6-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;There is no single ‘correct’ CRS that can represent everywhere well: it is physically impossible to ‘peal’ the surface of the Earth onto a flat screen (credit: &lt;a href=&#34;https://unsplash.com/@awarnerway&#34;&gt;Awar Jahfar&lt;/a&gt;):&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://images.unsplash.com/photo-1564509398619-622e40ad5a5e?ixlib=rb-1.2.1&amp;amp;auto=format&amp;amp;fit=crop&amp;amp;w=633&amp;amp;q=80&#34; /&gt;&lt;!-- --&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;At best we can comply with two out of three spatial properties (distance, area, direction).
+Therefore, the task at hand determines which projection to choose.
+For instance, if we are interested in a density (points per grid cell or inhabitants per grid cell), we should use an equal-area projection.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;ul&gt;
+&lt;li&gt;There is also a fourth property, shape.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;div id=&#34;which-projection-to-use&#34; class=&#34;section level1&#34;&gt;
+&lt;h1&gt;Which projection to use?&lt;/h1&gt;
+&lt;p&gt;A range of CRSs is available:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;A Lambert azimuthal equal-area (&lt;a href=&#34;https://en.wikipedia.org/wiki/Lambert_azimuthal_equal-area_projection&#34;&gt;LAEA&lt;/a&gt;) projection for a custom local projection (set &lt;code&gt;lon_0&lt;/code&gt; and &lt;code&gt;lat_0&lt;/code&gt; to the center of the study area), which is an equal-area projection at all locations but distorts shapes beyond thousands of kilometers.&lt;/li&gt;
+&lt;li&gt;Azimuthal equidistant (&lt;a href=&#34;https://en.wikipedia.org/wiki/Azimuthal_equidistant_projection&#34;&gt;AEQD&lt;/a&gt;) projections for a specifically accurate straight-line distance between a point and the center point of the local projection.&lt;/li&gt;
+&lt;li&gt;Lambert conformal conic (&lt;a href=&#34;https://en.wikipedia.org/wiki/Lambert_conformal_conic_projection&#34;&gt;LCC&lt;/a&gt;) projections for regions covering thousands of kilometers, with the cone set to keep distance and area properties reasonable between the secant lines.&lt;/li&gt;
+&lt;li&gt;Stereographic (&lt;a href=&#34;https://en.wikipedia.org/wiki/Stereographic_projection&#34;&gt;STERE&lt;/a&gt;) projections for polar regions, but taking care not to rely on area and distance calculations thousands of kilometers from the center.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;This is how it works in R:&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;world_laea1_g = world %&amp;gt;%
+  st_transform(&amp;quot;+proj=laea +x_0=0 +y_0=0 +lon_0=0 +lat_0=0&amp;quot;) %&amp;gt;% 
+  st_geometry()
+plot(world_laea1_g)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;https://geocompr.github.io/post/2019/crs-projections-transformations_files/figure-html/unnamed-chunk-8-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;world %&amp;gt;%
+  st_transform(&amp;quot;+proj=aeqd +x_0=0 +y_0=0 +lon_0=0 +lat_0=0&amp;quot;) %&amp;gt;% 
+  st_geometry() %&amp;gt;% 
+  plot()&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;https://geocompr.github.io/post/2019/crs-projections-transformations_files/figure-html/unnamed-chunk-9-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;world %&amp;gt;%
+  st_transform(&amp;quot;+proj=moll&amp;quot;) %&amp;gt;% 
+  st_geometry() %&amp;gt;% 
+  plot()&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;https://geocompr.github.io/post/2019/crs-projections-transformations_files/figure-html/unnamed-chunk-10-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;How to add graticules?&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;world %&amp;gt;%
+  st_transform(&amp;quot;+proj=moll&amp;quot;) %&amp;gt;% 
+  st_geometry() %&amp;gt;% 
+  plot()
+g = st_graticule(x = world) %&amp;gt;% 
+  st_transform(&amp;quot;+proj=moll&amp;quot;) %&amp;gt;% 
+  st_geometry()
+plot(g, add = TRUE)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;https://geocompr.github.io/post/2019/crs-projections-transformations_files/figure-html/unnamed-chunk-11-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;canada_centroid = st_coordinates(st_centroid(canada))
+#&amp;gt; Warning in st_centroid.sf(canada): st_centroid assumes attributes are constant
+#&amp;gt; over geometries of x
+#&amp;gt; Warning in st_centroid.sfc(st_geometry(x), of_largest_polygon =
+#&amp;gt; of_largest_polygon): st_centroid does not give correct centroids for longitude/
+#&amp;gt; latitude data
+canada_laea_crs = paste0(&amp;quot;+proj=laea +x_0=0 +y_0=0 +lon_0=&amp;quot;,
+                         canada_centroid[1],
+                         &amp;quot; +lat_0=&amp;quot;,
+                         canada_centroid[2])
+canada_laea = st_transform(canada, crs = canada_laea_crs)
+world_laea = st_transform(world, crs = canada_laea_crs)
+plot(st_geometry(canada_laea))
+plot(world_laea, add = TRUE)
+#&amp;gt; Warning in plot.sf(world_laea, add = TRUE): ignoring all but the first attribute&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;https://geocompr.github.io/post/2019/crs-projections-transformations_files/figure-html/unnamed-chunk-12-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;canada_centroid = st_coordinates(st_centroid(canada))
+#&amp;gt; Warning in st_centroid.sf(canada): st_centroid assumes attributes are constant
+#&amp;gt; over geometries of x
+#&amp;gt; Warning in st_centroid.sfc(st_geometry(x), of_largest_polygon =
+#&amp;gt; of_largest_polygon): st_centroid does not give correct centroids for longitude/
+#&amp;gt; latitude data
+canada_laea_crs = paste0(&amp;quot;+proj=laea +x_0=0 +y_0=0 +lon_0=&amp;quot;,
+                         canada_centroid[1],
+                         &amp;quot; +lat_0=&amp;quot;,
+                         canada_centroid[2])
+canada_laea = st_transform(canada, crs = canada_laea_crs)
+world_laea = st_transform(world, crs = canada_laea_crs)
+plot(st_geometry(canada_laea))
+plot(world_laea, add = TRUE)
+#&amp;gt; Warning in plot.sf(world_laea, add = TRUE): ignoring all but the first attribute&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;https://geocompr.github.io/post/2019/crs-projections-transformations_files/figure-html/unnamed-chunk-13-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;epsg-codes&#34; class=&#34;section level1&#34;&gt;
+&lt;h1&gt;EPSG codes&lt;/h1&gt;
+&lt;p&gt;EPSG codes are standard codes for projections.
+See them in R with:&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;epsg_codes = rgdal::make_EPSG()
+# View(epsg_codes) # open in interactive spreadsheet&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;In the UK, the EPSG code of official data is &lt;a href=&#34;https://epsg.io/27700&#34;&gt;27700&lt;/a&gt;.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;geographic-data-in-r&#34; class=&#34;section level1&#34;&gt;
+&lt;h1&gt;Geographic data in R&lt;/h1&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;london_df = data.frame(name = &amp;quot;london&amp;quot;, population = 1e7,
+                       lon = -0.1, lat = 51.5)
+class(london_df)
+#&amp;gt; [1] &amp;quot;data.frame&amp;quot;
+london = st_as_sf(london_df, coords = c(&amp;quot;lon&amp;quot;, &amp;quot;lat&amp;quot;))
+class(london)
+#&amp;gt; [1] &amp;quot;sf&amp;quot;         &amp;quot;data.frame&amp;quot;
+st_is_longlat(london)
+#&amp;gt; [1] NA
+plot(zones_london_projected$geometry)
+plot(london$geometry, add = TRUE, pch = 9) # not there&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;https://geocompr.github.io/post/2019/crs-projections-transformations_files/figure-html/unnamed-chunk-15-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;issues-with-geometric-operations&#34; class=&#34;section level1&#34;&gt;
+&lt;h1&gt;Issues with geometric operations&lt;/h1&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;london_buff1 = st_buffer(london, 0.1)
+plot(london_buff1)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;https://geocompr.github.io/post/2019/crs-projections-transformations_files/figure-html/unnamed-chunk-16-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;plot(zones_london$geometry)
+plot(london_buff1, add = T)
+#&amp;gt; Warning in plot.sf(london_buff1, add = T): ignoring all but the first attribute&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;https://geocompr.github.io/post/2019/crs-projections-transformations_files/figure-html/unnamed-chunk-16-2.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;st_crs(london) = 4326
+london_projected = st_transform(london, 27700)
+london_buff2 = st_buffer(london_projected, 10000)
+st_is_longlat(london_projected)
+#&amp;gt; [1] FALSE
+plot(zones_london_projected$geometry)
+plot(london_buff2, add = TRUE)
+#&amp;gt; Warning in plot.sf(london_buff2, add = TRUE): ignoring all but the first
+#&amp;gt; attribute&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;https://geocompr.github.io/post/2019/crs-projections-transformations_files/figure-html/unnamed-chunk-17-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;further-reading&#34; class=&#34;section level1&#34;&gt;
+&lt;h1&gt;Further reading&lt;/h1&gt;
+&lt;p&gt;If you’re interested in learning more on this, check out &lt;em&gt;Geocomputations with R&lt;/em&gt;.&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://geocompr.robinlovelace.net/&#34;&gt;&lt;img src=&#34;https://geocompr.robinlovelace.net/images/cover.png&#34; /&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;More specific resources on projections include:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Excellent tutorial on coordinate systems on the Manifold website: &lt;a href=&#34;http://www.manifold.net/doc/mfd9/projections_tutorial.htm&#34; class=&#34;uri&#34;&gt;http://www.manifold.net/doc/mfd9/projections_tutorial.htm&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;An introduction to vector geographic data in &lt;em&gt;Geocomputation with R&lt;/em&gt; (Section &lt;a href=&#34;https://geocompr.robinlovelace.net/spatial-class.html#vector-data&#34;&gt;2.2&lt;/a&gt;)&lt;/li&gt;
+&lt;li&gt;An introduction to CRSs in R (Section &lt;a href=&#34;https://geocompr.robinlovelace.net/spatial-class.html#crs-intro&#34;&gt;2.4&lt;/a&gt;)&lt;/li&gt;
+&lt;li&gt;The contents and exercises of Chapter &lt;a href=&#34;https://geocompr.robinlovelace.net/reproj-geo-data.html&#34;&gt;6&lt;/a&gt;, solutions to which you can find at &lt;a href=&#34;https://geocompr.github.io/geocompkg/articles/index.html&#34; class=&#34;uri&#34;&gt;https://geocompr.github.io/geocompkg/articles/index.html&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;For a fun take on projections, see &lt;a href=&#34;https://xkcd.com/977/&#34; class=&#34;uri&#34;&gt;https://xkcd.com/977/&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Chapter in upcoming book on CRSs by Edzer Pebesma and Roger Bivand: &lt;a href=&#34;https://github.com/edzer/sdsr&#34; class=&#34;uri&#34;&gt;https://github.com/edzer/sdsr&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Check out the questions in the exercises section of Chapter 6 of Geocomputation with R.&lt;/p&gt;
+&lt;/div&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>stars on the Geocomputation with R website</title>
+    <link>https://geocompr.github.io/tags/stars/</link>
+    <description>Recent content in stars on the Geocomputation with R website</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Thu, 27 Jan 2022 00:00:00 +0000</lastBuildDate><atom:link href="https://geocompr.github.io/tags/stars/feed.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Progress update: Geocomputation with R Second Edition Part 1</title>
+      <link>https://geocompr.github.io/post/2022/geocompr2-bp2/</link>
+      <pubDate>Thu, 27 Jan 2022 00:00:00 +0000</pubDate>
+      
+      <guid>https://geocompr.github.io/post/2022/geocompr2-bp2/</guid>
+      <description>Geocomputation with R is a book on geographic data analysis, visualization, and modeling. The First Edition was first published as a physical book in 2019 and we have reached 500k people through via the website at https://geocompr.robinlovelace.net/ and the physical book since then.
+The book has also become a key part of many university courses, lectures, and has been endorsed by many people who have found it vital for their work and for learning new geographic skills, as outlined in our guestbook at geocompr.</description>
+    </item>
+    
+    <item>
+      <title>Geocomputation with R: Second Edition feedback</title>
+      <link>https://geocompr.github.io/post/2021/geocompr2-bp1/</link>
+      <pubDate>Mon, 06 Sep 2021 00:00:00 +0000</pubDate>
+      
+      <guid>https://geocompr.github.io/post/2021/geocompr2-bp1/</guid>
+      <description>TL;DR: Please help us by filling out the survey at https://forms.gle/nq9RmbxJyZXQgc948.
+It’s been almost 3 years since the first edition of Geocomputation with R was published back in 2019. It’s been an amazing journey for this open source book on geographic data analysis, visualization and modeling since then. We have reached almost 500k people via the website at https://geocompr.robinlovelace.net/ and the physical book. The book now contributes to many university courses, lectures, and personal development as outlined at https://geocompr.</description>
+    </item>
+    
+    <item>
+      <title>Conversions between different spatial classes in R</title>
+      <link>https://geocompr.github.io/post/2021/spatial-classes-conversion/</link>
+      <pubDate>Thu, 17 Jun 2021 00:00:00 +0000</pubDate>
+      
+      <guid>https://geocompr.github.io/post/2021/spatial-classes-conversion/</guid>
+      <description>The R programming language has, over the past two decades, evolved substantial spatial data analysis capabilities, and is now one of the most powerful environments for undertaking geographic research using a reproducible command line interface. Currently, dedicated R packages allow to read spatial data and apply a plethora of different kinds of spatial methods in a reproducible fashion.
+There are two main1 spatial data models - spatial vector data and spatial raster data.</description>
+    </item>
+    
+  </channel>
+</rss>

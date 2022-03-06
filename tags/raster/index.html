@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="en-us">
+    <head>
+         
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>raster</title>
+        <meta name="description=" content="Geocomputation with R is for people who want to analyze, visualize and model geographic data with open source software. GIS, Spatial, R, Geospatial, Maps.">
+        
+        <style>
+
+    html body {
+        font-family: 'Raleway', sans-serif;
+        background-color: white;
+    }
+
+    :root {
+        --accent: #591257;
+        --border-width:  5px ;
+    }
+
+</style>
+
+
+<link rel="stylesheet" href="https://geocompr.github.io/css/main.css">
+
+
+
+
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
+
+
+ <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css"> 
+
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+ 
+
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+
+     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/go.min.js"></script>  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/haskell.min.js"></script>  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/kotlin.min.js"></script>  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/scala.min.js"></script>  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/swift.min.js"></script> 
+
+    <script>hljs.initHighlightingOnLoad();</script>
+
+
+
+
+
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+
+
+<script>$(document).on('click', function() { $('.collapse').collapse('hide'); })</script>
+ <meta name="generator" content="Hugo 0.87.0" />
+        
+        <link href="https://geocompr.github.io/tags/raster/feed.xml" rel="alternate" type="application/rss+xml" title="the Geocomputation with R website" />
+        <link href="https://geocompr.github.io/tags/raster/feed.xml" rel="feed" type="application/rss+xml" title="the Geocomputation with R website" />
+        
+
+        
+        
+        <script async src="https://www.googletagmanager.com/gtag/js?id=UA-99618359-2"></script>
+        <script>
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments)};
+          gtag('js', new Date());
+
+          gtag('config', 'UA-99618359-2');
+        </script>
+        
+    </head>
+
+    
+    
+    <script type="text/javascript" async
+      src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+    </script>
+    
+
+    <body>
+         
+        <nav class="navbar navbar-default navbar-fixed-top">
+
+            <div class="container">
+
+                <div class="navbar-header">
+
+                    <a class="navbar-brand visible-xs" href="#">raster</a>
+
+                    <button class="navbar-toggle" data-target=".navbar-collapse" data-toggle="collapse">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+
+                </div>
+
+                <div class="collapse navbar-collapse">
+
+                    
+                        <ul class="nav navbar-nav">
+                            
+                                <li><a href="/">Home</a></li>
+                            
+                                <li><a href="/post/">Posts</a></li>
+                            
+                                <li><a href="/presentations/">Presentations</a></li>
+                            
+                                <li><a href="/workshops/">Workshops</a></li>
+                            
+                                <li><a href="/vignettes/">Vignettes and solutions</a></li>
+                            
+                                <li><a href="/guestbook/">Guestbook</a></li>
+                            
+                        </ul>
+                    
+
+                    
+                        <ul class="nav navbar-nav navbar-right">
+                            
+                                <li class="navbar-icon"><a href="https://geocompr.robinlovelace.net/"><i class="fa fa-book"></i></a></li>
+                            
+                                <li class="navbar-icon"><a href="https://github.com/Robinlovelace/geocompr"><i class="fa fa-github"></i></a></li>
+                            
+                                <li class="navbar-icon"><a href="https://twitter.com/hashtag/geocompr"><i class="fa fa-twitter"></i></a></li>
+                            
+                                <li class="navbar-icon"><a href="https://geocompr.github.io/feed.xml"><i class="fa fa-rss"></i></a></li>
+                            
+                        </ul>
+                    
+
+                </div>
+
+            </div>
+
+        </nav>
+
+
+<main>
+
+    <h2>raster</h2>
+    
+     <div class="item">
+
+    
+    
+    
+
+    
+
+    <h4><a href="/post/2022/geocompr2-bp2/">Progress update: Geocomputation with R Second Edition Part 1</a></h4>
+    
+    <div class="post-metadata">
+        Jakub Nowosad, Robin Lovelace, Jannes Muenchow
+        <br>
+        
+        <span class="post-date">
+          <time datetime="2022-01-27 00:00:00 &#43;0000 UTC" itemprop="datePublished">27 January 2022</time>
+        </span>
+        
+    </div>
+    
+    <h5></h5>
+    
+    <a href="https://geocompr.github.io/tags/geocompr"><kbd class="item-tag">geocompr</kbd></a>
+    
+    <a href="https://geocompr.github.io/tags/geocompr2"><kbd class="item-tag">geocompr2</kbd></a>
+    
+    <a href="https://geocompr.github.io/tags/sf"><kbd class="item-tag">sf</kbd></a>
+    
+    <a href="https://geocompr.github.io/tags/rgdal"><kbd class="item-tag">rgdal</kbd></a>
+    
+    <a href="https://geocompr.github.io/tags/stars"><kbd class="item-tag">stars</kbd></a>
+    
+    <a href="https://geocompr.github.io/tags/raster"><kbd class="item-tag">raster</kbd></a>
+    
+    <a href="https://geocompr.github.io/tags/terra"><kbd class="item-tag">terra</kbd></a>
+    
+    <a href="https://geocompr.github.io/tags/s2"><kbd class="item-tag">s2</kbd></a>
+    
+    <a href="https://geocompr.github.io/tags/rstats"><kbd class="item-tag">rstats</kbd></a>
+    
+
+</div>
+  <div class="item">
+
+    
+    
+    
+
+    
+
+    <h4><a href="/post/2021/geocompr2-bp1/">Geocomputation with R: Second Edition feedback</a></h4>
+    
+    <div class="post-metadata">
+        Robin Lovelace, Jakub Nowosad, Jannes Muenchow
+        <br>
+        
+        <span class="post-date">
+          <time datetime="2021-09-06 00:00:00 &#43;0000 UTC" itemprop="datePublished">6 September 2021</time>
+        </span>
+        
+    </div>
+    
+    <h5></h5>
+    
+    <a href="https://geocompr.github.io/tags/geocompr"><kbd class="item-tag">geocompr</kbd></a>
+    
+    <a href="https://geocompr.github.io/tags/geocompr2"><kbd class="item-tag">geocompr2</kbd></a>
+    
+    <a href="https://geocompr.github.io/tags/sf"><kbd class="item-tag">sf</kbd></a>
+    
+    <a href="https://geocompr.github.io/tags/sp"><kbd class="item-tag">sp</kbd></a>
+    
+    <a href="https://geocompr.github.io/tags/stars"><kbd class="item-tag">stars</kbd></a>
+    
+    <a href="https://geocompr.github.io/tags/raster"><kbd class="item-tag">raster</kbd></a>
+    
+    <a href="https://geocompr.github.io/tags/terra"><kbd class="item-tag">terra</kbd></a>
+    
+    <a href="https://geocompr.github.io/tags/sabre"><kbd class="item-tag">sabre</kbd></a>
+    
+    <a href="https://geocompr.github.io/tags/tmap"><kbd class="item-tag">tmap</kbd></a>
+    
+    <a href="https://geocompr.github.io/tags/rstats"><kbd class="item-tag">rstats</kbd></a>
+    
+
+</div>
+  <div class="item">
+
+    
+    
+    
+
+    
+
+    <h4><a href="/post/2021/spatial-classes-conversion/">Conversions between different spatial classes in R</a></h4>
+    
+    <div class="post-metadata">
+        Jakub Nowosad
+        <br>
+        
+        <span class="post-date">
+          <time datetime="2021-06-17 00:00:00 &#43;0000 UTC" itemprop="datePublished">17 June 2021</time>
+        </span>
+        
+    </div>
+    
+    <h5></h5>
+    
+    <a href="https://geocompr.github.io/tags/geocompr"><kbd class="item-tag">geocompr</kbd></a>
+    
+    <a href="https://geocompr.github.io/tags/sf"><kbd class="item-tag">sf</kbd></a>
+    
+    <a href="https://geocompr.github.io/tags/sp"><kbd class="item-tag">sp</kbd></a>
+    
+    <a href="https://geocompr.github.io/tags/stars"><kbd class="item-tag">stars</kbd></a>
+    
+    <a href="https://geocompr.github.io/tags/raster"><kbd class="item-tag">raster</kbd></a>
+    
+    <a href="https://geocompr.github.io/tags/terra"><kbd class="item-tag">terra</kbd></a>
+    
+    <a href="https://geocompr.github.io/tags/sabre"><kbd class="item-tag">sabre</kbd></a>
+    
+    <a href="https://geocompr.github.io/tags/tmap"><kbd class="item-tag">tmap</kbd></a>
+    
+    <a href="https://geocompr.github.io/tags/rstats"><kbd class="item-tag">rstats</kbd></a>
+    
+
+</div>
+  <div class="item">
+
+    
+    
+    
+
+    
+
+    <h4><a href="/post/2020/whyr_webinar004/">Recent changes in R spatial and how to be ready for them</a></h4>
+    
+    <div class="post-metadata">
+        Jakub Nowosad, Robin Lovelace
+        <br>
+        
+        <span class="post-date">
+          <time datetime="2020-04-25 00:00:00 &#43;0000 UTC" itemprop="datePublished">25 April 2020</time>
+        </span>
+        
+    </div>
+    
+    <h5></h5>
+    
+    <a href="https://geocompr.github.io/tags/geocompr"><kbd class="item-tag">geocompr</kbd></a>
+    
+    <a href="https://geocompr.github.io/tags/sf"><kbd class="item-tag">sf</kbd></a>
+    
+    <a href="https://geocompr.github.io/tags/raster"><kbd class="item-tag">raster</kbd></a>
+    
+    <a href="https://geocompr.github.io/tags/tmap"><kbd class="item-tag">tmap</kbd></a>
+    
+    <a href="https://geocompr.github.io/tags/docker"><kbd class="item-tag">docker</kbd></a>
+    
+    <a href="https://geocompr.github.io/tags/proj"><kbd class="item-tag">proj</kbd></a>
+    
+    <a href="https://geocompr.github.io/tags/covid19"><kbd class="item-tag">covid19</kbd></a>
+    
+
+</div>
+ 
+
+</main>
+
+
+
+
+
+<em>Blog posts are aggregated at <a href="https://www.r-bloggers.com/">R-bloggers</a> and <a href="https://rweekly.org/">RWeekly</a></em>
+
+        <footer>
+
+            <p class="copyright text-muted">© All rights reserved. Powered by <a href="https://gohugo.io">Hugo</a> and <a href="https://github.com/calintat/minimal">Minimal</a></p>
+
+        </footer>
+       
+    </body>
+
+</html>
+
+
+

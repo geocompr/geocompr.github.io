@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>solutions on the Geocomputation with R website</title>
+    <link>https://geocompr.github.io/tags/solutions/</link>
+    <description>Recent content in solutions on the Geocomputation with R website</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Thu, 24 Feb 2022 00:00:00 +0000</lastBuildDate><atom:link href="https://geocompr.github.io/tags/solutions/feed.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Automatic website for &#39;the Geocomputation with R&#39; solutions</title>
+      <link>https://geocompr.github.io/post/2022/geocompr-solutions/</link>
+      <pubDate>Thu, 24 Feb 2022 00:00:00 +0000</pubDate>
+      
+      <guid>https://geocompr.github.io/post/2022/geocompr-solutions/</guid>
+      <description>Geocomputation with R is a book on geographic data analysis, visualization, and modeling. Each chapter1 ends with a set of exercises allowing the readers to test how well they understand each presented concepts and approaches. However, exercises are often not enough without their solutions, which provides a way to compare readers’ answers with an expected one. This leads to technical questions: how to provide solutions to the exercises without making the book too long, and to minimise duplication of words/effort (for the questions and answers)?</description>
+    </item>
+    
+  </channel>
+</rss>

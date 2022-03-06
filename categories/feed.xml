@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Categories on the Geocomputation with R website</title>
+    <link>https://geocompr.github.io/categories/</link>
+    <description>Recent content in Categories on the Geocomputation with R website</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Thu, 24 Feb 2022 00:00:00 +0000</lastBuildDate><atom:link href="https://geocompr.github.io/categories/feed.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>vignette</title>
+      <link>https://geocompr.github.io/categories/vignette/</link>
+      <pubDate>Thu, 24 Feb 2022 00:00:00 +0000</pubDate>
+      
+      <guid>https://geocompr.github.io/categories/vignette/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>updates</title>
+      <link>https://geocompr.github.io/categories/updates/</link>
+      <pubDate>Thu, 27 Jan 2022 00:00:00 +0000</pubDate>
+      
+      <guid>https://geocompr.github.io/categories/updates/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>announcement</title>
+      <link>https://geocompr.github.io/categories/announcement/</link>
+      <pubDate>Mon, 06 Sep 2021 00:00:00 +0000</pubDate>
+      
+      <guid>https://geocompr.github.io/categories/announcement/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>demo</title>
+      <link>https://geocompr.github.io/categories/demo/</link>
+      <pubDate>Thu, 23 Apr 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://geocompr.github.io/categories/demo/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>setup</title>
+      <link>https://geocompr.github.io/categories/setup/</link>
+      <pubDate>Mon, 30 Mar 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://geocompr.github.io/categories/setup/</guid>
+      <description></description>
+    </item>
+    
+  </channel>
+</rss>

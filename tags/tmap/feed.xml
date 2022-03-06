@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>tmap on the Geocomputation with R website</title>
+    <link>https://geocompr.github.io/tags/tmap/</link>
+    <description>Recent content in tmap on the Geocomputation with R website</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Mon, 06 Sep 2021 00:00:00 +0000</lastBuildDate><atom:link href="https://geocompr.github.io/tags/tmap/feed.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Geocomputation with R: Second Edition feedback</title>
+      <link>https://geocompr.github.io/post/2021/geocompr2-bp1/</link>
+      <pubDate>Mon, 06 Sep 2021 00:00:00 +0000</pubDate>
+      
+      <guid>https://geocompr.github.io/post/2021/geocompr2-bp1/</guid>
+      <description>TL;DR: Please help us by filling out the survey at https://forms.gle/nq9RmbxJyZXQgc948.
+It’s been almost 3 years since the first edition of Geocomputation with R was published back in 2019. It’s been an amazing journey for this open source book on geographic data analysis, visualization and modeling since then. We have reached almost 500k people via the website at https://geocompr.robinlovelace.net/ and the physical book. The book now contributes to many university courses, lectures, and personal development as outlined at https://geocompr.</description>
+    </item>
+    
+    <item>
+      <title>Conversions between different spatial classes in R</title>
+      <link>https://geocompr.github.io/post/2021/spatial-classes-conversion/</link>
+      <pubDate>Thu, 17 Jun 2021 00:00:00 +0000</pubDate>
+      
+      <guid>https://geocompr.github.io/post/2021/spatial-classes-conversion/</guid>
+      <description>The R programming language has, over the past two decades, evolved substantial spatial data analysis capabilities, and is now one of the most powerful environments for undertaking geographic research using a reproducible command line interface. Currently, dedicated R packages allow to read spatial data and apply a plethora of different kinds of spatial methods in a reproducible fashion.
+There are two main1 spatial data models - spatial vector data and spatial raster data.</description>
+    </item>
+    
+    <item>
+      <title>Recent changes in R spatial and how to be ready for them</title>
+      <link>https://geocompr.github.io/post/2020/whyr_webinar004/</link>
+      <pubDate>Sat, 25 Apr 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://geocompr.github.io/post/2020/whyr_webinar004/</guid>
+      <description>Currently, hundreds of R packages are related to spatial data analysis. They range from ecology and earth observation, hydrology and soil science, to transportation and demography. These packages support various stages of analysis, including data preparation, visualization, modeling, or communicating the results. One common feature of most R spatial packages is that they are built upon some of the main representations of spatial data in R, available in key geographic R packages such as:</description>
+    </item>
+    
+    <item>
+      <title>Map coloring: the color scale styles available in the tmap package</title>
+      <link>https://geocompr.github.io/post/2019/tmap-color-scales/</link>
+      <pubDate>Thu, 17 Oct 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://geocompr.github.io/post/2019/tmap-color-scales/</guid>
+      <description>This vignette builds on the making maps chapter of the Geocomputation with R book. Its goal is to demonstrate all possible map styles available in the tmap package.
+Prerequisites The examples below assume the following packages are attached:
+library(spData) # example datasets library(tmap) # map creation library(sf) # spatial data reprojection The world object containing a world map data from Natural Earth and information about countries’ names, regions, and subregions they belong to, areas, life expectancies, and populations.</description>
+    </item>
+    
+    <item>
+      <title>Grids and graticules in the tmap package</title>
+      <link>https://geocompr.github.io/post/2019/tmap-grid/</link>
+      <pubDate>Wed, 04 Sep 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://geocompr.github.io/post/2019/tmap-grid/</guid>
+      <description>This vignette builds on the making maps chapter of the Geocomputation with R book. Its goal is to demonstrate how to set and modify grids and graticules in the tmap package.
+Prerequisites The examples below assume the following packages are attached:
+library(spData) # example datasets library(tmap) # map creation (&amp;gt;=2.3) library(sf) # spatial data classes  Grids and graticules The tmap package offers two ways to draws coordinate lines - tm_grid() and tm_graticules().</description>
+    </item>
+    
+  </channel>
+</rss>
