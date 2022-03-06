@@ -51,7 +51,7 @@ jobs:
 
       - name: Install hugo
         run: |
-          Rscript -e 'blogdown::install_hugo()'
+          Rscript -e 'blogdown::install_hugo("0.87.0")'
 
       - name: Build site
         run: |
