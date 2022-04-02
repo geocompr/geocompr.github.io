@@ -1,0 +1,40 @@
+---
+title: "Using buffers vs 'within distance' approaches" 
+author: Olivier
+date: "2022-04-10"
+slug: geocompr-solutions
+categories: [vignette]
+tags: [geocompr2, buffers, rstats]
+draft: true
+---
+
+This post explores two ways of calculating whether or not objects are within a certain distance of another object.
+This may sound rather abstract and the situation is perhaps best illustrated with reference to a simple reproducible example starting with (psuedo) randomly located points.
+
+```{r}
+library(sf)
+library(dplyr)
+library(tmap)
+set.seed(2022)
+point_locations = data.frame(
+  x = rnorm(n = 100, mean = 0, sd = 1),
+  y = rnorm(n = 100, mean = 0, sd = 1),
+  n = 1:100
+) %>% 
+  st_as_sf(coords = c("x", "y"))
+
+target_points = data.frame(
+  x = rnorm(n = 5, mean = 0, sd = 1),
+  y = rnorm(n = 5, mean = 0, sd = 1),
+  n = 1:5
+) %>% 
+  st_as_sf(coords = c("x", "y"))
+target_buffers = st_buffer(target_points, dist = 1)
+```
+
+```{r}
+tm_shape(point_locations) +
+  tm_dots() +
+  tm_shape(target_buffers) +
+  tm_borders()
+```
