@@ -1,7 +1,7 @@
 ---
 title: "Using buffers vs 'within distance' approaches" 
 author: Olivier
-date: "2022-04-10"
+date: "2022-04-02"
 slug: buffer-distance
 categories: [vignette]
 tags: [geocompr2, buffers, rstats]
@@ -15,10 +15,14 @@ rbbt::bbt_update_bib(path_rmd = "buffer-vs-within-distance.Rmd", path_bib = "buf
 
 This post explores ways of calculating whether or not objects are within a certain distance of another object.
 This may sound rather abstract and the situation is perhaps best understood with reference to a concrete example: how many restaurants are within one mile of a highway?
-This scenario is described in [@obe_postgis_2015].
+This question is posed by @obe_postgis_2015 who demonstrate methods, implemented in reproducible SQL code, to answer it.
 
+Before reproducing their example in R and PostGIS, which can be called from R, we will demonstrate the basic scenario with reference to a minimal reproducible example.
 
-illustrated with reference to a simple reproducible example starting with (psuedo) randomly located points.
+## Minimal reproducible example
+
+Imagine that there are 100 restaurants and only five highways.
+Based on the simplifying assumption that highways can be represented as points, we can generate a minimal example to demonstrate the question with a few lines of R code to generate (psuedo) randomly located points.
 
 ```{r}
 library(sf)
