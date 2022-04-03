@@ -2,14 +2,23 @@
 title: "Using buffers vs 'within distance' approaches" 
 author: Olivier
 date: "2022-04-10"
-slug: geocompr-solutions
+slug: buffer-distance
 categories: [vignette]
 tags: [geocompr2, buffers, rstats]
 draft: true
 ---
 
-This post explores two ways of calculating whether or not objects are within a certain distance of another object.
-This may sound rather abstract and the situation is perhaps best illustrated with reference to a simple reproducible example starting with (psuedo) randomly located points.
+```{r, eval=TRUE, echo=FALSE}
+# Add references
+rbbt::bbt_update_bib(path_rmd = "buffer-vs-within-distance.Rmd", path_bib = "buffer-vs-within-distance.bib")
+```
+
+This post explores ways of calculating whether or not objects are within a certain distance of another object.
+This may sound rather abstract and the situation is perhaps best understood with reference to a concrete example: how many restaurants are within one mile of a highway?
+This scenario is described in [@obe_postgis_2015].
+
+
+illustrated with reference to a simple reproducible example starting with (psuedo) randomly located points.
 
 ```{r}
 library(sf)
@@ -29,7 +38,7 @@ target_points = data.frame(
   n = 1:5
 ) %>% 
   st_as_sf(coords = c("x", "y"))
-target_buffers = st_buffer(target_points, dist = 1)
+target_buffers = st_buffer(target_points, dist = 0.2)
 ```
 
 ```{r}
@@ -38,3 +47,6 @@ tm_shape(point_locations) +
   tm_shape(target_buffers) +
   tm_borders()
 ```
+
+# References
+
