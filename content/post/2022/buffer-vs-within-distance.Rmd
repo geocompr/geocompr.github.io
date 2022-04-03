@@ -8,8 +8,8 @@ tags: [geocompr2, buffers, rstats]
 draft: true
 ---
 
-```{r, eval=TRUE, echo=FALSE}
-# Add references
+```{r, eval=FALSE, echo=FALSE}
+# Add references, set eval=TRUE temporarily to update
 rbbt::bbt_update_bib(path_rmd = "buffer-vs-within-distance.Rmd", path_bib = "buffer-vs-within-distance.bib")
 ```
 
