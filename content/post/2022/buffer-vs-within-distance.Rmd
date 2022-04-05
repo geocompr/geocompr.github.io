@@ -29,28 +29,112 @@ library(sf)
 library(dplyr)
 library(tmap)
 set.seed(2022)
-point_locations = data.frame(
+
+pnts = data.frame(
   x = rnorm(n = 100, mean = 0, sd = 1),
   y = rnorm(n = 100, mean = 0, sd = 1),
   n = 1:100
 ) %>% 
   st_as_sf(coords = c("x", "y"))
 
-target_points = data.frame(
+tgrt = data.frame(
   x = rnorm(n = 5, mean = 0, sd = 1),
   y = rnorm(n = 5, mean = 0, sd = 1),
   n = 1:5
 ) %>% 
   st_as_sf(coords = c("x", "y"))
-target_buffers = st_buffer(target_points, dist = 0.2)
+tgrt_buff = st_buffer(tgrt, dist = 0.2)
 ```
 
 ```{r}
-tm_shape(point_locations) +
+tm_shape(pnts) +
   tm_dots() +
-  tm_shape(target_buffers) +
+  tm_shape(tgrt_buff) +
   tm_borders()
 ```
+
+This benchmark is just about how to do the same operations with `st_is_within`
+
+<!-- Possible ideas:  -->
+<!-- - doing it with an more aggregated point pattern  -->
+<!-- - try with line  -->
+
+
+
+```{r}
+points_1 = pnts[tgrt, , op = st_is_within_distance, dist = 0.2]
+points_1
+points_2 = pnts[
+  lengths(
+    st_is_within_distance(pnts, tgrt, dist = 0.2)
+    ) > 0, # this can be changed if needed for greater than one for particular cases
+]
+points_2
+points_3 = pnts[tgrt_buff, ]
+
+waldo::compare(points_1, points_2)
+waldo::compare(points_1, points_3)
+
+bench::mark(
+  st_within_square = pnts[tgrt, , op = st_is_within_distance, dist = 0.2],
+  st_within_verbose = {points_2 = pnts[
+    lengths(st_is_within_distance(pnts, tgrt, dist = 0.2)) > 0,
+  ]},
+  with_st_buffer = {
+    tgrt_buff = st_buffer(tgrt, dist = 0.2)
+    pnts[tgrt_buff,]
+  }
+)
+```
+
+## Full example
+
+```{r}
+library(RPostgreSQL)
+conn = dbConnect(drv = PostgreSQL(), 
+                 dbname = "rtafdf_zljbqm", host = "db.qgiscloud.com",
+                 port = "5432", user = "rtafdf_zljbqm", password = "d3290ead")
+
+dbListTables(conn)
+
+library(spData)
+
+Utah = us_states[us_states$NAME == "Utah",]
+Utah = sf::st_transform(Utah, 2163)
+
+rsts = sf::st_read(conn, query = "select * from restaurants;")
+highways = sf::st_read(conn, query = "select * from highways;")
+# franchises.dat = DBI::dbGetQuery(conn, statement = "select * from ch01.lu_franchises;")
+
+rsts_u = rsts[Utah,]
+road_utah.shp = highways[Utah,]
+
+RPostgreSQL::postgresqlCloseConnection(conn)
+```
+
+
+```{r}
+dist_to_check = 1609
+
+bench::mark(check = FALSE,
+    buffer = {
+        rsts_buff = sf::st_buffer(rsts_u, dist = dist_to_check) 
+        resto_near_road = rsts_buff[road_utah.shp,]
+    },
+    buffer2 = {
+        rsts_buff = sf::st_buffer(rsts_u, dist = dist_to_check, nQuadSegs = 4) 
+        resto_near_road = rsts_buff[road_utah.shp,]
+    },
+    within_distance ={
+        near_or_not = lengths(
+          sf::st_is_within_distance(rsts_u, road_utah.shp, dist_to_check)) > 0
+        resto_near_roadv2 = rsts[near_or_not,]
+    },
+    times = 100
+ )
+```
+
+
 
 # References
 
