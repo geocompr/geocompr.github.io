@@ -107,10 +107,20 @@ highways = sf::st_read(conn, query = "select * from highways;")
 # franchises.dat = DBI::dbGetQuery(conn, statement = "select * from ch01.lu_franchises;")
 
 rsts_u = rsts[Utah,]
-road_utah.shp = highways[Utah,]
+highways_u = highways[Utah,]
+highway_p = st_cast(highways_u, "POINT")
 
 RPostgreSQL::postgresqlCloseConnection(conn)
 ```
+
+What happens when we calculate distances to points (vertices) on the road network:
+
+```{r}
+highway_points = st_cast(highways, "POINT")
+nrow(highway_points)
+nrow(st_coordinates(highways))
+```
+
 
 
 ```{r}
@@ -119,16 +129,29 @@ dist_to_check = 1609
 bench::mark(check = FALSE,
     buffer = {
         rsts_buff = sf::st_buffer(rsts_u, dist = dist_to_check) 
-        resto_near_road = rsts_buff[road_utah.shp,]
+        resto_near_road1 = rsts_buff[highways_u, ]
     },
     buffer2 = {
         rsts_buff = sf::st_buffer(rsts_u, dist = dist_to_check, nQuadSegs = 4) 
-        resto_near_road = rsts_buff[road_utah.shp,]
+        resto_near_road2 = rsts_buff[highways_u, ]
+    },
+    buffer3 = {
+        highway_buff = sf::st_buffer(highways_u, dist = dist_to_check) 
+        resto_near_road3 = rsts_u[highway_buff, ]
+    },
+    buffer4 = {
+        highway_buff = sf::st_buffer(highways_u, dist = dist_to_check, nQuadSegs = 4) 
+        resto_near_road3 = rsts_u[highway_buff, ]
     },
     within_distance ={
         near_or_not = lengths(
-          sf::st_is_within_distance(rsts_u, road_utah.shp, dist_to_check)) > 0
-        resto_near_roadv2 = rsts[near_or_not,]
+          sf::st_is_within_distance(rsts_u, highways_u, dist_to_check)) > 0
+        resto_near_road4 = rsts_u[near_or_not, ]
+    },
+    within_distance2 ={
+        near_or_not = lengths(
+          sf::st_is_within_distance(rsts_u, highway_p, dist_to_check)) > 0
+        resto_near_road5 = rsts_u[near_or_not, ]
     },
     times = 100
  )
