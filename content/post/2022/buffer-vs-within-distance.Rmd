@@ -6,6 +6,7 @@ slug: buffer-distance
 categories: [vignette]
 tags: [geocompr2, buffers, rstats]
 draft: true
+bibliography: buffer-vs-within-distance.bib
 ---
 
 ```{r, eval=FALSE, echo=FALSE}
