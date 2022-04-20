@@ -43,13 +43,19 @@ ignoreErrors = ["error-remote-getjson"]
     
 [[menu.main]]
     url = "/vignettes/"
-    name = "Vignettes and solutions"
+    name = "Vignettes"
     weight = 5
+    
+    
+[[menu.main]]
+    url = "https://geocompr.github.io/solutions/"
+    name = "Solutions"
+    weight = 6
 
 [[menu.main]]
     url = "/guestbook/"
     name = "Guestbook"
-    weight = 6
+    weight = 7
 
 # Social icons to be shown on the right-hand side of the navigation bar
 # The "name" field should match the name of the icon to be used
