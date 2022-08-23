@@ -25,8 +25,15 @@ hidethedate: true
 - [Data Carpentry: Introduction to Geospatial Raster and Vector Data with R](https://datacarpentry.org/r-raster-vector-geospatial/)
 - [R: Mapping and Geospatial](https://guides.library.duke.edu/r-geospatial) guide, Duke University
 
-##### ([suggest more here](https://github.com/geocompr/geocompr.github.io/edit/source/content/guestbook/index.md))
-### Tweets:
+##### ([Suggest more here](https://github.com/geocompr/geocompr.github.io/edit/source/content/guestbook/index.md))
+
+### Book reviews
+
+> I first read the first edition around 3 years ago and was astounded that everything I had been doing piecemeal in Q, Arc, and with some sf functions could be done in an orderly manner and finally the geospatial libraries were accessibly explained. Sadly at the time I did not get past the first part and thought "this is great! but need to move on!". A month or so ago I sat down to reread the book in its entirety, with the move to terra etc.  
+
+See the rest of this review and maybe add your own review [here](https://www.amazon.com/Geocomputation-Chapman-Hall-Robin-Lovelace/dp/1138304514/). 
+
+### Tweets
 ##### ([suggest more here](https://github.com/geocompr/geocompr.github.io/edit/source/content/guestbook/index.md))
 
 {{< tweet 1519067757811228672 >}}
