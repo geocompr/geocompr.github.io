@@ -1,0 +1,164 @@
+---
+title: "Using buffers vs 'within distance' approaches" 
+author: Olivier
+date: "2022-04-02"
+slug: buffer-distance
+categories: [vignette]
+tags: [geocompr2, buffers, rstats]
+draft: true
+bibliography: buffer-vs-within-distance.bib
+---
+
+```{r, eval=FALSE, echo=FALSE}
+# Add references, set eval=TRUE temporarily to update
+rbbt::bbt_update_bib(path_rmd = "buffer-vs-within-distance.Rmd", path_bib = "buffer-vs-within-distance.bib")
+```
+
+This post explores ways of calculating whether or not objects are within a certain distance of another object.
+This may sound rather abstract and the situation is perhaps best understood with reference to a concrete example: how many restaurants are within one mile of a highway?
+This question is posed by @obe_postgis_2015 who demonstrate methods, implemented in reproducible SQL code, to answer it.
+
+Before reproducing their example in R and PostGIS, which can be called from R, we will demonstrate the basic scenario with reference to a minimal reproducible example.
+
+## Minimal reproducible example
+
+Imagine that there are 100 restaurants and only five highways.
+Based on the simplifying assumption that highways can be represented as points, we can generate a minimal example to demonstrate the question with a few lines of R code to generate (psuedo) randomly located points.
+
+```{r}
+library(sf)
+library(dplyr)
+library(tmap)
+set.seed(2022)
+
+pnts = data.frame(
+  x = rnorm(n = 100, mean = 0, sd = 1),
+  y = rnorm(n = 100, mean = 0, sd = 1),
+  n = 1:100
+) %>% 
+  st_as_sf(coords = c("x", "y"))
+
+tgrt = data.frame(
+  x = rnorm(n = 5, mean = 0, sd = 1),
+  y = rnorm(n = 5, mean = 0, sd = 1),
+  n = 1:5
+) %>% 
+  st_as_sf(coords = c("x", "y"))
+tgrt_buff = st_buffer(tgrt, dist = 0.2)
+```
+
+```{r}
+tm_shape(pnts) +
+  tm_dots() +
+  tm_shape(tgrt_buff) +
+  tm_borders()
+```
+
+This benchmark is just about how to do the same operations with `st_is_within`
+
+<!-- Possible ideas:  -->
+<!-- - doing it with an more aggregated point pattern  -->
+<!-- - try with line  -->
+
+
+
+```{r}
+points_1 = pnts[tgrt, , op = st_is_within_distance, dist = 0.2]
+points_1
+points_2 = pnts[
+  lengths(
+    st_is_within_distance(pnts, tgrt, dist = 0.2)
+    ) > 0, # this can be changed if needed for greater than one for particular cases
+]
+points_2
+points_3 = pnts[tgrt_buff, ]
+
+waldo::compare(points_1, points_2)
+waldo::compare(points_1, points_3)
+
+bench::mark(
+  st_within_square = pnts[tgrt, , op = st_is_within_distance, dist = 0.2],
+  st_within_verbose = {points_2 = pnts[
+    lengths(st_is_within_distance(pnts, tgrt, dist = 0.2)) > 0,
+  ]},
+  with_st_buffer = {
+    tgrt_buff = st_buffer(tgrt, dist = 0.2)
+    pnts[tgrt_buff,]
+  }
+)
+```
+
+## Full example
+
+```{r}
+library(RPostgreSQL)
+conn = dbConnect(drv = PostgreSQL(), 
+                 dbname = "rtafdf_zljbqm", host = "db.qgiscloud.com",
+                 port = "5432", user = "rtafdf_zljbqm", password = "d3290ead")
+
+dbListTables(conn)
+
+library(spData)
+
+Utah = us_states[us_states$NAME == "Utah",]
+Utah = sf::st_transform(Utah, 2163)
+
+rsts = sf::st_read(conn, query = "select * from restaurants;")
+highways = sf::st_read(conn, query = "select * from highways;")
+# franchises.dat = DBI::dbGetQuery(conn, statement = "select * from ch01.lu_franchises;")
+
+rsts_u = rsts[Utah,]
+highways_u = highways[Utah,]
+highway_p = st_cast(highways_u, "POINT")
+
+RPostgreSQL::postgresqlCloseConnection(conn)
+```
+
+What happens when we calculate distances to points (vertices) on the road network:
+
+```{r}
+highway_points = st_cast(highways, "POINT")
+nrow(highway_points)
+nrow(st_coordinates(highways))
+```
+
+
+
+```{r}
+dist_to_check = 1609
+
+bench::mark(check = FALSE,
+    buffer = {
+        rsts_buff = sf::st_buffer(rsts_u, dist = dist_to_check) 
+        resto_near_road1 = rsts_buff[highways_u, ]
+    },
+    buffer2 = {
+        rsts_buff = sf::st_buffer(rsts_u, dist = dist_to_check, nQuadSegs = 4) 
+        resto_near_road2 = rsts_buff[highways_u, ]
+    },
+    buffer3 = {
+        highway_buff = sf::st_buffer(highways_u, dist = dist_to_check) 
+        resto_near_road3 = rsts_u[highway_buff, ]
+    },
+    buffer4 = {
+        highway_buff = sf::st_buffer(highways_u, dist = dist_to_check, nQuadSegs = 4) 
+        resto_near_road3 = rsts_u[highway_buff, ]
+    },
+    within_distance ={
+        near_or_not = lengths(
+          sf::st_is_within_distance(rsts_u, highways_u, dist_to_check)) > 0
+        resto_near_road4 = rsts_u[near_or_not, ]
+    },
+    within_distance2 ={
+        near_or_not = lengths(
+          sf::st_is_within_distance(rsts_u, highway_p, dist_to_check)) > 0
+        resto_near_road5 = rsts_u[near_or_not, ]
+    },
+    times = 100
+ )
+```
+
+
+
+# References
+
